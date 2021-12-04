@@ -84,13 +84,13 @@ enum class Operator{
 
 typedef int      num_t;
 typedef Operator opr_t;
-typedef int       id_t;
+typedef int      idt_t;
 
 union NodeData
 {
     num_t num;
     opr_t opr;
-    id_t  id;
+    idt_t  id;
 
     CUSTOM_NODE_DATA_TYPE custom;
 };

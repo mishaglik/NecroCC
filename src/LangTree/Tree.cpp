@@ -28,6 +28,7 @@ void nodeListDtor(NodeList* list){
     free(list->nodes);
     list->capacity = 0;
     list->size = 0;
+    free(list);
 }
 
 void nodeListPush(NodeList* list, Node* node){
@@ -61,12 +62,12 @@ void graphTree(const Node* node){
     system(command);
 }
 
-void graphNode(const Node* node, const FILE* graphFile){
+void graphNode(const Node* node, FILE* graphFile){
     LOG_ASSERT(node      != NULL);
     LOG_ASSERT(graphFile != NULL);
 
-    
-    fprintf(graphFile, "N%p[style=record, color=\"%s\",label=\" %s | {<l> %p| <r> %p} \"]", node, getTypeColor(node->type), );
+    LOG_INFO("*Tree graph*");
+    // fprintf(graphFile, "N%p[style=record, color=\"%s\",label=\" %s | {<l> %p| <r> %p} \"]", node, getTypeColor(node->type), );
 }
 
 
@@ -99,3 +100,10 @@ const char* getTypeColor(NodeType type){
 }
 
 void graphNodeList(NodeList* list);
+
+Node* newNode(NodeType type, NodeData data){
+    Node* ptr = (Node*)mgk_calloc(1, sizeof(Node));
+    ptr->type = type;
+    ptr->data = data;
+    return ptr;
+}

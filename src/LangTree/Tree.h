@@ -1,6 +1,7 @@
 #ifndef LANG_TREE_TREE_H
 #define LANG_TREE_TREE_H
 #include <stdlib.h>
+#include <stdio.h>
 
 enum class CustomOperator{
     NONE  = 0,
@@ -19,6 +20,8 @@ struct NodeList
     Node** nodes    = NULL;
 };
 
+Node* newNode(NodeType type, NodeData data);
+
 void nodeListCtor(NodeList* list);
 
 void nodeListDtor(NodeList* list);
@@ -27,9 +30,9 @@ void nodeListPush(NodeList* list, Node* node);
 
 void graphTree(const Node* node);
 
-void graphNode(const Node* node, const FILE* graphFile);
+void graphNode(const Node* node, FILE* graphFile);
 
 const char* getTypeColor(NodeType type);
 
-void graphNodeList(NodeList* list);
+// void graphNodeList(NodeList* list);
 #endif

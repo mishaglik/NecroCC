@@ -19,7 +19,11 @@ CXXFLAGS += -DMINOR_VERSION=$(MINOR_VERSION)
 
 CXXFLAGS += $(SANFLAGS)
 
-SOURCES_TREE = Tree.cpp
+SOURCES_LangTree = Tree.cpp
+
+SOURCES_FrontEnd = 
+
+SOURCES_FrontEnd/Parser = Parser.cpp
 
 SUBDIRS = ${shell find $(SRC_DIR) -type d -printf '%P '}
 
