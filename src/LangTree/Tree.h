@@ -34,5 +34,7 @@ void graphNode(const Node* node, FILE* graphFile);
 
 const char* getTypeColor(NodeType type);
 
+char* getNodeLabel(const Node* node);
+
 // void graphNodeList(NodeList* list);
 #endif

@@ -3,6 +3,7 @@
 #include "MGK/Utils.h"
 #include "File.h"
 #include "FrontEnd/Parser/Parser.h"
+#include "FrontEnd/SyntaxAnal/SyntaxAnalyzer.h"
 int main(){
     FILE* file = fopen("Text.cht", "r");
     LOG_ASSERT(file != NULL);
@@ -13,8 +14,19 @@ int main(){
     
     NodeList* list = parseText(buffer);
     for(size_t i = 0; i < list->size; ++i){
-        LOG_DEBUG("[%3d] = { .type = %d, .data = %d }", i, (int)list->nodes[i]->type, list->nodes[i]->data.num);
+        char* label = getNodeLabel(list->nodes[i]);
+        LOG_DEBUG("[%3d] = { .type = %d, .data = %d \t .label = %s}", i, (int)list->nodes[i]->type, list->nodes[i]->data.num, label);
+        free(label);
     }
+
+    SyntaxContext context = {
+        .curPtr = list->nodes,
+        .size   = list->size,
+    };
+
+    context = getG(context);
+
+    graphTree(context.root);
     nodeListDtor(list);
     free(buffer);
     LOG_INFO("Successfully finished");

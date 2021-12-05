@@ -32,7 +32,7 @@
 - 
 - Basic ::= Number | Call | Id
 - 
-- Call ::= Id (Rval? {, Rval}*)
+- Call ::= Id (Line? {, Line}*)
 - 
 - DeclF ::= DecF Id ({Id {, Id}*}?)
 - 

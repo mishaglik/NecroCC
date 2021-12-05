@@ -25,6 +25,8 @@ SOURCES_FrontEnd =
 
 SOURCES_FrontEnd/Parser = Parser.cpp
 
+SOURCES_FrontEnd/SyntaxAnal = SyntaxAnalyzer.cpp
+
 SUBDIRS = ${shell find $(SRC_DIR) -type d -printf '%P '}
 
 SOURCES =  $(foreach dir, $(SUBDIRS), $(addprefix $(dir)/, $(SOURCES_$(dir))))

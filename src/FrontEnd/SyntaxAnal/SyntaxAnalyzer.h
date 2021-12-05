@@ -14,7 +14,7 @@ SyntaxContext getOpr(SyntaxContext context, Operator opr);
 
 SyntaxContext getCustom(SyntaxContext context, CustomOperator opr);
 
-SyntaxContext getOprLadder(SyntaxContext context, Operator opr, SyntaxContext (*rule)(SyntaxContext context));
+SyntaxContext getOprLadder(SyntaxContext context,const Operator* oprRq, size_t n, SyntaxContext (*rule)(SyntaxContext context));
 
 #define GRAMMAR_RULE(x) SyntaxContext get ## x (SyntaxContext context)
 

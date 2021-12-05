@@ -17,7 +17,16 @@
         LOG_INFO("Requirement operator %s not satisfied.", #opr);   \
         RETURN(_newContext);                                        \
     }                                                               \
-    _newContext;
+    _newContext;                                                    \
+})
+
+#define REQUIRE_CUSTOM(opr) ({                                      \
+    SyntaxContext _newContext = getCustom(context, opr);            \
+    if(_newContext.nParsed < 0) {                                   \
+        LOG_INFO("Requirement operator %s not satisfied.", #opr);   \
+        RETURN(_newContext);                                        \
+    }                                                               \
+    _newContext;                                                    \
 })
 
 #define INIT                                \
@@ -49,9 +58,9 @@ GRAMMAR_RULE(G){
     
     context = REQUIRE(Expr);
 
-    if(context.size != 1){
-        context.nParsed = -1;
-    }
+    // if(context.size != 1){
+        // context.nParsed = -1;
+    // }
 
     RETURN(context);
 }
@@ -59,15 +68,14 @@ GRAMMAR_RULE(G){
 GRAMMAR_RULE(Expr){
     INIT;
 
-    context = getOprLadder(context, Operator::ENDL, &getLine);
+    Operator opList[1] = {Operator::ENDL};
+    context = getOprLadder(context, opList, 1, &getLine);
 
     RETURN(context);
 }
 
 GRAMMAR_RULE(Line){
     INIT;
-
-    SyntaxContext newContext = {};
     
     TRY(DeclF);
     TRY(DeclV);
@@ -80,11 +88,272 @@ GRAMMAR_RULE(Line){
     RETURN(context);
 }
 
+GRAMMAR_RULE(DeclF){
+    INIT;
+    int nParsed = 0;
+
+    context = REQUIRE_OPR(Operator::FUNC);
+    nParsed += context.nParsed;
+
+    Node* root = context.root;
+
+    context = REQUIRE(Id);
+    nParsed += context.nParsed;
+    
+    root->left = context.root;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_L);
+    nParsed += context.nParsed;
+
+    Operator opList[1] =  {Operator::COMMA};
+    context = getOprLadder(context, opList, 1, &getId);
+    if(context.nParsed < 0){
+        LOG_INFO("Arglist not satisfied\n");
+        RETURN(context);
+    }
+    root->right = context.root;
+    nParsed += context.nParsed;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_R);
+    nParsed += context.nParsed;
+
+    context.nParsed = nParsed;
+    context.root    = root;
+    RETURN(context);
+}
+
+GRAMMAR_RULE(DeclV){
+    INIT;
+
+    int nParsed = 0;
+    Node* root  = NULL;
+
+    context = REQUIRE_OPR(Operator::VAR);
+    nParsed += context.nParsed;
+    root = context.root;
+
+    context = REQUIRE(Id);
+    nParsed += context.nParsed;
+
+    root->left = context.root;
+
+    SyntaxContext newContext = getOpr(context, Operator::SET);
+
+    if(newContext.nParsed < 0){
+        RETURN(context);
+    }
+
+    newContext = getLine(newContext);
+    if(newContext.nParsed < 0){
+        RETURN(context);
+    }
+    
+    root->right = newContext.root;
+    
+    context = newContext;
+
+    context.nParsed += nParsed + 1;
+    context.root    = root;
+    RETURN(context);
+}
+
+
 GRAMMAR_RULE(Asg){
     INIT;
 
-    REQUIRE(Id);
+    context = REQUIRE(Id);
 
+    context = REQUIRE_OPR(Operator::SET);
+
+    context = REQUIRE(Line);
+
+    context.nParsed += 2;
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Opt){
+    INIT;
+
+    context = REQUIRE(Rval);
+
+    SyntaxContext newCont = getOpr(context, Operator::QQ);
+    if(newCont.nParsed >= 0){
+        Node* root = newCont.root;
+        
+        newCont = getLine(newCont);
+
+        if(newCont.nParsed >= 0){
+            root->left = context.root;
+            root->right = newCont.root;
+            newCont.root = root;
+            newCont.nParsed += context.nParsed;
+            RETURN(newCont);
+        }
+
+    }
+
+    newCont = getOpr(context, Operator::TERN_Q);
+    if(newCont.nParsed < 0)
+        RETURN(context);
+    
+    Node* root = newCont.root;
+    root->left = context.root;
+    
+    int nParse = context.nParsed + newCont.nParsed;
+
+    context = getLine(newCont);
+    if(context.nParsed < 0) RETURN(context);    
+    nParse += context.nParsed;
+
+    newCont = getOpr(context, Operator::TERN_C);
+    if(newCont.nParsed < 0) RETURN(newCont);
+    nParse += newCont.nParsed;
+
+    root->right = newCont.root;
+    root->right->left = context.root;
+
+    context = getLine(newCont);
+    if(context.nParsed < 0) RETURN(context);
+    nParse += context.nParsed;
+
+    root->right->left = context.root;
+
+    context.nParsed = nParse;
+    context.root = root;
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Rval){
+    INIT;
+    context = REQUIRE(Sum);
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Sum){
+    INIT;
+
+    Operator opList[2] = {Operator::ADD, Operator::SUB};
+    context = getOprLadder(context, opList, 2, &getMul);
+
+    if(context.nParsed <= 0){
+        context.nParsed = -1;
+    }
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Mul){
+    INIT;
+
+    Operator opList[2] = {Operator::MUL, Operator::DIV};
+    context = getOprLadder(context, opList, 2, &getP);
+
+    if(context.nParsed <= 0){
+        context.nParsed = -1;
+    }
+    RETURN(context);
+}
+
+GRAMMAR_RULE(P){
+    INIT;
+
+    TRY(Wh);
+
+    SyntaxContext newCont = getCustom(context, CustomOperator::PAR_L);
+    if(newCont.nParsed >= 0){
+        newCont = getExpr(newCont);
+        if(newCont.nParsed < 0){
+            RETURN(newCont);
+        }
+        if(getCustom(context, CustomOperator::PAR_R).nParsed <0){
+            newCont.nParsed = -1;
+            RETURN(newCont);
+        }
+        newCont.nParsed += 2;
+
+        RETURN(newCont);
+    }
+
+    context = REQUIRE(Basic);
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Wh){
+    INIT;
+    Node* root = NULL;
+    int nParse = 0;
+
+    context = REQUIRE_OPR(Operator::WHILE);
+    nParse += context.nParsed;
+    root    = context.root;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_L);
+    nParse += context.nParsed;
+
+    context = REQUIRE(Expr);
+    nParse += context.nParsed;
+    root->left = context.root;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_R);
+    nParse += context.nParsed;
+
+    context = REQUIRE(Line);
+    root->right = context.root;
+
+    context.root = root;
+    context.nParsed += nParse;
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Basic){
+    INIT;
+    TRY(Number);
+    TRY(Call);
+    TRY(Id);
+
+    context.nParsed = -1;
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Call){
+    INIT;
+    int nParse = 0;
+    Node* root = NULL;
+    Node* left = NULL;
+
+    context = REQUIRE(Id);
+    left    = context.root;
+    nParse += context.nParsed;
+    
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_L);
+    nParse += context.nParsed;
+    root = context.root;
+
+    root->left = left;
+
+    Operator opList[1] = {Operator::COMMA};
+    context = getOprLadder(context, opList, 1, &getLine);
+    
+    if(context.nParsed < 0) RETURN(context);
+
+    nParse += context.nParsed;
+    root->right =  context.root;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_R);
+    nParse += context.nParsed;
+
+    LOG_WARNING("");
+    LOG_STYLE(ConsoleStyle::YELLOW);
+    LOG_WARNING("Call F. Changing node val");
+    
+    root->type = NodeType::OPERATOR;
+    root->data.opr = Operator::CALL;
+
+    context.nParsed = nParse;
+    context.root  = root;
+
+    RETURN(context);
 }
 
 SyntaxContext getOpr(SyntaxContext context, Operator opr){
@@ -100,10 +369,10 @@ SyntaxContext getOpr(SyntaxContext context, Operator opr){
         context.size--;
         context.nParsed = 1;
 
-        RETURN(context)
+        RETURN(context);
     }
     context.nParsed = -1;
-    return(context);
+    RETURN(context);
 }
 
 SyntaxContext getCustom(SyntaxContext context, CustomOperator opr){
@@ -161,7 +430,7 @@ GRAMMAR_RULE(Id){
     RETURN(context);
 }
 
-SyntaxContext getOprLadder(SyntaxContext context, Operator oprRq, SyntaxContext (*rule)(SyntaxContext context)){
+SyntaxContext getOprLadder(SyntaxContext context, const Operator* oprRq, size_t n, SyntaxContext (*rule)(SyntaxContext context)){
     INIT;
 
     SyntaxContext newContext = (*rule)(context);
@@ -176,7 +445,11 @@ SyntaxContext getOprLadder(SyntaxContext context, Operator oprRq, SyntaxContext 
     while(1){
         LOG_INFO("Trying to find {Opr Rule}* :");
 
-        newContext = getOpr(context, oprRq);
+        for(size_t i = 0; i < n; ++i){
+            newContext = getOpr(context, oprRq[i]);
+            if(newContext.nParsed >= 0) break;
+        }
+        
         if(newContext.nParsed < 0){
             LOG_INFO("Opr requirement not satisfied. Finishing ladder");
             break;

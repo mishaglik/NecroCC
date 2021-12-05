@@ -79,11 +79,13 @@ NodeList* parseText(const char* text){
                         }
                     }
                     if(!found){
+                        LOG_INFO("\b New!");
                         if(tabCap <= (size_t)curId){
                             idTable = (Identifier*)mgk_realloc(idTable, 2*tabCap , sizeof(Identifier));
                             tabCap  *= 2;
                         }
                         idTable[curId++] = {strdup(token), curId};
+                        nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id = curId-1}));
                     }
 
                     memset(token, 0, MAX_TOKEN_LEN);
