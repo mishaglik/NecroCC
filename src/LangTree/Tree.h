@@ -36,5 +36,7 @@ const char* getTypeColor(NodeType type);
 
 char* getNodeLabel(const Node* node);
 
+void nodeDump(const Node* node);
+
 // void graphNodeList(NodeList* list);
 #endif

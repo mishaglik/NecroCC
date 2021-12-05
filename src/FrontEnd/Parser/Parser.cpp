@@ -94,7 +94,8 @@ NodeList* parseText(const char* text){
                 }
 
             }
-            
+
+            memset(token, 0, MAX_TOKEN_LEN);
             token[0] = *text;
             curLen   = 1;
 
@@ -102,11 +103,11 @@ NodeList* parseText(const char* text){
             if(key){
                 nodeListPush(list, newNode(key->type, key->data));
             }
-
+            
+            text++;
             memset(token, 0, MAX_TOKEN_LEN);
             curLen = 0;
 
-            text++;
             continue;
         }
         else{

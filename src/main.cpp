@@ -5,6 +5,7 @@
 #include "FrontEnd/Parser/Parser.h"
 #include "FrontEnd/SyntaxAnal/SyntaxAnalyzer.h"
 int main(){
+    logger_set_file("ncc.log");
     FILE* file = fopen("Text.cht", "r");
     LOG_ASSERT(file != NULL);
     size_t file_sz = getFileSize(file);
@@ -13,6 +14,8 @@ int main(){
     fclose(file);
     
     NodeList* list = parseText(buffer);
+    Node* node = newNode(NodeType::NONE, {});
+    nodeListPush(list, node);
     for(size_t i = 0; i < list->size; ++i){
         char* label = getNodeLabel(list->nodes[i]);
         LOG_DEBUG("[%3d] = { .type = %d, .data = %d \t .label = %s}", i, (int)list->nodes[i]->type, list->nodes[i]->data.num, label);
@@ -22,6 +25,7 @@ int main(){
     SyntaxContext context = {
         .curPtr = list->nodes,
         .size   = list->size,
+        .start  = list->nodes,
     };
 
     context = getG(context);

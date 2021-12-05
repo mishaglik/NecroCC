@@ -40,8 +40,9 @@ const Keyword Dictionary[] = {
 
     KEYWORD(VAR, "Shoggoth")
     KEYWORD(FUNC, "Great")
+    KEYWORD(F_ARG, "faaa")
     KEYWORD(COMMA, ",")
-    KEYWORD(CALL, "cll")
+    KEYWORD(RET, "RT")
 
     KEYWORD(ENDL, ".")
     KEYWORD(QQ, "Hastur")
@@ -49,6 +50,7 @@ const Keyword Dictionary[] = {
     KEYWORD(TERN_C,":")
 
     KEYWORD(WHILE, "Nyarlathotep")
+
 
     {NULL, NodeType::NONE, {0}}    //End of array identifier
 };

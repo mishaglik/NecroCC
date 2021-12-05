@@ -35,7 +35,9 @@
     LOG_ASSERT(context.curPtr != NULL);     \
     LOG_ASSERT(context.size > 0);           \
     LOG_INFO("Trying parse %s:", __func__); \
-    LOG_INC_TAB()                           \
+    LOG_INC_TAB();                           \
+    LOG_INFO("Current node: %d:", context.curPtr - context.start)
+    // nodeDump(*context.curPtr)                                     
 
 #define RETURN(x)                                                           \
     LOG_INFO("%s parsing finished: ", __func__);                            \
@@ -58,10 +60,14 @@ GRAMMAR_RULE(G){
     
     context = REQUIRE(Expr);
 
-    // if(context.size != 1){
-        // context.nParsed = -1;
-    // }
-
+    if(context.size != 1 || (*context.curPtr)->type != NodeType::NONE){
+        context.nParsed = -1;
+        RETURN(context);
+    }
+    
+    context.nParsed++;
+    context.curPtr++;
+    context.size--;
     RETURN(context);
 }
 
@@ -117,6 +123,19 @@ GRAMMAR_RULE(DeclF){
     context = REQUIRE_CUSTOM(CustomOperator::PAR_R);
     nParsed += context.nParsed;
 
+    context = REQUIRE_OPR(Operator::F_ARG);
+    nParsed += context.nParsed;
+
+    context.root->left = root->right;
+    root->right = context.root;
+
+    context = getLine(context);
+    
+    if(context.nParsed >= 0){
+        root->right->right = context.root;
+        nParsed += context.nParsed;
+    }
+
     context.nParsed = nParsed;
     context.root    = root;
     RETURN(context);
@@ -140,11 +159,15 @@ GRAMMAR_RULE(DeclV){
     SyntaxContext newContext = getOpr(context, Operator::SET);
 
     if(newContext.nParsed < 0){
+        context.root = root;
+        context.nParsed = nParsed;
         RETURN(context);
     }
 
     newContext = getLine(newContext);
     if(newContext.nParsed < 0){
+        context.root = root;
+        context.nParsed = nParsed;
         RETURN(context);
     }
     
@@ -161,13 +184,24 @@ GRAMMAR_RULE(DeclV){
 GRAMMAR_RULE(Asg){
     INIT;
 
+    Node* root = NULL;
+    int nParsed = 0;
+
     context = REQUIRE(Id);
+    nParsed += context.nParsed;
+    root    = context.root;
 
     context = REQUIRE_OPR(Operator::SET);
+    nParsed += context.nParsed;
+    context.root->left = root;
+    root = context.root;
 
     context = REQUIRE(Line);
+    root->right = context.root;
+    nParsed += context.nParsed;
 
-    context.nParsed += 2;
+    context.root = root;
+    context.nParsed = nParsed;    
 
     RETURN(context);
 }
@@ -266,11 +300,15 @@ GRAMMAR_RULE(P){
         if(newCont.nParsed < 0){
             RETURN(newCont);
         }
-        if(getCustom(context, CustomOperator::PAR_R).nParsed <0){
+        Node* root = newCont.root;
+
+        newCont = getCustom(newCont, CustomOperator::PAR_R);
+        if(newCont.nParsed < 0){
             newCont.nParsed = -1;
             RETURN(newCont);
         }
         newCont.nParsed += 2;
+        newCont.root = root;
 
         RETURN(newCont);
     }
@@ -335,7 +373,9 @@ GRAMMAR_RULE(Call){
     Operator opList[1] = {Operator::COMMA};
     context = getOprLadder(context, opList, 1, &getLine);
     
-    if(context.nParsed < 0) RETURN(context);
+    if(context.nParsed < 0) {
+        RETURN(context);
+        }
 
     nParse += context.nParsed;
     root->right =  context.root;
@@ -372,6 +412,13 @@ SyntaxContext getOpr(SyntaxContext context, Operator opr){
         RETURN(context);
     }
     context.nParsed = -1;
+
+    Node req = {.type = NodeType::OPERATOR, .data = {.opr = opr}};
+    char* str = getNodeLabel(&req);
+    LOG_INFO("Required operator: %s", str);
+    free(str);
+
+
     RETURN(context);
 }
 
@@ -389,6 +436,12 @@ SyntaxContext getCustom(SyntaxContext context, CustomOperator opr){
         context.nParsed = 1;
         RETURN(context);
     }
+
+    Node req = {.type = NodeType::CUSTOM, .data = {.custom = opr}};
+    char* str = getNodeLabel(&req);
+    LOG_INFO("Required operator: %s", str);
+    free(str);
+
     context.nParsed = -1;
     RETURN(context);
 }
@@ -439,6 +492,7 @@ SyntaxContext getOprLadder(SyntaxContext context, const Operator* oprRq, size_t 
         RETURN(context);
     }
     LOG_INFO("Found first element.");
+    context = newContext;
 
     Node* lastOp = NULL;
 

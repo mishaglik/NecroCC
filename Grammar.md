@@ -34,7 +34,7 @@
 - 
 - Call ::= Id (Line? {, Line}*)
 - 
-- DeclF ::= DecF Id ({Id {, Id}*}?)
+- DeclF ::= DecF Id ({Id {, Id}*}?) F_ARG Line
 - 
 - DeclV ::= DecV Id (= Line)?
 

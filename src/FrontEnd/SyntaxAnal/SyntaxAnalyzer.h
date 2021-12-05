@@ -7,7 +7,9 @@ struct SyntaxContext{
     size_t size   = 0;
 
     int nParsed   = 0;
-    Node* root    = NULL;    
+    Node* root    = NULL;   
+
+    Node** start  = NULL; 
 };
 
 SyntaxContext getOpr(SyntaxContext context, Operator opr);

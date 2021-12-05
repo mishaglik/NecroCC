@@ -1,0 +1,1998 @@
+
+02:09:52 [ INFO] Tokenisation started:
+02:09:52 [ INFO] 	NodeList successfully created
+02:09:52 [ INFO] 	Found Keyword: "Great"
+02:09:52 [ INFO] 	Found identifier F. Registering...  New!
+02:09:52 [ INFO] 	Found Keyword: "("
+02:09:52 [ INFO] 	Found identifier x. Registering...  New!
+02:09:52 [ INFO] 	Found Keyword: ","
+02:09:52 [ INFO] 	Found identifier l. Registering...  New!
+02:09:52 [ INFO] 	Found Keyword: ")"
+02:09:52 [ INFO] 	Found Keyword: "faaa"
+02:09:52 [ INFO] 	Found Keyword: "("
+02:09:52 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:09:52 [ INFO] 	Found Keyword: "ah"
+02:09:52 [ INFO] 	Found Keyword: "Dagon"
+02:09:52 [ INFO] 	Found Keyword: "zhro"
+02:09:52 [ INFO] 	Found Keyword: ")"
+02:09:52 [ INFO] 	Found Keyword: "."
+02:09:52 [ INFO] 	Found Keyword: "Shoggoth"
+02:09:52 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:09:52 [ INFO] 	Found Keyword: "."
+02:09:52 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:09:52 [ INFO] 	Found Keyword: "fhtagn"
+02:09:52 [ INFO] 	Found identifier F. Registering...  Already exists!
+02:09:52 [ INFO] 	Found Keyword: "("
+02:09:52 [ INFO] 	Found Keyword: "Blahaj"
+02:09:52 [ INFO] 	Found Keyword: ","
+02:09:52 [ INFO] 	Found Keyword: "zhro"
+02:09:52 [ INFO] 	Found Keyword: ")"
+02:09:52 [ INFO] 	Found Keyword: "-"
+02:09:52 [ INFO] 	Found Keyword: "Dagon"
+02:09:52 [ INFO] 	Found Keyword: "."
+02:09:52 [ INFO] Tokenisation finished
+02:09:52 [DEBUG] [  0] = { .type = 3, .data = 22 	 .label = FUNC}
+02:09:52 [DEBUG] [  1] = { .type = 2, .data = 0 	 .label = #0}
+02:09:52 [DEBUG] [  2] = { .type = 4, .data = 1 	 .label = (}
+02:09:52 [DEBUG] [  3] = { .type = 2, .data = 1 	 .label = #1}
+02:09:52 [DEBUG] [  4] = { .type = 3, .data = 24 	 .label = COMMA}
+02:09:52 [DEBUG] [  5] = { .type = 2, .data = 2 	 .label = #2}
+02:09:52 [DEBUG] [  6] = { .type = 4, .data = 2 	 .label = )}
+02:09:52 [DEBUG] [  7] = { .type = 3, .data = 23 	 .label = F_ARG}
+02:09:52 [DEBUG] [  8] = { .type = 4, .data = 1 	 .label = (}
+02:09:52 [DEBUG] [  9] = { .type = 2, .data = 1 	 .label = #1}
+02:09:52 [DEBUG] [ 10] = { .type = 3, .data = 1 	 .label = ADD}
+02:09:52 [DEBUG] [ 11] = { .type = 1, .data = 10 	 .label = 10}
+02:09:52 [DEBUG] [ 12] = { .type = 4, .data = 2 	 .label = )}
+02:09:52 [DEBUG] [ 13] = { .type = 3, .data = 27 	 .label = ENDL}
+02:09:52 [DEBUG] [ 14] = { .type = 3, .data = 21 	 .label = VAR}
+02:09:52 [DEBUG] [ 15] = { .type = 2, .data = 1 	 .label = #1}
+02:09:52 [DEBUG] [ 16] = { .type = 3, .data = 27 	 .label = ENDL}
+02:09:52 [DEBUG] [ 17] = { .type = 2, .data = 1 	 .label = #1}
+02:09:52 [DEBUG] [ 18] = { .type = 3, .data = 11 	 .label = SET}
+02:09:52 [DEBUG] [ 19] = { .type = 2, .data = 0 	 .label = #0}
+02:09:52 [DEBUG] [ 20] = { .type = 4, .data = 1 	 .label = (}
+02:09:52 [DEBUG] [ 21] = { .type = 1, .data = 9 	 .label = 9}
+02:09:52 [DEBUG] [ 22] = { .type = 3, .data = 24 	 .label = COMMA}
+02:09:52 [DEBUG] [ 23] = { .type = 1, .data = 0 	 .label = 0}
+02:09:52 [DEBUG] [ 24] = { .type = 4, .data = 2 	 .label = )}
+02:09:52 [DEBUG] [ 25] = { .type = 3, .data = 2 	 .label = SUB}
+02:09:52 [DEBUG] [ 26] = { .type = 1, .data = 1 	 .label = 1}
+02:09:52 [DEBUG] [ 27] = { .type = 3, .data = 27 	 .label = ENDL}
+02:09:52 [DEBUG] [ 28] = { .type = 0, .data = 0 	 .label = }
+02:09:52 [ INFO] Trying parse getG:
+02:09:52 [ INFO] 	Current node: 0:
+02:09:52 [ INFO] 	Trying parse getExpr:
+02:09:52 [ INFO] 		Current node: 0:
+02:09:52 [ INFO] 		Trying parse getOprLadder:
+02:09:52 [ INFO] 			Current node: 0:
+02:09:52 [ INFO] 			Trying parse getLine:
+02:09:52 [ INFO] 				Current node: 0:
+02:09:52 [ INFO] 				Trying apply rule DeclF
+02:09:52 [ INFO] 				Trying parse getDeclF:
+02:09:52 [ INFO] 					Current node: 0:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 0:
+02:09:52 [ INFO] 						getOpr parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getId:
+02:09:52 [ INFO] 						Current node: 1:
+02:09:52 [ INFO] 						getId parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getCustom:
+02:09:52 [ INFO] 						Current node: 2:
+02:09:52 [ INFO] 						getCustom parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getOprLadder:
+02:09:52 [ INFO] 						Current node: 3:
+02:09:52 [ INFO] 						Trying parse getId:
+02:09:52 [ INFO] 							Current node: 3:
+02:09:52 [ INFO] 							getId parsing finished: Successfull
+02:09:52 [ INFO] 						Found first element.
+02:09:52 [ INFO] 						Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 						Trying parse getOpr:
+02:09:52 [ INFO] 							Current node: 4:
+02:09:52 [ INFO] 							getOpr parsing finished: Successfull
+02:09:52 [ INFO] 						Trying parse getId:
+02:09:52 [ INFO] 							Current node: 5:
+02:09:52 [ INFO] 							getId parsing finished: Successfull
+02:09:52 [ INFO] 						Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 						Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 						Trying parse getOpr:
+02:09:52 [ INFO] 							Current node: 6:
+02:09:52 [ INFO] 							Required operator: COMMA
+02:09:52 [ INFO] 							getOpr parsing finished:  Failed
+02:09:52 [ INFO] 						Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 						getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getCustom:
+02:09:52 [ INFO] 						Current node: 6:
+02:09:52 [ INFO] 						getCustom parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 7:
+02:09:52 [ INFO] 						getOpr parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getLine:
+02:09:52 [ INFO] 						Current node: 8:
+02:09:52 [ INFO] 						Trying apply rule DeclF
+02:09:52 [ INFO] 						Trying parse getDeclF:
+02:09:52 [ INFO] 							Current node: 8:
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 8:
+02:09:52 [ INFO] 								Required operator: FUNC
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 							getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 						Trying apply rule DeclV
+02:09:52 [ INFO] 						Trying parse getDeclV:
+02:09:52 [ INFO] 							Current node: 8:
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 8:
+02:09:52 [ INFO] 								Required operator: VAR
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 							getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 						Trying apply rule Asg
+02:09:52 [ INFO] 						Trying parse getAsg:
+02:09:52 [ INFO] 							Current node: 8:
+02:09:52 [ INFO] 							Trying parse getId:
+02:09:52 [ INFO] 								Current node: 8:
+02:09:52 [ INFO] 								getId parsing finished:  Failed
+02:09:52 [ INFO] 							Unsuccessfull. Requirement "Id" not satisfied.
+02:09:52 [ INFO] 						Trying apply rule Opt
+02:09:52 [ INFO] 						Trying parse getOpt:
+02:09:52 [ INFO] 							Current node: 8:
+02:09:52 [ INFO] 							Trying parse getRval:
+02:09:52 [ INFO] 								Current node: 8:
+02:09:52 [ INFO] 								Trying parse getSum:
+02:09:52 [ INFO] 									Current node: 8:
+02:09:52 [ INFO] 									Trying parse getOprLadder:
+02:09:52 [ INFO] 										Current node: 8:
+02:09:52 [ INFO] 										Trying parse getMul:
+02:09:52 [ INFO] 											Current node: 8:
+02:09:52 [ INFO] 											Trying parse getOprLadder:
+02:09:52 [ INFO] 												Current node: 8:
+02:09:52 [ INFO] 												Trying parse getP:
+02:09:52 [ INFO] 													Current node: 8:
+02:09:52 [ INFO] 													Trying apply rule Wh
+02:09:52 [ INFO] 													Trying parse getWh:
+02:09:52 [ INFO] 														Current node: 8:
+02:09:52 [ INFO] 														Trying parse getOpr:
+02:09:52 [ INFO] 															Current node: 8:
+02:09:52 [ INFO] 															Required operator: WHILE
+02:09:52 [ INFO] 															getOpr parsing finished:  Failed
+02:09:52 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 														getWh parsing finished:  Failed
+02:09:52 [ INFO] 													Trying parse getCustom:
+02:09:52 [ INFO] 														Current node: 8:
+02:09:52 [ INFO] 														getCustom parsing finished: Successfull
+02:09:52 [ INFO] 													Trying parse getExpr:
+02:09:52 [ INFO] 														Current node: 9:
+02:09:52 [ INFO] 														Trying parse getOprLadder:
+02:09:52 [ INFO] 															Current node: 9:
+02:09:52 [ INFO] 															Trying parse getLine:
+02:09:52 [ INFO] 																Current node: 9:
+02:09:52 [ INFO] 																Trying apply rule DeclF
+02:09:52 [ INFO] 																Trying parse getDeclF:
+02:09:52 [ INFO] 																	Current node: 9:
+02:09:52 [ INFO] 																	Trying parse getOpr:
+02:09:52 [ INFO] 																		Current node: 9:
+02:09:52 [ INFO] 																		Required operator: FUNC
+02:09:52 [ INFO] 																		getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																	Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 																	getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 																Trying apply rule DeclV
+02:09:52 [ INFO] 																Trying parse getDeclV:
+02:09:52 [ INFO] 																	Current node: 9:
+02:09:52 [ INFO] 																	Trying parse getOpr:
+02:09:52 [ INFO] 																		Current node: 9:
+02:09:52 [ INFO] 																		Required operator: VAR
+02:09:52 [ INFO] 																		getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																	Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 																	getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 																Trying apply rule Asg
+02:09:52 [ INFO] 																Trying parse getAsg:
+02:09:52 [ INFO] 																	Current node: 9:
+02:09:52 [ INFO] 																	Trying parse getId:
+02:09:52 [ INFO] 																		Current node: 9:
+02:09:52 [ INFO] 																		getId parsing finished: Successfull
+02:09:52 [ INFO] 																	Trying parse getOpr:
+02:09:52 [ INFO] 																		Current node: 10:
+02:09:52 [ INFO] 																		Required operator: SET
+02:09:52 [ INFO] 																		getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																	Requirement operator Operator::SET not satisfied.
+02:09:52 [ INFO] 																	getAsg parsing finished:  Failed
+02:09:52 [ INFO] 																Trying apply rule Opt
+02:09:52 [ INFO] 																Trying parse getOpt:
+02:09:52 [ INFO] 																	Current node: 9:
+02:09:52 [ INFO] 																	Trying parse getRval:
+02:09:52 [ INFO] 																		Current node: 9:
+02:09:52 [ INFO] 																		Trying parse getSum:
+02:09:52 [ INFO] 																			Current node: 9:
+02:09:52 [ INFO] 																			Trying parse getOprLadder:
+02:09:52 [ INFO] 																				Current node: 9:
+02:09:52 [ INFO] 																				Trying parse getMul:
+02:09:52 [ INFO] 																					Current node: 9:
+02:09:52 [ INFO] 																					Trying parse getOprLadder:
+02:09:52 [ INFO] 																						Current node: 9:
+02:09:52 [ INFO] 																						Trying parse getP:
+02:09:52 [ INFO] 																							Current node: 9:
+02:09:52 [ INFO] 																							Trying apply rule Wh
+02:09:52 [ INFO] 																							Trying parse getWh:
+02:09:52 [ INFO] 																								Current node: 9:
+02:09:52 [ INFO] 																								Trying parse getOpr:
+02:09:52 [ INFO] 																									Current node: 9:
+02:09:52 [ INFO] 																									Required operator: WHILE
+02:09:52 [ INFO] 																									getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																								Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 																								getWh parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getCustom:
+02:09:52 [ INFO] 																								Current node: 9:
+02:09:52 [ INFO] 																								Required operator: (
+02:09:52 [ INFO] 																								getCustom parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getBasic:
+02:09:52 [ INFO] 																								Current node: 9:
+02:09:52 [ INFO] 																								Trying apply rule Number
+02:09:52 [ INFO] 																								Trying parse getNumber:
+02:09:52 [ INFO] 																									Current node: 9:
+02:09:52 [ INFO] 																									getNumber parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying apply rule Call
+02:09:52 [ INFO] 																								Trying parse getCall:
+02:09:52 [ INFO] 																									Current node: 9:
+02:09:52 [ INFO] 																									Trying parse getId:
+02:09:52 [ INFO] 																										Current node: 9:
+02:09:52 [ INFO] 																										getId parsing finished: Successfull
+02:09:52 [ INFO] 																									Trying parse getCustom:
+02:09:52 [ INFO] 																										Current node: 10:
+02:09:52 [ INFO] 																										Required operator: (
+02:09:52 [ INFO] 																										getCustom parsing finished:  Failed
+02:09:52 [ INFO] 																									Requirement operator CustomOperator::PAR_L not satisfied.
+02:09:52 [ INFO] 																									getCall parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying apply rule Id
+02:09:52 [ INFO] 																								Trying parse getId:
+02:09:52 [ INFO] 																									Current node: 9:
+02:09:52 [ INFO] 																									getId parsing finished: Successfull
+02:09:52 [ INFO] 																								Rule Id satisfied
+02:09:52 [ INFO] 																								getBasic parsing finished: Successfull
+02:09:52 [ INFO] 																							getP parsing finished: Successfull
+02:09:52 [ INFO] 																						Found first element.
+02:09:52 [ INFO] 																						Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																						Trying parse getOpr:
+02:09:52 [ INFO] 																							Current node: 10:
+02:09:52 [ INFO] 																							Required operator: MUL
+02:09:52 [ INFO] 																							getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																						Trying parse getOpr:
+02:09:52 [ INFO] 																							Current node: 10:
+02:09:52 [ INFO] 																							Required operator: DIV
+02:09:52 [ INFO] 																							getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																						Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																						getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																					getMul parsing finished: Successfull
+02:09:52 [ INFO] 																				Found first element.
+02:09:52 [ INFO] 																				Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																				Trying parse getOpr:
+02:09:52 [ INFO] 																					Current node: 10:
+02:09:52 [ INFO] 																					getOpr parsing finished: Successfull
+02:09:52 [ INFO] 																				Trying parse getMul:
+02:09:52 [ INFO] 																					Current node: 11:
+02:09:52 [ INFO] 																					Trying parse getOprLadder:
+02:09:52 [ INFO] 																						Current node: 11:
+02:09:52 [ INFO] 																						Trying parse getP:
+02:09:52 [ INFO] 																							Current node: 11:
+02:09:52 [ INFO] 																							Trying apply rule Wh
+02:09:52 [ INFO] 																							Trying parse getWh:
+02:09:52 [ INFO] 																								Current node: 11:
+02:09:52 [ INFO] 																								Trying parse getOpr:
+02:09:52 [ INFO] 																									Current node: 11:
+02:09:52 [ INFO] 																									Required operator: WHILE
+02:09:52 [ INFO] 																									getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																								Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 																								getWh parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getCustom:
+02:09:52 [ INFO] 																								Current node: 11:
+02:09:52 [ INFO] 																								Required operator: (
+02:09:52 [ INFO] 																								getCustom parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getBasic:
+02:09:52 [ INFO] 																								Current node: 11:
+02:09:52 [ INFO] 																								Trying apply rule Number
+02:09:52 [ INFO] 																								Trying parse getNumber:
+02:09:52 [ INFO] 																									Current node: 11:
+02:09:52 [ INFO] 																									getNumber parsing finished: Successfull
+02:09:52 [ INFO] 																								Rule Number satisfied
+02:09:52 [ INFO] 																								getBasic parsing finished: Successfull
+02:09:52 [ INFO] 																							getP parsing finished: Successfull
+02:09:52 [ INFO] 																						Found first element.
+02:09:52 [ INFO] 																						Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																						Trying parse getOpr:
+02:09:52 [ INFO] 																							Current node: 12:
+02:09:52 [ INFO] 																							Required operator: MUL
+02:09:52 [ INFO] 																							getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																						Trying parse getOpr:
+02:09:52 [ INFO] 																							Current node: 12:
+02:09:52 [ INFO] 																							Required operator: DIV
+02:09:52 [ INFO] 																							getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																						Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																						getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																					getMul parsing finished: Successfull
+02:09:52 [ INFO] 																				Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 																				Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																				Trying parse getOpr:
+02:09:52 [ INFO] 																					Current node: 12:
+02:09:52 [ INFO] 																					Required operator: ADD
+02:09:52 [ INFO] 																					getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																				Trying parse getOpr:
+02:09:52 [ INFO] 																					Current node: 12:
+02:09:52 [ INFO] 																					Required operator: SUB
+02:09:52 [ INFO] 																					getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																				Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																				getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																			getSum parsing finished: Successfull
+02:09:52 [ INFO] 																		getRval parsing finished: Successfull
+02:09:52 [ INFO] 																	Trying parse getOpr:
+02:09:52 [ INFO] 																		Current node: 12:
+02:09:52 [ INFO] 																		Required operator: QQ
+02:09:52 [ INFO] 																		getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																	Trying parse getOpr:
+02:09:52 [ INFO] 																		Current node: 12:
+02:09:52 [ INFO] 																		Required operator: TERN_Q
+02:09:52 [ INFO] 																		getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																	getOpt parsing finished: Successfull
+02:09:52 [ INFO] 																Rule Opt satisfied
+02:09:52 [ INFO] 																getLine parsing finished: Successfull
+02:09:52 [ INFO] 															Found first element.
+02:09:52 [ INFO] 															Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 															Trying parse getOpr:
+02:09:52 [ INFO] 																Current node: 12:
+02:09:52 [ INFO] 																Required operator: ENDL
+02:09:52 [ INFO] 																getOpr parsing finished:  Failed
+02:09:52 [ INFO] 															Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 															getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 														getExpr parsing finished: Successfull
+02:09:52 [ INFO] 													Trying parse getCustom:
+02:09:52 [ INFO] 														Current node: 12:
+02:09:52 [ INFO] 														getCustom parsing finished: Successfull
+02:09:52 [ INFO] 													getP parsing finished: Successfull
+02:09:52 [ INFO] 												Found first element.
+02:09:52 [ INFO] 												Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 13:
+02:09:52 [ INFO] 													Required operator: MUL
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 13:
+02:09:52 [ INFO] 													Required operator: DIV
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 												getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 											getMul parsing finished: Successfull
+02:09:52 [ INFO] 										Found first element.
+02:09:52 [ INFO] 										Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 13:
+02:09:52 [ INFO] 											Required operator: ADD
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 13:
+02:09:52 [ INFO] 											Required operator: SUB
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 										getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 									getSum parsing finished: Successfull
+02:09:52 [ INFO] 								getRval parsing finished: Successfull
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 13:
+02:09:52 [ INFO] 								Required operator: QQ
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 13:
+02:09:52 [ INFO] 								Required operator: TERN_Q
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							getOpt parsing finished: Successfull
+02:09:52 [ INFO] 						Rule Opt satisfied
+02:09:52 [ INFO] 						getLine parsing finished: Successfull
+02:09:52 [ INFO] 					getDeclF parsing finished: Successfull
+02:09:52 [ INFO] 				Rule DeclF satisfied
+02:09:52 [ INFO] 				getLine parsing finished: Successfull
+02:09:52 [ INFO] 			Found first element.
+02:09:52 [ INFO] 			Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 			Trying parse getOpr:
+02:09:52 [ INFO] 				Current node: 13:
+02:09:52 [ INFO] 				getOpr parsing finished: Successfull
+02:09:52 [ INFO] 			Trying parse getLine:
+02:09:52 [ INFO] 				Current node: 14:
+02:09:52 [ INFO] 				Trying apply rule DeclF
+02:09:52 [ INFO] 				Trying parse getDeclF:
+02:09:52 [ INFO] 					Current node: 14:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 14:
+02:09:52 [ INFO] 						Required operator: FUNC
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 					getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 				Trying apply rule DeclV
+02:09:52 [ INFO] 				Trying parse getDeclV:
+02:09:52 [ INFO] 					Current node: 14:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 14:
+02:09:52 [ INFO] 						getOpr parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getId:
+02:09:52 [ INFO] 						Current node: 15:
+02:09:52 [ INFO] 						getId parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 16:
+02:09:52 [ INFO] 						Required operator: SET
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					getDeclV parsing finished: Successfull
+02:09:52 [ INFO] 				Rule DeclV satisfied
+02:09:52 [ INFO] 				getLine parsing finished: Successfull
+02:09:52 [ INFO] 			Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 			Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 			Trying parse getOpr:
+02:09:52 [ INFO] 				Current node: 16:
+02:09:52 [ INFO] 				getOpr parsing finished: Successfull
+02:09:52 [ INFO] 			Trying parse getLine:
+02:09:52 [ INFO] 				Current node: 17:
+02:09:52 [ INFO] 				Trying apply rule DeclF
+02:09:52 [ INFO] 				Trying parse getDeclF:
+02:09:52 [ INFO] 					Current node: 17:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 17:
+02:09:52 [ INFO] 						Required operator: FUNC
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 					getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 				Trying apply rule DeclV
+02:09:52 [ INFO] 				Trying parse getDeclV:
+02:09:52 [ INFO] 					Current node: 17:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 17:
+02:09:52 [ INFO] 						Required operator: VAR
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 					getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 				Trying apply rule Asg
+02:09:52 [ INFO] 				Trying parse getAsg:
+02:09:52 [ INFO] 					Current node: 17:
+02:09:52 [ INFO] 					Trying parse getId:
+02:09:52 [ INFO] 						Current node: 17:
+02:09:52 [ INFO] 						getId parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 18:
+02:09:52 [ INFO] 						getOpr parsing finished: Successfull
+02:09:52 [ INFO] 					Trying parse getLine:
+02:09:52 [ INFO] 						Current node: 19:
+02:09:52 [ INFO] 						Trying apply rule DeclF
+02:09:52 [ INFO] 						Trying parse getDeclF:
+02:09:52 [ INFO] 							Current node: 19:
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 19:
+02:09:52 [ INFO] 								Required operator: FUNC
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 							getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 						Trying apply rule DeclV
+02:09:52 [ INFO] 						Trying parse getDeclV:
+02:09:52 [ INFO] 							Current node: 19:
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 19:
+02:09:52 [ INFO] 								Required operator: VAR
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 							getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 						Trying apply rule Asg
+02:09:52 [ INFO] 						Trying parse getAsg:
+02:09:52 [ INFO] 							Current node: 19:
+02:09:52 [ INFO] 							Trying parse getId:
+02:09:52 [ INFO] 								Current node: 19:
+02:09:52 [ INFO] 								getId parsing finished: Successfull
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 20:
+02:09:52 [ INFO] 								Required operator: SET
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Requirement operator Operator::SET not satisfied.
+02:09:52 [ INFO] 							getAsg parsing finished:  Failed
+02:09:52 [ INFO] 						Trying apply rule Opt
+02:09:52 [ INFO] 						Trying parse getOpt:
+02:09:52 [ INFO] 							Current node: 19:
+02:09:52 [ INFO] 							Trying parse getRval:
+02:09:52 [ INFO] 								Current node: 19:
+02:09:52 [ INFO] 								Trying parse getSum:
+02:09:52 [ INFO] 									Current node: 19:
+02:09:52 [ INFO] 									Trying parse getOprLadder:
+02:09:52 [ INFO] 										Current node: 19:
+02:09:52 [ INFO] 										Trying parse getMul:
+02:09:52 [ INFO] 											Current node: 19:
+02:09:52 [ INFO] 											Trying parse getOprLadder:
+02:09:52 [ INFO] 												Current node: 19:
+02:09:52 [ INFO] 												Trying parse getP:
+02:09:52 [ INFO] 													Current node: 19:
+02:09:52 [ INFO] 													Trying apply rule Wh
+02:09:52 [ INFO] 													Trying parse getWh:
+02:09:52 [ INFO] 														Current node: 19:
+02:09:52 [ INFO] 														Trying parse getOpr:
+02:09:52 [ INFO] 															Current node: 19:
+02:09:52 [ INFO] 															Required operator: WHILE
+02:09:52 [ INFO] 															getOpr parsing finished:  Failed
+02:09:52 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 														getWh parsing finished:  Failed
+02:09:52 [ INFO] 													Trying parse getCustom:
+02:09:52 [ INFO] 														Current node: 19:
+02:09:52 [ INFO] 														Required operator: (
+02:09:52 [ INFO] 														getCustom parsing finished:  Failed
+02:09:52 [ INFO] 													Trying parse getBasic:
+02:09:52 [ INFO] 														Current node: 19:
+02:09:52 [ INFO] 														Trying apply rule Number
+02:09:52 [ INFO] 														Trying parse getNumber:
+02:09:52 [ INFO] 															Current node: 19:
+02:09:52 [ INFO] 															getNumber parsing finished:  Failed
+02:09:52 [ INFO] 														Trying apply rule Call
+02:09:52 [ INFO] 														Trying parse getCall:
+02:09:52 [ INFO] 															Current node: 19:
+02:09:52 [ INFO] 															Trying parse getId:
+02:09:52 [ INFO] 																Current node: 19:
+02:09:52 [ INFO] 																getId parsing finished: Successfull
+02:09:52 [ INFO] 															Trying parse getCustom:
+02:09:52 [ INFO] 																Current node: 20:
+02:09:52 [ INFO] 																getCustom parsing finished: Successfull
+02:09:52 [ INFO] 															Trying parse getOprLadder:
+02:09:52 [ INFO] 																Current node: 21:
+02:09:52 [ INFO] 																Trying parse getLine:
+02:09:52 [ INFO] 																	Current node: 21:
+02:09:52 [ INFO] 																	Trying apply rule DeclF
+02:09:52 [ INFO] 																	Trying parse getDeclF:
+02:09:52 [ INFO] 																		Current node: 21:
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 21:
+02:09:52 [ INFO] 																			Required operator: FUNC
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 																		getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 																	Trying apply rule DeclV
+02:09:52 [ INFO] 																	Trying parse getDeclV:
+02:09:52 [ INFO] 																		Current node: 21:
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 21:
+02:09:52 [ INFO] 																			Required operator: VAR
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 																		getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 																	Trying apply rule Asg
+02:09:52 [ INFO] 																	Trying parse getAsg:
+02:09:52 [ INFO] 																		Current node: 21:
+02:09:52 [ INFO] 																		Trying parse getId:
+02:09:52 [ INFO] 																			Current node: 21:
+02:09:52 [ INFO] 																			getId parsing finished:  Failed
+02:09:52 [ INFO] 																		Unsuccessfull. Requirement "Id" not satisfied.
+02:09:52 [ INFO] 																	Trying apply rule Opt
+02:09:52 [ INFO] 																	Trying parse getOpt:
+02:09:52 [ INFO] 																		Current node: 21:
+02:09:52 [ INFO] 																		Trying parse getRval:
+02:09:52 [ INFO] 																			Current node: 21:
+02:09:52 [ INFO] 																			Trying parse getSum:
+02:09:52 [ INFO] 																				Current node: 21:
+02:09:52 [ INFO] 																				Trying parse getOprLadder:
+02:09:52 [ INFO] 																					Current node: 21:
+02:09:52 [ INFO] 																					Trying parse getMul:
+02:09:52 [ INFO] 																						Current node: 21:
+02:09:52 [ INFO] 																						Trying parse getOprLadder:
+02:09:52 [ INFO] 																							Current node: 21:
+02:09:52 [ INFO] 																							Trying parse getP:
+02:09:52 [ INFO] 																								Current node: 21:
+02:09:52 [ INFO] 																								Trying apply rule Wh
+02:09:52 [ INFO] 																								Trying parse getWh:
+02:09:52 [ INFO] 																									Current node: 21:
+02:09:52 [ INFO] 																									Trying parse getOpr:
+02:09:52 [ INFO] 																										Current node: 21:
+02:09:52 [ INFO] 																										Required operator: WHILE
+02:09:52 [ INFO] 																										getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																									Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 																									getWh parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying parse getCustom:
+02:09:52 [ INFO] 																									Current node: 21:
+02:09:52 [ INFO] 																									Required operator: (
+02:09:52 [ INFO] 																									getCustom parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying parse getBasic:
+02:09:52 [ INFO] 																									Current node: 21:
+02:09:52 [ INFO] 																									Trying apply rule Number
+02:09:52 [ INFO] 																									Trying parse getNumber:
+02:09:52 [ INFO] 																										Current node: 21:
+02:09:52 [ INFO] 																										getNumber parsing finished: Successfull
+02:09:52 [ INFO] 																									Rule Number satisfied
+02:09:52 [ INFO] 																									getBasic parsing finished: Successfull
+02:09:52 [ INFO] 																								getP parsing finished: Successfull
+02:09:52 [ INFO] 																							Found first element.
+02:09:52 [ INFO] 																							Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																							Trying parse getOpr:
+02:09:52 [ INFO] 																								Current node: 22:
+02:09:52 [ INFO] 																								Required operator: MUL
+02:09:52 [ INFO] 																								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getOpr:
+02:09:52 [ INFO] 																								Current node: 22:
+02:09:52 [ INFO] 																								Required operator: DIV
+02:09:52 [ INFO] 																								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																							Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																							getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																						getMul parsing finished: Successfull
+02:09:52 [ INFO] 																					Found first element.
+02:09:52 [ INFO] 																					Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																					Trying parse getOpr:
+02:09:52 [ INFO] 																						Current node: 22:
+02:09:52 [ INFO] 																						Required operator: ADD
+02:09:52 [ INFO] 																						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																					Trying parse getOpr:
+02:09:52 [ INFO] 																						Current node: 22:
+02:09:52 [ INFO] 																						Required operator: SUB
+02:09:52 [ INFO] 																						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																					Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																					getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																				getSum parsing finished: Successfull
+02:09:52 [ INFO] 																			getRval parsing finished: Successfull
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 22:
+02:09:52 [ INFO] 																			Required operator: QQ
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 22:
+02:09:52 [ INFO] 																			Required operator: TERN_Q
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		getOpt parsing finished: Successfull
+02:09:52 [ INFO] 																	Rule Opt satisfied
+02:09:52 [ INFO] 																	getLine parsing finished: Successfull
+02:09:52 [ INFO] 																Found first element.
+02:09:52 [ INFO] 																Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																Trying parse getOpr:
+02:09:52 [ INFO] 																	Current node: 22:
+02:09:52 [ INFO] 																	getOpr parsing finished: Successfull
+02:09:52 [ INFO] 																Trying parse getLine:
+02:09:52 [ INFO] 																	Current node: 23:
+02:09:52 [ INFO] 																	Trying apply rule DeclF
+02:09:52 [ INFO] 																	Trying parse getDeclF:
+02:09:52 [ INFO] 																		Current node: 23:
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 23:
+02:09:52 [ INFO] 																			Required operator: FUNC
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 																		getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 																	Trying apply rule DeclV
+02:09:52 [ INFO] 																	Trying parse getDeclV:
+02:09:52 [ INFO] 																		Current node: 23:
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 23:
+02:09:52 [ INFO] 																			Required operator: VAR
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 																		getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 																	Trying apply rule Asg
+02:09:52 [ INFO] 																	Trying parse getAsg:
+02:09:52 [ INFO] 																		Current node: 23:
+02:09:52 [ INFO] 																		Trying parse getId:
+02:09:52 [ INFO] 																			Current node: 23:
+02:09:52 [ INFO] 																			getId parsing finished:  Failed
+02:09:52 [ INFO] 																		Unsuccessfull. Requirement "Id" not satisfied.
+02:09:52 [ INFO] 																	Trying apply rule Opt
+02:09:52 [ INFO] 																	Trying parse getOpt:
+02:09:52 [ INFO] 																		Current node: 23:
+02:09:52 [ INFO] 																		Trying parse getRval:
+02:09:52 [ INFO] 																			Current node: 23:
+02:09:52 [ INFO] 																			Trying parse getSum:
+02:09:52 [ INFO] 																				Current node: 23:
+02:09:52 [ INFO] 																				Trying parse getOprLadder:
+02:09:52 [ INFO] 																					Current node: 23:
+02:09:52 [ INFO] 																					Trying parse getMul:
+02:09:52 [ INFO] 																						Current node: 23:
+02:09:52 [ INFO] 																						Trying parse getOprLadder:
+02:09:52 [ INFO] 																							Current node: 23:
+02:09:52 [ INFO] 																							Trying parse getP:
+02:09:52 [ INFO] 																								Current node: 23:
+02:09:52 [ INFO] 																								Trying apply rule Wh
+02:09:52 [ INFO] 																								Trying parse getWh:
+02:09:52 [ INFO] 																									Current node: 23:
+02:09:52 [ INFO] 																									Trying parse getOpr:
+02:09:52 [ INFO] 																										Current node: 23:
+02:09:52 [ INFO] 																										Required operator: WHILE
+02:09:52 [ INFO] 																										getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																									Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 																									getWh parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying parse getCustom:
+02:09:52 [ INFO] 																									Current node: 23:
+02:09:52 [ INFO] 																									Required operator: (
+02:09:52 [ INFO] 																									getCustom parsing finished:  Failed
+02:09:52 [ INFO] 																								Trying parse getBasic:
+02:09:52 [ INFO] 																									Current node: 23:
+02:09:52 [ INFO] 																									Trying apply rule Number
+02:09:52 [ INFO] 																									Trying parse getNumber:
+02:09:52 [ INFO] 																										Current node: 23:
+02:09:52 [ INFO] 																										getNumber parsing finished: Successfull
+02:09:52 [ INFO] 																									Rule Number satisfied
+02:09:52 [ INFO] 																									getBasic parsing finished: Successfull
+02:09:52 [ INFO] 																								getP parsing finished: Successfull
+02:09:52 [ INFO] 																							Found first element.
+02:09:52 [ INFO] 																							Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																							Trying parse getOpr:
+02:09:52 [ INFO] 																								Current node: 24:
+02:09:52 [ INFO] 																								Required operator: MUL
+02:09:52 [ INFO] 																								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																							Trying parse getOpr:
+02:09:52 [ INFO] 																								Current node: 24:
+02:09:52 [ INFO] 																								Required operator: DIV
+02:09:52 [ INFO] 																								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																							Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																							getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																						getMul parsing finished: Successfull
+02:09:52 [ INFO] 																					Found first element.
+02:09:52 [ INFO] 																					Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																					Trying parse getOpr:
+02:09:52 [ INFO] 																						Current node: 24:
+02:09:52 [ INFO] 																						Required operator: ADD
+02:09:52 [ INFO] 																						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																					Trying parse getOpr:
+02:09:52 [ INFO] 																						Current node: 24:
+02:09:52 [ INFO] 																						Required operator: SUB
+02:09:52 [ INFO] 																						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																					Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																					getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 																				getSum parsing finished: Successfull
+02:09:52 [ INFO] 																			getRval parsing finished: Successfull
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 24:
+02:09:52 [ INFO] 																			Required operator: QQ
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		Trying parse getOpr:
+02:09:52 [ INFO] 																			Current node: 24:
+02:09:52 [ INFO] 																			Required operator: TERN_Q
+02:09:52 [ INFO] 																			getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																		getOpt parsing finished: Successfull
+02:09:52 [ INFO] 																	Rule Opt satisfied
+02:09:52 [ INFO] 																	getLine parsing finished: Successfull
+02:09:52 [ INFO] 																Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 																Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 																Trying parse getOpr:
+02:09:52 [ INFO] 																	Current node: 24:
+02:09:52 [ INFO] 																	Required operator: COMMA
+02:09:52 [ INFO] 																	getOpr parsing finished:  Failed
+02:09:52 [ INFO] 																Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 																getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 															Trying parse getCustom:
+02:09:52 [ INFO] 																Current node: 24:
+02:09:52 [ INFO] 																getCustom parsing finished: Successfull
+02:09:52 [ WARN] 															
+02:09:52 [ WARN] 															Call F. Changing node val
+02:09:52 [ INFO] 															getCall parsing finished: Successfull
+02:09:52 [ INFO] 														Rule Call satisfied
+02:09:52 [ INFO] 														getBasic parsing finished: Successfull
+02:09:52 [ INFO] 													getP parsing finished: Successfull
+02:09:52 [ INFO] 												Found first element.
+02:09:52 [ INFO] 												Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 25:
+02:09:52 [ INFO] 													Required operator: MUL
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 25:
+02:09:52 [ INFO] 													Required operator: DIV
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 												getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 											getMul parsing finished: Successfull
+02:09:52 [ INFO] 										Found first element.
+02:09:52 [ INFO] 										Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 25:
+02:09:52 [ INFO] 											Required operator: ADD
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 25:
+02:09:52 [ INFO] 											getOpr parsing finished: Successfull
+02:09:52 [ INFO] 										Trying parse getMul:
+02:09:52 [ INFO] 											Current node: 26:
+02:09:52 [ INFO] 											Trying parse getOprLadder:
+02:09:52 [ INFO] 												Current node: 26:
+02:09:52 [ INFO] 												Trying parse getP:
+02:09:52 [ INFO] 													Current node: 26:
+02:09:52 [ INFO] 													Trying apply rule Wh
+02:09:52 [ INFO] 													Trying parse getWh:
+02:09:52 [ INFO] 														Current node: 26:
+02:09:52 [ INFO] 														Trying parse getOpr:
+02:09:52 [ INFO] 															Current node: 26:
+02:09:52 [ INFO] 															Required operator: WHILE
+02:09:52 [ INFO] 															getOpr parsing finished:  Failed
+02:09:52 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 														getWh parsing finished:  Failed
+02:09:52 [ INFO] 													Trying parse getCustom:
+02:09:52 [ INFO] 														Current node: 26:
+02:09:52 [ INFO] 														Required operator: (
+02:09:52 [ INFO] 														getCustom parsing finished:  Failed
+02:09:52 [ INFO] 													Trying parse getBasic:
+02:09:52 [ INFO] 														Current node: 26:
+02:09:52 [ INFO] 														Trying apply rule Number
+02:09:52 [ INFO] 														Trying parse getNumber:
+02:09:52 [ INFO] 															Current node: 26:
+02:09:52 [ INFO] 															getNumber parsing finished: Successfull
+02:09:52 [ INFO] 														Rule Number satisfied
+02:09:52 [ INFO] 														getBasic parsing finished: Successfull
+02:09:52 [ INFO] 													getP parsing finished: Successfull
+02:09:52 [ INFO] 												Found first element.
+02:09:52 [ INFO] 												Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 27:
+02:09:52 [ INFO] 													Required operator: MUL
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 27:
+02:09:52 [ INFO] 													Required operator: DIV
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 												getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 											getMul parsing finished: Successfull
+02:09:52 [ INFO] 										Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 										Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 27:
+02:09:52 [ INFO] 											Required operator: ADD
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 27:
+02:09:52 [ INFO] 											Required operator: SUB
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 										getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 									getSum parsing finished: Successfull
+02:09:52 [ INFO] 								getRval parsing finished: Successfull
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 27:
+02:09:52 [ INFO] 								Required operator: QQ
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							Trying parse getOpr:
+02:09:52 [ INFO] 								Current node: 27:
+02:09:52 [ INFO] 								Required operator: TERN_Q
+02:09:52 [ INFO] 								getOpr parsing finished:  Failed
+02:09:52 [ INFO] 							getOpt parsing finished: Successfull
+02:09:52 [ INFO] 						Rule Opt satisfied
+02:09:52 [ INFO] 						getLine parsing finished: Successfull
+02:09:52 [ INFO] 					getAsg parsing finished: Successfull
+02:09:52 [ INFO] 				Rule Asg satisfied
+02:09:52 [ INFO] 				getLine parsing finished: Successfull
+02:09:52 [ INFO] 			Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 			Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 			Trying parse getOpr:
+02:09:52 [ INFO] 				Current node: 27:
+02:09:52 [ INFO] 				getOpr parsing finished: Successfull
+02:09:52 [ INFO] 			Trying parse getLine:
+02:09:52 [ INFO] 				Current node: 28:
+02:09:52 [ INFO] 				Trying apply rule DeclF
+02:09:52 [ INFO] 				Trying parse getDeclF:
+02:09:52 [ INFO] 					Current node: 28:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 28:
+02:09:52 [ INFO] 						Required operator: FUNC
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:09:52 [ INFO] 					getDeclF parsing finished:  Failed
+02:09:52 [ INFO] 				Trying apply rule DeclV
+02:09:52 [ INFO] 				Trying parse getDeclV:
+02:09:52 [ INFO] 					Current node: 28:
+02:09:52 [ INFO] 					Trying parse getOpr:
+02:09:52 [ INFO] 						Current node: 28:
+02:09:52 [ INFO] 						Required operator: VAR
+02:09:52 [ INFO] 						getOpr parsing finished:  Failed
+02:09:52 [ INFO] 					Requirement operator Operator::VAR not satisfied.
+02:09:52 [ INFO] 					getDeclV parsing finished:  Failed
+02:09:52 [ INFO] 				Trying apply rule Asg
+02:09:52 [ INFO] 				Trying parse getAsg:
+02:09:52 [ INFO] 					Current node: 28:
+02:09:52 [ INFO] 					Trying parse getId:
+02:09:52 [ INFO] 						Current node: 28:
+02:09:52 [ INFO] 						getId parsing finished:  Failed
+02:09:52 [ INFO] 					Unsuccessfull. Requirement "Id" not satisfied.
+02:09:52 [ INFO] 				Trying apply rule Opt
+02:09:52 [ INFO] 				Trying parse getOpt:
+02:09:52 [ INFO] 					Current node: 28:
+02:09:52 [ INFO] 					Trying parse getRval:
+02:09:52 [ INFO] 						Current node: 28:
+02:09:52 [ INFO] 						Trying parse getSum:
+02:09:52 [ INFO] 							Current node: 28:
+02:09:52 [ INFO] 							Trying parse getOprLadder:
+02:09:52 [ INFO] 								Current node: 28:
+02:09:52 [ INFO] 								Trying parse getMul:
+02:09:52 [ INFO] 									Current node: 28:
+02:09:52 [ INFO] 									Trying parse getOprLadder:
+02:09:52 [ INFO] 										Current node: 28:
+02:09:52 [ INFO] 										Trying parse getP:
+02:09:52 [ INFO] 											Current node: 28:
+02:09:52 [ INFO] 											Trying apply rule Wh
+02:09:52 [ INFO] 											Trying parse getWh:
+02:09:52 [ INFO] 												Current node: 28:
+02:09:52 [ INFO] 												Trying parse getOpr:
+02:09:52 [ INFO] 													Current node: 28:
+02:09:52 [ INFO] 													Required operator: WHILE
+02:09:52 [ INFO] 													getOpr parsing finished:  Failed
+02:09:52 [ INFO] 												Requirement operator Operator::WHILE not satisfied.
+02:09:52 [ INFO] 												getWh parsing finished:  Failed
+02:09:52 [ INFO] 											Trying parse getCustom:
+02:09:52 [ INFO] 												Current node: 28:
+02:09:52 [ INFO] 												Required operator: (
+02:09:52 [ INFO] 												getCustom parsing finished:  Failed
+02:09:52 [ INFO] 											Trying parse getBasic:
+02:09:52 [ INFO] 												Current node: 28:
+02:09:52 [ INFO] 												Trying apply rule Number
+02:09:52 [ INFO] 												Trying parse getNumber:
+02:09:52 [ INFO] 													Current node: 28:
+02:09:52 [ INFO] 													getNumber parsing finished:  Failed
+02:09:52 [ INFO] 												Trying apply rule Call
+02:09:52 [ INFO] 												Trying parse getCall:
+02:09:52 [ INFO] 													Current node: 28:
+02:09:52 [ INFO] 													Trying parse getId:
+02:09:52 [ INFO] 														Current node: 28:
+02:09:52 [ INFO] 														getId parsing finished:  Failed
+02:09:52 [ INFO] 													Unsuccessfull. Requirement "Id" not satisfied.
+02:09:52 [ INFO] 												Trying apply rule Id
+02:09:52 [ INFO] 												Trying parse getId:
+02:09:52 [ INFO] 													Current node: 28:
+02:09:52 [ INFO] 													getId parsing finished:  Failed
+02:09:52 [ INFO] 												getBasic parsing finished:  Failed
+02:09:52 [ INFO] 											Unsuccessfull. Requirement "Basic" not satisfied.
+02:09:52 [ INFO] 										Found first element.
+02:09:52 [ INFO] 										Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 28:
+02:09:52 [ INFO] 											Required operator: MUL
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Trying parse getOpr:
+02:09:52 [ INFO] 											Current node: 28:
+02:09:52 [ INFO] 											Required operator: DIV
+02:09:52 [ INFO] 											getOpr parsing finished:  Failed
+02:09:52 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 										getOprLadder parsing finished:  Failed
+02:09:52 [ INFO] 									getMul parsing finished:  Failed
+02:09:52 [ INFO] 								Found first element.
+02:09:52 [ INFO] 								Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 								Trying parse getOpr:
+02:09:52 [ INFO] 									Current node: 28:
+02:09:52 [ INFO] 									Required operator: ADD
+02:09:52 [ INFO] 									getOpr parsing finished:  Failed
+02:09:52 [ INFO] 								Trying parse getOpr:
+02:09:52 [ INFO] 									Current node: 28:
+02:09:52 [ INFO] 									Required operator: SUB
+02:09:52 [ INFO] 									getOpr parsing finished:  Failed
+02:09:52 [ INFO] 								Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 								getOprLadder parsing finished:  Failed
+02:09:52 [ INFO] 							getSum parsing finished:  Failed
+02:09:52 [ INFO] 						Unsuccessfull. Requirement "Sum" not satisfied.
+02:09:52 [ INFO] 					Unsuccessfull. Requirement "Rval" not satisfied.
+02:09:52 [ INFO] 				Empty line found
+02:09:52 [ INFO] 				getLine parsing finished: Successfull
+02:09:52 [ INFO] 			Both requirements satisfied. Building tree.
+02:09:52 [ INFO] 			Trying to find {Opr Rule}* :
+02:09:52 [ INFO] 			Trying parse getOpr:
+02:09:52 [ INFO] 				Current node: 28:
+02:09:52 [ INFO] 				Required operator: ENDL
+02:09:52 [ INFO] 				getOpr parsing finished:  Failed
+02:09:52 [ INFO] 			Opr requirement not satisfied. Finishing ladder
+02:09:52 [ INFO] 			getOprLadder parsing finished: Successfull
+02:09:52 [ INFO] 		getExpr parsing finished: Successfull
+02:09:52 [ INFO] 	getG parsing finished: Successfull
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] *Tree graph*
+02:09:52 [ INFO] Executing command: "dot -T png /tmp/graph.dot -o log/GRAPH_NODE_0.png"
+02:09:52 [ INFO] Successfully finished
+
+
+############################################################################
+
+
+
+02:12:20 [ INFO] Tokenisation started:
+02:12:20 [ INFO] 	NodeList successfully created
+02:12:20 [ INFO] 	Found Keyword: "Great"
+02:12:20 [ INFO] 	Found identifier F. Registering...  New!
+02:12:20 [ INFO] 	Found Keyword: "("
+02:12:20 [ INFO] 	Found identifier x. Registering...  New!
+02:12:20 [ INFO] 	Found Keyword: ","
+02:12:20 [ INFO] 	Found identifier l. Registering...  New!
+02:12:20 [ INFO] 	Found Keyword: ")"
+02:12:20 [ INFO] 	Found Keyword: "faaa"
+02:12:20 [ INFO] 	Found Keyword: "("
+02:12:20 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:12:20 [ INFO] 	Found Keyword: "ah"
+02:12:20 [ INFO] 	Found Keyword: "Dagon"
+02:12:20 [ INFO] 	Found Keyword: "zhro"
+02:12:20 [ INFO] 	Found Keyword: ")"
+02:12:20 [ INFO] 	Found Keyword: "."
+02:12:20 [ INFO] 	Found Keyword: "Shoggoth"
+02:12:20 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:12:20 [ INFO] 	Found Keyword: "."
+02:12:20 [ INFO] 	Found identifier x. Registering...  Already exists!
+02:12:20 [ INFO] 	Found Keyword: "fhtagn"
+02:12:20 [ INFO] 	Found identifier F. Registering...  Already exists!
+02:12:20 [ INFO] 	Found Keyword: "("
+02:12:20 [ INFO] 	Found Keyword: "Blahaj"
+02:12:20 [ INFO] 	Found Keyword: ","
+02:12:20 [ INFO] 	Found Keyword: "zhro"
+02:12:20 [ INFO] 	Found Keyword: ")"
+02:12:20 [ INFO] 	Found Keyword: "-"
+02:12:20 [ INFO] 	Found Keyword: "Dagon"
+02:12:20 [ INFO] 	Found Keyword: "."
+02:12:20 [ INFO] Tokenisation finished
+02:12:20 [DEBUG] [  0] = { .type = 3, .data = 22 	 .label = FUNC}
+02:12:20 [DEBUG] [  1] = { .type = 2, .data = 0 	 .label = #0}
+02:12:20 [DEBUG] [  2] = { .type = 4, .data = 1 	 .label = (}
+02:12:20 [DEBUG] [  3] = { .type = 2, .data = 1 	 .label = #1}
+02:12:20 [DEBUG] [  4] = { .type = 3, .data = 24 	 .label = COMMA}
+02:12:20 [DEBUG] [  5] = { .type = 2, .data = 2 	 .label = #2}
+02:12:20 [DEBUG] [  6] = { .type = 4, .data = 2 	 .label = )}
+02:12:20 [DEBUG] [  7] = { .type = 3, .data = 23 	 .label = F_ARG}
+02:12:20 [DEBUG] [  8] = { .type = 4, .data = 1 	 .label = (}
+02:12:20 [DEBUG] [  9] = { .type = 2, .data = 1 	 .label = #1}
+02:12:20 [DEBUG] [ 10] = { .type = 3, .data = 1 	 .label = ADD}
+02:12:20 [DEBUG] [ 11] = { .type = 1, .data = 10 	 .label = 10}
+02:12:20 [DEBUG] [ 12] = { .type = 4, .data = 2 	 .label = )}
+02:12:20 [DEBUG] [ 13] = { .type = 3, .data = 27 	 .label = ENDL}
+02:12:20 [DEBUG] [ 14] = { .type = 3, .data = 21 	 .label = VAR}
+02:12:20 [DEBUG] [ 15] = { .type = 2, .data = 1 	 .label = #1}
+02:12:20 [DEBUG] [ 16] = { .type = 3, .data = 27 	 .label = ENDL}
+02:12:20 [DEBUG] [ 17] = { .type = 2, .data = 1 	 .label = #1}
+02:12:20 [DEBUG] [ 18] = { .type = 3, .data = 11 	 .label = SET}
+02:12:20 [DEBUG] [ 19] = { .type = 2, .data = 0 	 .label = #0}
+02:12:20 [DEBUG] [ 20] = { .type = 4, .data = 1 	 .label = (}
+02:12:20 [DEBUG] [ 21] = { .type = 1, .data = 9 	 .label = 9}
+02:12:20 [DEBUG] [ 22] = { .type = 3, .data = 24 	 .label = COMMA}
+02:12:20 [DEBUG] [ 23] = { .type = 1, .data = 0 	 .label = 0}
+02:12:20 [DEBUG] [ 24] = { .type = 4, .data = 2 	 .label = )}
+02:12:20 [DEBUG] [ 25] = { .type = 3, .data = 2 	 .label = SUB}
+02:12:20 [DEBUG] [ 26] = { .type = 1, .data = 1 	 .label = 1}
+02:12:20 [DEBUG] [ 27] = { .type = 3, .data = 27 	 .label = ENDL}
+02:12:20 [DEBUG] [ 28] = { .type = 0, .data = 0 	 .label = }
+02:12:20 [ INFO] Trying parse getG:
+02:12:20 [ INFO] 	Current node: 0:
+02:12:20 [ INFO] 	Trying parse getExpr:
+02:12:20 [ INFO] 		Current node: 0:
+02:12:20 [ INFO] 		Trying parse getOprLadder:
+02:12:20 [ INFO] 			Current node: 0:
+02:12:20 [ INFO] 			Trying parse getLine:
+02:12:20 [ INFO] 				Current node: 0:
+02:12:20 [ INFO] 				Trying apply rule DeclF
+02:12:20 [ INFO] 				Trying parse getDeclF:
+02:12:20 [ INFO] 					Current node: 0:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 0:
+02:12:20 [ INFO] 						getOpr parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getId:
+02:12:20 [ INFO] 						Current node: 1:
+02:12:20 [ INFO] 						getId parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getCustom:
+02:12:20 [ INFO] 						Current node: 2:
+02:12:20 [ INFO] 						getCustom parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getOprLadder:
+02:12:20 [ INFO] 						Current node: 3:
+02:12:20 [ INFO] 						Trying parse getId:
+02:12:20 [ INFO] 							Current node: 3:
+02:12:20 [ INFO] 							getId parsing finished: Successfull
+02:12:20 [ INFO] 						Found first element.
+02:12:20 [ INFO] 						Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 						Trying parse getOpr:
+02:12:20 [ INFO] 							Current node: 4:
+02:12:20 [ INFO] 							getOpr parsing finished: Successfull
+02:12:20 [ INFO] 						Trying parse getId:
+02:12:20 [ INFO] 							Current node: 5:
+02:12:20 [ INFO] 							getId parsing finished: Successfull
+02:12:20 [ INFO] 						Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 						Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 						Trying parse getOpr:
+02:12:20 [ INFO] 							Current node: 6:
+02:12:20 [ INFO] 							Required operator: COMMA
+02:12:20 [ INFO] 							getOpr parsing finished:  Failed
+02:12:20 [ INFO] 						Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 						getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getCustom:
+02:12:20 [ INFO] 						Current node: 6:
+02:12:20 [ INFO] 						getCustom parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 7:
+02:12:20 [ INFO] 						getOpr parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getLine:
+02:12:20 [ INFO] 						Current node: 8:
+02:12:20 [ INFO] 						Trying apply rule DeclF
+02:12:20 [ INFO] 						Trying parse getDeclF:
+02:12:20 [ INFO] 							Current node: 8:
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 8:
+02:12:20 [ INFO] 								Required operator: FUNC
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 							getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 						Trying apply rule DeclV
+02:12:20 [ INFO] 						Trying parse getDeclV:
+02:12:20 [ INFO] 							Current node: 8:
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 8:
+02:12:20 [ INFO] 								Required operator: VAR
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 							getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 						Trying apply rule Asg
+02:12:20 [ INFO] 						Trying parse getAsg:
+02:12:20 [ INFO] 							Current node: 8:
+02:12:20 [ INFO] 							Trying parse getId:
+02:12:20 [ INFO] 								Current node: 8:
+02:12:20 [ INFO] 								getId parsing finished:  Failed
+02:12:20 [ INFO] 							Unsuccessfull. Requirement "Id" not satisfied.
+02:12:20 [ INFO] 						Trying apply rule Opt
+02:12:20 [ INFO] 						Trying parse getOpt:
+02:12:20 [ INFO] 							Current node: 8:
+02:12:20 [ INFO] 							Trying parse getRval:
+02:12:20 [ INFO] 								Current node: 8:
+02:12:20 [ INFO] 								Trying parse getSum:
+02:12:20 [ INFO] 									Current node: 8:
+02:12:20 [ INFO] 									Trying parse getOprLadder:
+02:12:20 [ INFO] 										Current node: 8:
+02:12:20 [ INFO] 										Trying parse getMul:
+02:12:20 [ INFO] 											Current node: 8:
+02:12:20 [ INFO] 											Trying parse getOprLadder:
+02:12:20 [ INFO] 												Current node: 8:
+02:12:20 [ INFO] 												Trying parse getP:
+02:12:20 [ INFO] 													Current node: 8:
+02:12:20 [ INFO] 													Trying apply rule Wh
+02:12:20 [ INFO] 													Trying parse getWh:
+02:12:20 [ INFO] 														Current node: 8:
+02:12:20 [ INFO] 														Trying parse getOpr:
+02:12:20 [ INFO] 															Current node: 8:
+02:12:20 [ INFO] 															Required operator: WHILE
+02:12:20 [ INFO] 															getOpr parsing finished:  Failed
+02:12:20 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 														getWh parsing finished:  Failed
+02:12:20 [ INFO] 													Trying parse getCustom:
+02:12:20 [ INFO] 														Current node: 8:
+02:12:20 [ INFO] 														getCustom parsing finished: Successfull
+02:12:20 [ INFO] 													Trying parse getExpr:
+02:12:20 [ INFO] 														Current node: 9:
+02:12:20 [ INFO] 														Trying parse getOprLadder:
+02:12:20 [ INFO] 															Current node: 9:
+02:12:20 [ INFO] 															Trying parse getLine:
+02:12:20 [ INFO] 																Current node: 9:
+02:12:20 [ INFO] 																Trying apply rule DeclF
+02:12:20 [ INFO] 																Trying parse getDeclF:
+02:12:20 [ INFO] 																	Current node: 9:
+02:12:20 [ INFO] 																	Trying parse getOpr:
+02:12:20 [ INFO] 																		Current node: 9:
+02:12:20 [ INFO] 																		Required operator: FUNC
+02:12:20 [ INFO] 																		getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																	Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 																	getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 																Trying apply rule DeclV
+02:12:20 [ INFO] 																Trying parse getDeclV:
+02:12:20 [ INFO] 																	Current node: 9:
+02:12:20 [ INFO] 																	Trying parse getOpr:
+02:12:20 [ INFO] 																		Current node: 9:
+02:12:20 [ INFO] 																		Required operator: VAR
+02:12:20 [ INFO] 																		getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																	Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 																	getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 																Trying apply rule Asg
+02:12:20 [ INFO] 																Trying parse getAsg:
+02:12:20 [ INFO] 																	Current node: 9:
+02:12:20 [ INFO] 																	Trying parse getId:
+02:12:20 [ INFO] 																		Current node: 9:
+02:12:20 [ INFO] 																		getId parsing finished: Successfull
+02:12:20 [ INFO] 																	Trying parse getOpr:
+02:12:20 [ INFO] 																		Current node: 10:
+02:12:20 [ INFO] 																		Required operator: SET
+02:12:20 [ INFO] 																		getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																	Requirement operator Operator::SET not satisfied.
+02:12:20 [ INFO] 																	getAsg parsing finished:  Failed
+02:12:20 [ INFO] 																Trying apply rule Opt
+02:12:20 [ INFO] 																Trying parse getOpt:
+02:12:20 [ INFO] 																	Current node: 9:
+02:12:20 [ INFO] 																	Trying parse getRval:
+02:12:20 [ INFO] 																		Current node: 9:
+02:12:20 [ INFO] 																		Trying parse getSum:
+02:12:20 [ INFO] 																			Current node: 9:
+02:12:20 [ INFO] 																			Trying parse getOprLadder:
+02:12:20 [ INFO] 																				Current node: 9:
+02:12:20 [ INFO] 																				Trying parse getMul:
+02:12:20 [ INFO] 																					Current node: 9:
+02:12:20 [ INFO] 																					Trying parse getOprLadder:
+02:12:20 [ INFO] 																						Current node: 9:
+02:12:20 [ INFO] 																						Trying parse getP:
+02:12:20 [ INFO] 																							Current node: 9:
+02:12:20 [ INFO] 																							Trying apply rule Wh
+02:12:20 [ INFO] 																							Trying parse getWh:
+02:12:20 [ INFO] 																								Current node: 9:
+02:12:20 [ INFO] 																								Trying parse getOpr:
+02:12:20 [ INFO] 																									Current node: 9:
+02:12:20 [ INFO] 																									Required operator: WHILE
+02:12:20 [ INFO] 																									getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																								Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 																								getWh parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getCustom:
+02:12:20 [ INFO] 																								Current node: 9:
+02:12:20 [ INFO] 																								Required operator: (
+02:12:20 [ INFO] 																								getCustom parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getBasic:
+02:12:20 [ INFO] 																								Current node: 9:
+02:12:20 [ INFO] 																								Trying apply rule Number
+02:12:20 [ INFO] 																								Trying parse getNumber:
+02:12:20 [ INFO] 																									Current node: 9:
+02:12:20 [ INFO] 																									getNumber parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying apply rule Call
+02:12:20 [ INFO] 																								Trying parse getCall:
+02:12:20 [ INFO] 																									Current node: 9:
+02:12:20 [ INFO] 																									Trying parse getId:
+02:12:20 [ INFO] 																										Current node: 9:
+02:12:20 [ INFO] 																										getId parsing finished: Successfull
+02:12:20 [ INFO] 																									Trying parse getCustom:
+02:12:20 [ INFO] 																										Current node: 10:
+02:12:20 [ INFO] 																										Required operator: (
+02:12:20 [ INFO] 																										getCustom parsing finished:  Failed
+02:12:20 [ INFO] 																									Requirement operator CustomOperator::PAR_L not satisfied.
+02:12:20 [ INFO] 																									getCall parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying apply rule Id
+02:12:20 [ INFO] 																								Trying parse getId:
+02:12:20 [ INFO] 																									Current node: 9:
+02:12:20 [ INFO] 																									getId parsing finished: Successfull
+02:12:20 [ INFO] 																								Rule Id satisfied
+02:12:20 [ INFO] 																								getBasic parsing finished: Successfull
+02:12:20 [ INFO] 																							getP parsing finished: Successfull
+02:12:20 [ INFO] 																						Found first element.
+02:12:20 [ INFO] 																						Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																						Trying parse getOpr:
+02:12:20 [ INFO] 																							Current node: 10:
+02:12:20 [ INFO] 																							Required operator: MUL
+02:12:20 [ INFO] 																							getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																						Trying parse getOpr:
+02:12:20 [ INFO] 																							Current node: 10:
+02:12:20 [ INFO] 																							Required operator: DIV
+02:12:20 [ INFO] 																							getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																						Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																						getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																					getMul parsing finished: Successfull
+02:12:20 [ INFO] 																				Found first element.
+02:12:20 [ INFO] 																				Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																				Trying parse getOpr:
+02:12:20 [ INFO] 																					Current node: 10:
+02:12:20 [ INFO] 																					getOpr parsing finished: Successfull
+02:12:20 [ INFO] 																				Trying parse getMul:
+02:12:20 [ INFO] 																					Current node: 11:
+02:12:20 [ INFO] 																					Trying parse getOprLadder:
+02:12:20 [ INFO] 																						Current node: 11:
+02:12:20 [ INFO] 																						Trying parse getP:
+02:12:20 [ INFO] 																							Current node: 11:
+02:12:20 [ INFO] 																							Trying apply rule Wh
+02:12:20 [ INFO] 																							Trying parse getWh:
+02:12:20 [ INFO] 																								Current node: 11:
+02:12:20 [ INFO] 																								Trying parse getOpr:
+02:12:20 [ INFO] 																									Current node: 11:
+02:12:20 [ INFO] 																									Required operator: WHILE
+02:12:20 [ INFO] 																									getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																								Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 																								getWh parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getCustom:
+02:12:20 [ INFO] 																								Current node: 11:
+02:12:20 [ INFO] 																								Required operator: (
+02:12:20 [ INFO] 																								getCustom parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getBasic:
+02:12:20 [ INFO] 																								Current node: 11:
+02:12:20 [ INFO] 																								Trying apply rule Number
+02:12:20 [ INFO] 																								Trying parse getNumber:
+02:12:20 [ INFO] 																									Current node: 11:
+02:12:20 [ INFO] 																									getNumber parsing finished: Successfull
+02:12:20 [ INFO] 																								Rule Number satisfied
+02:12:20 [ INFO] 																								getBasic parsing finished: Successfull
+02:12:20 [ INFO] 																							getP parsing finished: Successfull
+02:12:20 [ INFO] 																						Found first element.
+02:12:20 [ INFO] 																						Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																						Trying parse getOpr:
+02:12:20 [ INFO] 																							Current node: 12:
+02:12:20 [ INFO] 																							Required operator: MUL
+02:12:20 [ INFO] 																							getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																						Trying parse getOpr:
+02:12:20 [ INFO] 																							Current node: 12:
+02:12:20 [ INFO] 																							Required operator: DIV
+02:12:20 [ INFO] 																							getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																						Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																						getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																					getMul parsing finished: Successfull
+02:12:20 [ INFO] 																				Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 																				Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																				Trying parse getOpr:
+02:12:20 [ INFO] 																					Current node: 12:
+02:12:20 [ INFO] 																					Required operator: ADD
+02:12:20 [ INFO] 																					getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																				Trying parse getOpr:
+02:12:20 [ INFO] 																					Current node: 12:
+02:12:20 [ INFO] 																					Required operator: SUB
+02:12:20 [ INFO] 																					getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																				Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																				getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																			getSum parsing finished: Successfull
+02:12:20 [ INFO] 																		getRval parsing finished: Successfull
+02:12:20 [ INFO] 																	Trying parse getOpr:
+02:12:20 [ INFO] 																		Current node: 12:
+02:12:20 [ INFO] 																		Required operator: QQ
+02:12:20 [ INFO] 																		getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																	Trying parse getOpr:
+02:12:20 [ INFO] 																		Current node: 12:
+02:12:20 [ INFO] 																		Required operator: TERN_Q
+02:12:20 [ INFO] 																		getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																	getOpt parsing finished: Successfull
+02:12:20 [ INFO] 																Rule Opt satisfied
+02:12:20 [ INFO] 																getLine parsing finished: Successfull
+02:12:20 [ INFO] 															Found first element.
+02:12:20 [ INFO] 															Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 															Trying parse getOpr:
+02:12:20 [ INFO] 																Current node: 12:
+02:12:20 [ INFO] 																Required operator: ENDL
+02:12:20 [ INFO] 																getOpr parsing finished:  Failed
+02:12:20 [ INFO] 															Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 															getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 														getExpr parsing finished: Successfull
+02:12:20 [ INFO] 													Trying parse getCustom:
+02:12:20 [ INFO] 														Current node: 12:
+02:12:20 [ INFO] 														getCustom parsing finished: Successfull
+02:12:20 [ INFO] 													getP parsing finished: Successfull
+02:12:20 [ INFO] 												Found first element.
+02:12:20 [ INFO] 												Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 13:
+02:12:20 [ INFO] 													Required operator: MUL
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 13:
+02:12:20 [ INFO] 													Required operator: DIV
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 												getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 											getMul parsing finished: Successfull
+02:12:20 [ INFO] 										Found first element.
+02:12:20 [ INFO] 										Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 13:
+02:12:20 [ INFO] 											Required operator: ADD
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 13:
+02:12:20 [ INFO] 											Required operator: SUB
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 										getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 									getSum parsing finished: Successfull
+02:12:20 [ INFO] 								getRval parsing finished: Successfull
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 13:
+02:12:20 [ INFO] 								Required operator: QQ
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 13:
+02:12:20 [ INFO] 								Required operator: TERN_Q
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							getOpt parsing finished: Successfull
+02:12:20 [ INFO] 						Rule Opt satisfied
+02:12:20 [ INFO] 						getLine parsing finished: Successfull
+02:12:20 [ INFO] 					getDeclF parsing finished: Successfull
+02:12:20 [ INFO] 				Rule DeclF satisfied
+02:12:20 [ INFO] 				getLine parsing finished: Successfull
+02:12:20 [ INFO] 			Found first element.
+02:12:20 [ INFO] 			Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 			Trying parse getOpr:
+02:12:20 [ INFO] 				Current node: 13:
+02:12:20 [ INFO] 				getOpr parsing finished: Successfull
+02:12:20 [ INFO] 			Trying parse getLine:
+02:12:20 [ INFO] 				Current node: 14:
+02:12:20 [ INFO] 				Trying apply rule DeclF
+02:12:20 [ INFO] 				Trying parse getDeclF:
+02:12:20 [ INFO] 					Current node: 14:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 14:
+02:12:20 [ INFO] 						Required operator: FUNC
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 					getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 				Trying apply rule DeclV
+02:12:20 [ INFO] 				Trying parse getDeclV:
+02:12:20 [ INFO] 					Current node: 14:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 14:
+02:12:20 [ INFO] 						getOpr parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getId:
+02:12:20 [ INFO] 						Current node: 15:
+02:12:20 [ INFO] 						getId parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 16:
+02:12:20 [ INFO] 						Required operator: SET
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					getDeclV parsing finished: Successfull
+02:12:20 [ INFO] 				Rule DeclV satisfied
+02:12:20 [ INFO] 				getLine parsing finished: Successfull
+02:12:20 [ INFO] 			Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 			Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 			Trying parse getOpr:
+02:12:20 [ INFO] 				Current node: 16:
+02:12:20 [ INFO] 				getOpr parsing finished: Successfull
+02:12:20 [ INFO] 			Trying parse getLine:
+02:12:20 [ INFO] 				Current node: 17:
+02:12:20 [ INFO] 				Trying apply rule DeclF
+02:12:20 [ INFO] 				Trying parse getDeclF:
+02:12:20 [ INFO] 					Current node: 17:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 17:
+02:12:20 [ INFO] 						Required operator: FUNC
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 					getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 				Trying apply rule DeclV
+02:12:20 [ INFO] 				Trying parse getDeclV:
+02:12:20 [ INFO] 					Current node: 17:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 17:
+02:12:20 [ INFO] 						Required operator: VAR
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 					getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 				Trying apply rule Asg
+02:12:20 [ INFO] 				Trying parse getAsg:
+02:12:20 [ INFO] 					Current node: 17:
+02:12:20 [ INFO] 					Trying parse getId:
+02:12:20 [ INFO] 						Current node: 17:
+02:12:20 [ INFO] 						getId parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 18:
+02:12:20 [ INFO] 						getOpr parsing finished: Successfull
+02:12:20 [ INFO] 					Trying parse getLine:
+02:12:20 [ INFO] 						Current node: 19:
+02:12:20 [ INFO] 						Trying apply rule DeclF
+02:12:20 [ INFO] 						Trying parse getDeclF:
+02:12:20 [ INFO] 							Current node: 19:
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 19:
+02:12:20 [ INFO] 								Required operator: FUNC
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 							getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 						Trying apply rule DeclV
+02:12:20 [ INFO] 						Trying parse getDeclV:
+02:12:20 [ INFO] 							Current node: 19:
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 19:
+02:12:20 [ INFO] 								Required operator: VAR
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 							getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 						Trying apply rule Asg
+02:12:20 [ INFO] 						Trying parse getAsg:
+02:12:20 [ INFO] 							Current node: 19:
+02:12:20 [ INFO] 							Trying parse getId:
+02:12:20 [ INFO] 								Current node: 19:
+02:12:20 [ INFO] 								getId parsing finished: Successfull
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 20:
+02:12:20 [ INFO] 								Required operator: SET
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Requirement operator Operator::SET not satisfied.
+02:12:20 [ INFO] 							getAsg parsing finished:  Failed
+02:12:20 [ INFO] 						Trying apply rule Opt
+02:12:20 [ INFO] 						Trying parse getOpt:
+02:12:20 [ INFO] 							Current node: 19:
+02:12:20 [ INFO] 							Trying parse getRval:
+02:12:20 [ INFO] 								Current node: 19:
+02:12:20 [ INFO] 								Trying parse getSum:
+02:12:20 [ INFO] 									Current node: 19:
+02:12:20 [ INFO] 									Trying parse getOprLadder:
+02:12:20 [ INFO] 										Current node: 19:
+02:12:20 [ INFO] 										Trying parse getMul:
+02:12:20 [ INFO] 											Current node: 19:
+02:12:20 [ INFO] 											Trying parse getOprLadder:
+02:12:20 [ INFO] 												Current node: 19:
+02:12:20 [ INFO] 												Trying parse getP:
+02:12:20 [ INFO] 													Current node: 19:
+02:12:20 [ INFO] 													Trying apply rule Wh
+02:12:20 [ INFO] 													Trying parse getWh:
+02:12:20 [ INFO] 														Current node: 19:
+02:12:20 [ INFO] 														Trying parse getOpr:
+02:12:20 [ INFO] 															Current node: 19:
+02:12:20 [ INFO] 															Required operator: WHILE
+02:12:20 [ INFO] 															getOpr parsing finished:  Failed
+02:12:20 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 														getWh parsing finished:  Failed
+02:12:20 [ INFO] 													Trying parse getCustom:
+02:12:20 [ INFO] 														Current node: 19:
+02:12:20 [ INFO] 														Required operator: (
+02:12:20 [ INFO] 														getCustom parsing finished:  Failed
+02:12:20 [ INFO] 													Trying parse getBasic:
+02:12:20 [ INFO] 														Current node: 19:
+02:12:20 [ INFO] 														Trying apply rule Number
+02:12:20 [ INFO] 														Trying parse getNumber:
+02:12:20 [ INFO] 															Current node: 19:
+02:12:20 [ INFO] 															getNumber parsing finished:  Failed
+02:12:20 [ INFO] 														Trying apply rule Call
+02:12:20 [ INFO] 														Trying parse getCall:
+02:12:20 [ INFO] 															Current node: 19:
+02:12:20 [ INFO] 															Trying parse getId:
+02:12:20 [ INFO] 																Current node: 19:
+02:12:20 [ INFO] 																getId parsing finished: Successfull
+02:12:20 [ INFO] 															Trying parse getCustom:
+02:12:20 [ INFO] 																Current node: 20:
+02:12:20 [ INFO] 																getCustom parsing finished: Successfull
+02:12:20 [ INFO] 															Trying parse getOprLadder:
+02:12:20 [ INFO] 																Current node: 21:
+02:12:20 [ INFO] 																Trying parse getLine:
+02:12:20 [ INFO] 																	Current node: 21:
+02:12:20 [ INFO] 																	Trying apply rule DeclF
+02:12:20 [ INFO] 																	Trying parse getDeclF:
+02:12:20 [ INFO] 																		Current node: 21:
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 21:
+02:12:20 [ INFO] 																			Required operator: FUNC
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 																		getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 																	Trying apply rule DeclV
+02:12:20 [ INFO] 																	Trying parse getDeclV:
+02:12:20 [ INFO] 																		Current node: 21:
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 21:
+02:12:20 [ INFO] 																			Required operator: VAR
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 																		getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 																	Trying apply rule Asg
+02:12:20 [ INFO] 																	Trying parse getAsg:
+02:12:20 [ INFO] 																		Current node: 21:
+02:12:20 [ INFO] 																		Trying parse getId:
+02:12:20 [ INFO] 																			Current node: 21:
+02:12:20 [ INFO] 																			getId parsing finished:  Failed
+02:12:20 [ INFO] 																		Unsuccessfull. Requirement "Id" not satisfied.
+02:12:20 [ INFO] 																	Trying apply rule Opt
+02:12:20 [ INFO] 																	Trying parse getOpt:
+02:12:20 [ INFO] 																		Current node: 21:
+02:12:20 [ INFO] 																		Trying parse getRval:
+02:12:20 [ INFO] 																			Current node: 21:
+02:12:20 [ INFO] 																			Trying parse getSum:
+02:12:20 [ INFO] 																				Current node: 21:
+02:12:20 [ INFO] 																				Trying parse getOprLadder:
+02:12:20 [ INFO] 																					Current node: 21:
+02:12:20 [ INFO] 																					Trying parse getMul:
+02:12:20 [ INFO] 																						Current node: 21:
+02:12:20 [ INFO] 																						Trying parse getOprLadder:
+02:12:20 [ INFO] 																							Current node: 21:
+02:12:20 [ INFO] 																							Trying parse getP:
+02:12:20 [ INFO] 																								Current node: 21:
+02:12:20 [ INFO] 																								Trying apply rule Wh
+02:12:20 [ INFO] 																								Trying parse getWh:
+02:12:20 [ INFO] 																									Current node: 21:
+02:12:20 [ INFO] 																									Trying parse getOpr:
+02:12:20 [ INFO] 																										Current node: 21:
+02:12:20 [ INFO] 																										Required operator: WHILE
+02:12:20 [ INFO] 																										getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																									Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 																									getWh parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying parse getCustom:
+02:12:20 [ INFO] 																									Current node: 21:
+02:12:20 [ INFO] 																									Required operator: (
+02:12:20 [ INFO] 																									getCustom parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying parse getBasic:
+02:12:20 [ INFO] 																									Current node: 21:
+02:12:20 [ INFO] 																									Trying apply rule Number
+02:12:20 [ INFO] 																									Trying parse getNumber:
+02:12:20 [ INFO] 																										Current node: 21:
+02:12:20 [ INFO] 																										getNumber parsing finished: Successfull
+02:12:20 [ INFO] 																									Rule Number satisfied
+02:12:20 [ INFO] 																									getBasic parsing finished: Successfull
+02:12:20 [ INFO] 																								getP parsing finished: Successfull
+02:12:20 [ INFO] 																							Found first element.
+02:12:20 [ INFO] 																							Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																							Trying parse getOpr:
+02:12:20 [ INFO] 																								Current node: 22:
+02:12:20 [ INFO] 																								Required operator: MUL
+02:12:20 [ INFO] 																								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getOpr:
+02:12:20 [ INFO] 																								Current node: 22:
+02:12:20 [ INFO] 																								Required operator: DIV
+02:12:20 [ INFO] 																								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																							Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																							getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																						getMul parsing finished: Successfull
+02:12:20 [ INFO] 																					Found first element.
+02:12:20 [ INFO] 																					Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																					Trying parse getOpr:
+02:12:20 [ INFO] 																						Current node: 22:
+02:12:20 [ INFO] 																						Required operator: ADD
+02:12:20 [ INFO] 																						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																					Trying parse getOpr:
+02:12:20 [ INFO] 																						Current node: 22:
+02:12:20 [ INFO] 																						Required operator: SUB
+02:12:20 [ INFO] 																						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																					Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																					getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																				getSum parsing finished: Successfull
+02:12:20 [ INFO] 																			getRval parsing finished: Successfull
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 22:
+02:12:20 [ INFO] 																			Required operator: QQ
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 22:
+02:12:20 [ INFO] 																			Required operator: TERN_Q
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		getOpt parsing finished: Successfull
+02:12:20 [ INFO] 																	Rule Opt satisfied
+02:12:20 [ INFO] 																	getLine parsing finished: Successfull
+02:12:20 [ INFO] 																Found first element.
+02:12:20 [ INFO] 																Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																Trying parse getOpr:
+02:12:20 [ INFO] 																	Current node: 22:
+02:12:20 [ INFO] 																	getOpr parsing finished: Successfull
+02:12:20 [ INFO] 																Trying parse getLine:
+02:12:20 [ INFO] 																	Current node: 23:
+02:12:20 [ INFO] 																	Trying apply rule DeclF
+02:12:20 [ INFO] 																	Trying parse getDeclF:
+02:12:20 [ INFO] 																		Current node: 23:
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 23:
+02:12:20 [ INFO] 																			Required operator: FUNC
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 																		getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 																	Trying apply rule DeclV
+02:12:20 [ INFO] 																	Trying parse getDeclV:
+02:12:20 [ INFO] 																		Current node: 23:
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 23:
+02:12:20 [ INFO] 																			Required operator: VAR
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 																		getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 																	Trying apply rule Asg
+02:12:20 [ INFO] 																	Trying parse getAsg:
+02:12:20 [ INFO] 																		Current node: 23:
+02:12:20 [ INFO] 																		Trying parse getId:
+02:12:20 [ INFO] 																			Current node: 23:
+02:12:20 [ INFO] 																			getId parsing finished:  Failed
+02:12:20 [ INFO] 																		Unsuccessfull. Requirement "Id" not satisfied.
+02:12:20 [ INFO] 																	Trying apply rule Opt
+02:12:20 [ INFO] 																	Trying parse getOpt:
+02:12:20 [ INFO] 																		Current node: 23:
+02:12:20 [ INFO] 																		Trying parse getRval:
+02:12:20 [ INFO] 																			Current node: 23:
+02:12:20 [ INFO] 																			Trying parse getSum:
+02:12:20 [ INFO] 																				Current node: 23:
+02:12:20 [ INFO] 																				Trying parse getOprLadder:
+02:12:20 [ INFO] 																					Current node: 23:
+02:12:20 [ INFO] 																					Trying parse getMul:
+02:12:20 [ INFO] 																						Current node: 23:
+02:12:20 [ INFO] 																						Trying parse getOprLadder:
+02:12:20 [ INFO] 																							Current node: 23:
+02:12:20 [ INFO] 																							Trying parse getP:
+02:12:20 [ INFO] 																								Current node: 23:
+02:12:20 [ INFO] 																								Trying apply rule Wh
+02:12:20 [ INFO] 																								Trying parse getWh:
+02:12:20 [ INFO] 																									Current node: 23:
+02:12:20 [ INFO] 																									Trying parse getOpr:
+02:12:20 [ INFO] 																										Current node: 23:
+02:12:20 [ INFO] 																										Required operator: WHILE
+02:12:20 [ INFO] 																										getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																									Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 																									getWh parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying parse getCustom:
+02:12:20 [ INFO] 																									Current node: 23:
+02:12:20 [ INFO] 																									Required operator: (
+02:12:20 [ INFO] 																									getCustom parsing finished:  Failed
+02:12:20 [ INFO] 																								Trying parse getBasic:
+02:12:20 [ INFO] 																									Current node: 23:
+02:12:20 [ INFO] 																									Trying apply rule Number
+02:12:20 [ INFO] 																									Trying parse getNumber:
+02:12:20 [ INFO] 																										Current node: 23:
+02:12:20 [ INFO] 																										getNumber parsing finished: Successfull
+02:12:20 [ INFO] 																									Rule Number satisfied
+02:12:20 [ INFO] 																									getBasic parsing finished: Successfull
+02:12:20 [ INFO] 																								getP parsing finished: Successfull
+02:12:20 [ INFO] 																							Found first element.
+02:12:20 [ INFO] 																							Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																							Trying parse getOpr:
+02:12:20 [ INFO] 																								Current node: 24:
+02:12:20 [ INFO] 																								Required operator: MUL
+02:12:20 [ INFO] 																								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																							Trying parse getOpr:
+02:12:20 [ INFO] 																								Current node: 24:
+02:12:20 [ INFO] 																								Required operator: DIV
+02:12:20 [ INFO] 																								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																							Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																							getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																						getMul parsing finished: Successfull
+02:12:20 [ INFO] 																					Found first element.
+02:12:20 [ INFO] 																					Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																					Trying parse getOpr:
+02:12:20 [ INFO] 																						Current node: 24:
+02:12:20 [ INFO] 																						Required operator: ADD
+02:12:20 [ INFO] 																						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																					Trying parse getOpr:
+02:12:20 [ INFO] 																						Current node: 24:
+02:12:20 [ INFO] 																						Required operator: SUB
+02:12:20 [ INFO] 																						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																					Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																					getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 																				getSum parsing finished: Successfull
+02:12:20 [ INFO] 																			getRval parsing finished: Successfull
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 24:
+02:12:20 [ INFO] 																			Required operator: QQ
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		Trying parse getOpr:
+02:12:20 [ INFO] 																			Current node: 24:
+02:12:20 [ INFO] 																			Required operator: TERN_Q
+02:12:20 [ INFO] 																			getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																		getOpt parsing finished: Successfull
+02:12:20 [ INFO] 																	Rule Opt satisfied
+02:12:20 [ INFO] 																	getLine parsing finished: Successfull
+02:12:20 [ INFO] 																Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 																Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 																Trying parse getOpr:
+02:12:20 [ INFO] 																	Current node: 24:
+02:12:20 [ INFO] 																	Required operator: COMMA
+02:12:20 [ INFO] 																	getOpr parsing finished:  Failed
+02:12:20 [ INFO] 																Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 																getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 															Trying parse getCustom:
+02:12:20 [ INFO] 																Current node: 24:
+02:12:20 [ INFO] 																getCustom parsing finished: Successfull
+02:12:20 [ WARN] 															
+02:12:20 [ WARN] 															Call F. Changing node val
+02:12:20 [ INFO] 															getCall parsing finished: Successfull
+02:12:20 [ INFO] 														Rule Call satisfied
+02:12:20 [ INFO] 														getBasic parsing finished: Successfull
+02:12:20 [ INFO] 													getP parsing finished: Successfull
+02:12:20 [ INFO] 												Found first element.
+02:12:20 [ INFO] 												Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 25:
+02:12:20 [ INFO] 													Required operator: MUL
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 25:
+02:12:20 [ INFO] 													Required operator: DIV
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 												getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 											getMul parsing finished: Successfull
+02:12:20 [ INFO] 										Found first element.
+02:12:20 [ INFO] 										Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 25:
+02:12:20 [ INFO] 											Required operator: ADD
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 25:
+02:12:20 [ INFO] 											getOpr parsing finished: Successfull
+02:12:20 [ INFO] 										Trying parse getMul:
+02:12:20 [ INFO] 											Current node: 26:
+02:12:20 [ INFO] 											Trying parse getOprLadder:
+02:12:20 [ INFO] 												Current node: 26:
+02:12:20 [ INFO] 												Trying parse getP:
+02:12:20 [ INFO] 													Current node: 26:
+02:12:20 [ INFO] 													Trying apply rule Wh
+02:12:20 [ INFO] 													Trying parse getWh:
+02:12:20 [ INFO] 														Current node: 26:
+02:12:20 [ INFO] 														Trying parse getOpr:
+02:12:20 [ INFO] 															Current node: 26:
+02:12:20 [ INFO] 															Required operator: WHILE
+02:12:20 [ INFO] 															getOpr parsing finished:  Failed
+02:12:20 [ INFO] 														Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 														getWh parsing finished:  Failed
+02:12:20 [ INFO] 													Trying parse getCustom:
+02:12:20 [ INFO] 														Current node: 26:
+02:12:20 [ INFO] 														Required operator: (
+02:12:20 [ INFO] 														getCustom parsing finished:  Failed
+02:12:20 [ INFO] 													Trying parse getBasic:
+02:12:20 [ INFO] 														Current node: 26:
+02:12:20 [ INFO] 														Trying apply rule Number
+02:12:20 [ INFO] 														Trying parse getNumber:
+02:12:20 [ INFO] 															Current node: 26:
+02:12:20 [ INFO] 															getNumber parsing finished: Successfull
+02:12:20 [ INFO] 														Rule Number satisfied
+02:12:20 [ INFO] 														getBasic parsing finished: Successfull
+02:12:20 [ INFO] 													getP parsing finished: Successfull
+02:12:20 [ INFO] 												Found first element.
+02:12:20 [ INFO] 												Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 27:
+02:12:20 [ INFO] 													Required operator: MUL
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 27:
+02:12:20 [ INFO] 													Required operator: DIV
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 												getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 											getMul parsing finished: Successfull
+02:12:20 [ INFO] 										Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 										Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 27:
+02:12:20 [ INFO] 											Required operator: ADD
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 27:
+02:12:20 [ INFO] 											Required operator: SUB
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 										getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 									getSum parsing finished: Successfull
+02:12:20 [ INFO] 								getRval parsing finished: Successfull
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 27:
+02:12:20 [ INFO] 								Required operator: QQ
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							Trying parse getOpr:
+02:12:20 [ INFO] 								Current node: 27:
+02:12:20 [ INFO] 								Required operator: TERN_Q
+02:12:20 [ INFO] 								getOpr parsing finished:  Failed
+02:12:20 [ INFO] 							getOpt parsing finished: Successfull
+02:12:20 [ INFO] 						Rule Opt satisfied
+02:12:20 [ INFO] 						getLine parsing finished: Successfull
+02:12:20 [ INFO] 					getAsg parsing finished: Successfull
+02:12:20 [ INFO] 				Rule Asg satisfied
+02:12:20 [ INFO] 				getLine parsing finished: Successfull
+02:12:20 [ INFO] 			Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 			Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 			Trying parse getOpr:
+02:12:20 [ INFO] 				Current node: 27:
+02:12:20 [ INFO] 				getOpr parsing finished: Successfull
+02:12:20 [ INFO] 			Trying parse getLine:
+02:12:20 [ INFO] 				Current node: 28:
+02:12:20 [ INFO] 				Trying apply rule DeclF
+02:12:20 [ INFO] 				Trying parse getDeclF:
+02:12:20 [ INFO] 					Current node: 28:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 28:
+02:12:20 [ INFO] 						Required operator: FUNC
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					Requirement operator Operator::FUNC not satisfied.
+02:12:20 [ INFO] 					getDeclF parsing finished:  Failed
+02:12:20 [ INFO] 				Trying apply rule DeclV
+02:12:20 [ INFO] 				Trying parse getDeclV:
+02:12:20 [ INFO] 					Current node: 28:
+02:12:20 [ INFO] 					Trying parse getOpr:
+02:12:20 [ INFO] 						Current node: 28:
+02:12:20 [ INFO] 						Required operator: VAR
+02:12:20 [ INFO] 						getOpr parsing finished:  Failed
+02:12:20 [ INFO] 					Requirement operator Operator::VAR not satisfied.
+02:12:20 [ INFO] 					getDeclV parsing finished:  Failed
+02:12:20 [ INFO] 				Trying apply rule Asg
+02:12:20 [ INFO] 				Trying parse getAsg:
+02:12:20 [ INFO] 					Current node: 28:
+02:12:20 [ INFO] 					Trying parse getId:
+02:12:20 [ INFO] 						Current node: 28:
+02:12:20 [ INFO] 						getId parsing finished:  Failed
+02:12:20 [ INFO] 					Unsuccessfull. Requirement "Id" not satisfied.
+02:12:20 [ INFO] 				Trying apply rule Opt
+02:12:20 [ INFO] 				Trying parse getOpt:
+02:12:20 [ INFO] 					Current node: 28:
+02:12:20 [ INFO] 					Trying parse getRval:
+02:12:20 [ INFO] 						Current node: 28:
+02:12:20 [ INFO] 						Trying parse getSum:
+02:12:20 [ INFO] 							Current node: 28:
+02:12:20 [ INFO] 							Trying parse getOprLadder:
+02:12:20 [ INFO] 								Current node: 28:
+02:12:20 [ INFO] 								Trying parse getMul:
+02:12:20 [ INFO] 									Current node: 28:
+02:12:20 [ INFO] 									Trying parse getOprLadder:
+02:12:20 [ INFO] 										Current node: 28:
+02:12:20 [ INFO] 										Trying parse getP:
+02:12:20 [ INFO] 											Current node: 28:
+02:12:20 [ INFO] 											Trying apply rule Wh
+02:12:20 [ INFO] 											Trying parse getWh:
+02:12:20 [ INFO] 												Current node: 28:
+02:12:20 [ INFO] 												Trying parse getOpr:
+02:12:20 [ INFO] 													Current node: 28:
+02:12:20 [ INFO] 													Required operator: WHILE
+02:12:20 [ INFO] 													getOpr parsing finished:  Failed
+02:12:20 [ INFO] 												Requirement operator Operator::WHILE not satisfied.
+02:12:20 [ INFO] 												getWh parsing finished:  Failed
+02:12:20 [ INFO] 											Trying parse getCustom:
+02:12:20 [ INFO] 												Current node: 28:
+02:12:20 [ INFO] 												Required operator: (
+02:12:20 [ INFO] 												getCustom parsing finished:  Failed
+02:12:20 [ INFO] 											Trying parse getBasic:
+02:12:20 [ INFO] 												Current node: 28:
+02:12:20 [ INFO] 												Trying apply rule Number
+02:12:20 [ INFO] 												Trying parse getNumber:
+02:12:20 [ INFO] 													Current node: 28:
+02:12:20 [ INFO] 													getNumber parsing finished:  Failed
+02:12:20 [ INFO] 												Trying apply rule Call
+02:12:20 [ INFO] 												Trying parse getCall:
+02:12:20 [ INFO] 													Current node: 28:
+02:12:20 [ INFO] 													Trying parse getId:
+02:12:20 [ INFO] 														Current node: 28:
+02:12:20 [ INFO] 														getId parsing finished:  Failed
+02:12:20 [ INFO] 													Unsuccessfull. Requirement "Id" not satisfied.
+02:12:20 [ INFO] 												Trying apply rule Id
+02:12:20 [ INFO] 												Trying parse getId:
+02:12:20 [ INFO] 													Current node: 28:
+02:12:20 [ INFO] 													getId parsing finished:  Failed
+02:12:20 [ INFO] 												getBasic parsing finished:  Failed
+02:12:20 [ INFO] 											Unsuccessfull. Requirement "Basic" not satisfied.
+02:12:20 [ INFO] 										Found first element.
+02:12:20 [ INFO] 										Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 28:
+02:12:20 [ INFO] 											Required operator: MUL
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Trying parse getOpr:
+02:12:20 [ INFO] 											Current node: 28:
+02:12:20 [ INFO] 											Required operator: DIV
+02:12:20 [ INFO] 											getOpr parsing finished:  Failed
+02:12:20 [ INFO] 										Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 										getOprLadder parsing finished:  Failed
+02:12:20 [ INFO] 									getMul parsing finished:  Failed
+02:12:20 [ INFO] 								Found first element.
+02:12:20 [ INFO] 								Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 								Trying parse getOpr:
+02:12:20 [ INFO] 									Current node: 28:
+02:12:20 [ INFO] 									Required operator: ADD
+02:12:20 [ INFO] 									getOpr parsing finished:  Failed
+02:12:20 [ INFO] 								Trying parse getOpr:
+02:12:20 [ INFO] 									Current node: 28:
+02:12:20 [ INFO] 									Required operator: SUB
+02:12:20 [ INFO] 									getOpr parsing finished:  Failed
+02:12:20 [ INFO] 								Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 								getOprLadder parsing finished:  Failed
+02:12:20 [ INFO] 							getSum parsing finished:  Failed
+02:12:20 [ INFO] 						Unsuccessfull. Requirement "Sum" not satisfied.
+02:12:20 [ INFO] 					Unsuccessfull. Requirement "Rval" not satisfied.
+02:12:20 [ INFO] 				Empty line found
+02:12:20 [ INFO] 				getLine parsing finished: Successfull
+02:12:20 [ INFO] 			Both requirements satisfied. Building tree.
+02:12:20 [ INFO] 			Trying to find {Opr Rule}* :
+02:12:20 [ INFO] 			Trying parse getOpr:
+02:12:20 [ INFO] 				Current node: 28:
+02:12:20 [ INFO] 				Required operator: ENDL
+02:12:20 [ INFO] 				getOpr parsing finished:  Failed
+02:12:20 [ INFO] 			Opr requirement not satisfied. Finishing ladder
+02:12:20 [ INFO] 			getOprLadder parsing finished: Successfull
+02:12:20 [ INFO] 		getExpr parsing finished: Successfull
+02:12:20 [ INFO] 	getG parsing finished: Successfull
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] *Tree graph*
+02:12:20 [ INFO] Executing command: "dot -T png /tmp/graph.dot -o log/GRAPH_NODE_0.png"
+02:12:20 [ INFO] Successfully finished
+
+
+############################################################################
+
+

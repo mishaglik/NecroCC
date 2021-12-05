@@ -57,28 +57,29 @@ enum class Operator{
     DEC     = 20,  // L-- or --R                                                        [unary]
 
 // ##### VAR & FUNC #####
-    VAR     = 21,  // Declares L as local variable with R as value                      [basic]
-    FUNC    = 22,  // Declares L as function with R as param tree (comma separated).    [basic]
-    COMMA   = 23,  // Function argument separator.                                      [multicall]
-    CALL    = 24,  // Call L with R as paraments (comma separated).                     [basic]
-// ? RET    = 25,  // Return from fuction. 
+    VAR     = 21,  // Declares L as local variable with R as value                        [basic]
+    FUNC    = 22,  // Declares L as function with R-> as param tree (comma separated).    [basic]
+    F_ARG   = 23,  // Declare function sepaerator. L is param tree. R is code             [basic]
+    COMMA   = 24,  // Function argument separator.                                      [multicall]
+    CALL    = 25,  // Call L with R as paraments (comma separated).                     [basic]
+    RET     = 26,  // Return from fuction. 
 
 // ##### SEPARATORS #####
-    ENDL    = 26, // L; R - if R returns R, else if L retunrs L else 0.                 [basic]
-    QQ      = 27, // L ?? R - if L != 0 return L, else R                                [qq]
-    TERN_Q  = 28, // L ? (R->L) : (R->R)  - if L return R->L else R->R                  [basic]
-    TERN_C  = 29, // -----------^                                                       [basic]
+    ENDL    = 27, // L; R - if R returns R, else if L retunrs L else 0.                 [basic]
+    QQ      = 28, // L ?? R - if L != 0 return L, else R                                [qq]
+    TERN_Q  = 29, // L ? (R->L) : (R->R)  - if L return R->L else R->R                  [basic]
+    TERN_C  = 30, // -----------^                                                       [basic]
 
 // ##### LOOP #####
-    WHILE   = 30, // while(L) R                                                         [basic]
-// ? BREAK = 31,
+    WHILE   = 31, // while(L) R                                                         [basic]
+// ? BREAK = 32,
 
 // ##### MEMORY #####
-    ADDR    = 32, // return adress of R(VAR).                                           [memory]
-    VAL     = 33, // return value  of R. (From memory).                                 [memory]
+    ADDR    = 33, // return adress of R(VAR).                                           [memory]
+    VAL     = 34, // return value  of R. (From memory).                                 [memory]
 
 // ##### DIFFERENTIATE #####
-    DIFF    = 34, // (R)'. R must differable.                                           [basic]
+    DIFF    = 35, // (R)'. R must differable.                                           [basic]
 };
 
 

@@ -35,7 +35,7 @@ void nodeListPush(NodeList* list, Node* node){
     LOG_ASSERT(list != NULL);
     LOG_ASSERT(node != NULL);
 
-    if(list->size + 2 <= list->capacity){
+    if(list->size + 2 >= list->capacity){
         list->nodes = (Node**)mgk_realloc(list->nodes, EXPAND_COEF * list->capacity, sizeof(Node*));
         list->capacity = EXPAND_COEF * list->capacity;
     }
@@ -57,7 +57,7 @@ void graphTree(const Node* node){
     
     char command[50] = "";
 
-    sprintf(command, "dot -T png /tmp/graph.dot -o /log/GRAPH_NODE_%d", nGraph++);
+    sprintf(command, "dot -T png /tmp/graph.dot -o log/GRAPH_NODE_%d.png", nGraph++);
     LOG_INFO("Executing command: \"%s\"", command);
     system(command);
 }
@@ -69,7 +69,7 @@ void graphNode(const Node* node, FILE* graphFile){
     LOG_INFO("*Tree graph*");
     
     char* label = getNodeLabel(node);
-    fprintf(graphFile, "N%p[style=record, color=\"%s\",label=\" %s | {<l> %p| <r> %p} \"]\n", node, getTypeColor(node->type), label , node->left, node->right);
+    fprintf(graphFile, "N%p[shape=record, color=\"%s\",label=\" %s | {<l> %p| <r> %p} \"]\n", node, getTypeColor(node->type), label , node->left, node->right);
     free(label);
 
     if(node->left)
@@ -126,7 +126,7 @@ char* getNodeLabel(const Node* node){
         sprintf(str, "%d", node->data.num);
         break;
     case NodeType::IDENTIFIER:
-        sprintf(str, "\"#%d\"", node->data.id);
+        sprintf(str, "#%d", node->data.id);
         break;
     case NodeType::CUSTOM:
         {
@@ -183,6 +183,8 @@ char* getNodeLabel(const Node* node){
                 OP_CASE(ADDR    );
                 OP_CASE(VAL     );
                 OP_CASE(DIFF    );
+                OP_CASE(RET     );
+                OP_CASE(F_ARG   );
             default:
                 break;
             }
@@ -203,4 +205,14 @@ Node* newNode(NodeType type, NodeData data){
     ptr->type = type;
     ptr->data = data;
     return ptr;
+}
+
+void nodeDump(const Node* node){
+    if(node == NULL){
+        LOG_INFO("Node: NULL");
+        return;
+    }
+    char* nodeStr = getNodeLabel(node);
+    LOG_INFO("Node[%p]: {.type = %d, .data = %8d, .label = %s}", node,node->type, node->data.num, nodeStr);
+    free(nodeStr);
 }
