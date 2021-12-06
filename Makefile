@@ -21,7 +21,7 @@ CXXFLAGS += $(SANFLAGS)
 
 SOURCES_LangTree = Tree.cpp
 
-SOURCES_FrontEnd = 
+SOURCES_FrontEnd = Frontend.cpp
 
 SOURCES_FrontEnd/Parser = Parser.cpp
 
