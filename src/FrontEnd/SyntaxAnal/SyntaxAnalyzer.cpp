@@ -39,12 +39,12 @@
     LOG_INFO("Current node: %d:", context.curPtr - context.start)
     // nodeDump(*context.curPtr)                                     
 
-#define RETURN(x)                                                           \
+#define RETURN(x){                                                          \
     LOG_INFO("%s parsing finished: ", __func__);                            \
     LOG_STYLE((x.nParsed < 0) ? ConsoleStyle::RED : ConsoleStyle::GREEN);   \
     LOG_INFO((x.nParsed < 0) ? "\b Failed" : "\bSuccessfull");              \
     LOG_DEC_TAB();                                                          \
-    return x
+    return x;}
 
 #define TRY(rule)       {                               \
     LOG_INFO("Trying apply rule %s", #rule);            \
@@ -190,7 +190,6 @@ GRAMMAR_RULE(Asg){
     context = REQUIRE(Id);
     nParsed += context.nParsed;
     root    = context.root;
-
     context = REQUIRE_OPR(Operator::SET);
     nParsed += context.nParsed;
     context.root->left = root;
@@ -228,8 +227,9 @@ GRAMMAR_RULE(Opt){
     }
 
     newCont = getOpr(context, Operator::TERN_Q);
-    if(newCont.nParsed < 0)
+    if(newCont.nParsed < 0){
         RETURN(context);
+        }
     
     Node* root = newCont.root;
     root->left = context.root;
@@ -251,7 +251,7 @@ GRAMMAR_RULE(Opt){
     if(context.nParsed < 0) RETURN(context);
     nParse += context.nParsed;
 
-    root->right->left = context.root;
+    root->right->right = context.root;
 
     context.nParsed = nParse;
     context.root = root;
@@ -485,10 +485,12 @@ GRAMMAR_RULE(Id){
 
 SyntaxContext getOprLadder(SyntaxContext context, const Operator* oprRq, size_t n, SyntaxContext (*rule)(SyntaxContext context)){
     INIT;
+    LOG_DEC_TAB();
 
     SyntaxContext newContext = (*rule)(context);
     if(context.nParsed < 0){
         LOG_INFO("Nothing found, but nothing required. So returning.");
+        LOG_INC_TAB();
         RETURN(context);
     }
     LOG_INFO("Found first element.");
@@ -535,5 +537,6 @@ SyntaxContext getOprLadder(SyntaxContext context, const Operator* oprRq, size_t 
             lastOp = opr;
     }
 
+    LOG_INC_TAB();
     RETURN(context);
 }

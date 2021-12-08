@@ -166,6 +166,8 @@ char* getNodeLabel(const Node* node){
                 OP_CASE(GRTR    );
                 OP_CASE(LESS_EQ );
                 OP_CASE(GRTR_EQ );
+                OP_CASE(LOR     );
+                OP_CASE(LAND    );
                 OP_CASE(NOT     );
                 OP_CASE(INC     );
                 OP_CASE(DEC     );
@@ -173,13 +175,12 @@ char* getNodeLabel(const Node* node){
                 OP_CASE(FUNC    );
                 OP_CASE(COMMA   );
                 OP_CASE(CALL    );
-             // OP_CASE(RET     ); 
                 OP_CASE(ENDL    );
                 OP_CASE(QQ      );
                 OP_CASE(TERN_Q  );
                 OP_CASE(TERN_C  );
                 OP_CASE(WHILE   );
-            //  OP_CASE(BREAK   );
+                OP_CASE(BREAK   );
                 OP_CASE(ADDR    );
                 OP_CASE(VAL     );
                 OP_CASE(DIFF    );

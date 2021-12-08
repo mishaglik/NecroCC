@@ -18,7 +18,7 @@ NodeList* parseText(const char* text){
     
     Identifier* idTable = (Identifier*)mgk_calloc(TABLE_INIT_SZ, sizeof(Identifier));
     size_t      tabCap  = TABLE_INIT_SZ;
-    int         curId   = 0;
+    int         curId   = 1;
 
     NodeList* list = (NodeList*)mgk_calloc(1, sizeof(NodeList));
     nodeListCtor(list);
@@ -29,7 +29,7 @@ NodeList* parseText(const char* text){
     while(*text != '\0'){
 
         if(*text == '\''){
-            const char* nxt = strpbrk(text + 1, "'" SPACE_SYM);
+            const char* nxt = strpbrk(text + 1, "'.;:,?!()-" SPACE_SYM);
             if(!nxt){
                 LOG_ERROR("Commenst started here: \"%.15s\" has no finish\n", text);
                 LOG_STYLE(ConsoleStyle::RED);
@@ -70,7 +70,7 @@ NodeList* parseText(const char* text){
                     
                     int found = 0;
 
-                    for(int i = 0; i < curId; ++i){
+                    for(int i = 1; i < curId; ++i){
                         if(strcmp(token, idTable[i].str) == 0){
                             LOG_INFO("\b Already exists!");
                             nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id=idTable[i].id}));

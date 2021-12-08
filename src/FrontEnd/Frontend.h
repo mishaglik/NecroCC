@@ -3,6 +3,6 @@
 
 #include "../LangTree/Tree.h"
 
-NodeList* frontEnd(const char* str);
+NodeList* frontEnd(const char* str, Node** root);
 
 #endif

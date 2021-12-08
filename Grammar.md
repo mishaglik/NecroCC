@@ -2,9 +2,7 @@
 
 ## Basic rules ##
 - **N** - number
-- **V** - variable
-- **F** - function
-
+- **ID** - identifier
 
 
 
@@ -22,6 +20,8 @@
 - 
 - Rval ::= Sum 
 -  
+- Comp ::= Summ {<>=! Summ}*
+- 
 - Summ ::= Mul {+- Mul} *
 - 
 - Mul  ::= P   {*/ P  } *

@@ -45,7 +45,7 @@ const Keyword Dictionary[] = {
     KEYWORD(RET, "RT")
 
     KEYWORD(ENDL, ".")
-    KEYWORD(QQ, "Hastur")
+    KEYWORD(QQ, ";")
     KEYWORD(TERN_Q, "Azathoth")
     KEYWORD(TERN_C,":")
 

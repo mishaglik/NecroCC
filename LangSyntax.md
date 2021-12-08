@@ -65,7 +65,7 @@ Thanks author for translation. He lost his mind, but task is done
 
 // ##### SEPARATORS #####
 -    ENDL    **.**
--    QQ      **Hastur**
+-    QQ      **;**
 -    TERN_Q  **Azathoth**
 -    TERN_C  **:**
 

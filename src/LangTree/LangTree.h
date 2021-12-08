@@ -51,35 +51,39 @@ enum class Operator{
     LESS_EQ = 16,   // L <= R                                                           [basic]
     GRTR_EQ = 17,   // L >= R                                                           [basic]
 
+//  ##### LOGICAL #####
+    LAND    = 18,   // L && R                                                           [logic]
+    LOR     = 19,   // L || R                                                           [logic]
+
 //  ##### UNARY #####
-    NOT     = 18,  // !R                                                                [basic]
-    INC     = 19,  // L++ or ++R                                                        [unary]
-    DEC     = 20,  // L-- or --R                                                        [unary]
+    NOT     = 20,  // !R                                                                [basic]
+    INC     = 21,  // L++ or ++R                                                        [unary]
+    DEC     = 22,  // L-- or --R                                                        [unary]
 
 // ##### VAR & FUNC #####
-    VAR     = 21,  // Declares L as local variable with R as value                        [basic]
-    FUNC    = 22,  // Declares L as function with R-> as param tree (comma separated).    [basic]
-    F_ARG   = 23,  // Declare function sepaerator. L is param tree. R is code             [basic]
-    COMMA   = 24,  // Function argument separator.                                      [multicall]
-    CALL    = 25,  // Call L with R as paraments (comma separated).                     [basic]
-    RET     = 26,  // Return from fuction. 
+    VAR     = 23,  // Declares L as local variable with R as value                        [basic]
+    FUNC    = 24,  // Declares L as function with R-> as param tree (comma separated).    [basic]
+    F_ARG   = 25,  // Declare function sepaerator. L is param tree. R is code             [basic]
+    COMMA   = 26,  // Function argument separator.                                      [multicall]
+    CALL    = 27,  // Call L with R as paraments (comma separated).                     [basic]
+    RET     = 28,  // Return from fuction.                                              [return]
 
 // ##### SEPARATORS #####
-    ENDL    = 27, // L; R - if R returns R, else if L retunrs L else 0.                 [basic]
-    QQ      = 28, // L ?? R - if L != 0 return L, else R                                [qq]
-    TERN_Q  = 29, // L ? (R->L) : (R->R)  - if L return R->L else R->R                  [basic]
-    TERN_C  = 30, // -----------^                                                       [basic]
+    ENDL    = 29, // L; R - if R returns R, else if L retunrs L else 0.                 [basic]
+    QQ      = 30, // L ?? R - if L != 0 return L, else R                                [qq]
+    TERN_Q  = 31, // L ? (R->L) : (R->R)  - if L return R->L else R->R                  [basic]
+    TERN_C  = 32, // -----------^                                                       [basic]
 
 // ##### LOOP #####
-    WHILE   = 31, // while(L) R                                                         [basic]
-// ? BREAK = 32,
+    WHILE   = 33, // while(L) R                                                         [basic]
+    BREAK   = 34, // break nearest while                                                [break]
 
 // ##### MEMORY #####
-    ADDR    = 33, // return adress of R(VAR).                                           [memory]
-    VAL     = 34, // return value  of R. (From memory).                                 [memory]
+    ADDR    = 35, // return adress of R(VAR).                                           [memory]
+    VAL     = 36, // return value  of R. (From memory).                                 [memory]
 
 // ##### DIFFERENTIATE #####
-    DIFF    = 35, // (R)'. R must differable.                                           [basic]
+    DIFF    = 37, // (R)'. R must differable.                                           [basic]
 };
 
 

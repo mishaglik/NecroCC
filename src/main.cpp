@@ -3,6 +3,8 @@
 #include "MGK/Utils.h"
 #include "File.h"
 #include "FrontEnd/Frontend.h"
+#include "BackEnd/Backend.h"
+
 int main(){
     logger_set_file("ncc.log");
     FILE* file = fopen("Text.cht", "r");
@@ -12,7 +14,9 @@ int main(){
     fread(buffer, sizeof(char), file_sz, file);
     fclose(file);
     
-    NodeList* list = frontEnd(buffer);
+    Node* root = NULL;
+    NodeList* list = frontEnd(buffer, &root);
+    backend(root, "Text.asm");
 
     nodeListDtor(list);
     free(buffer);

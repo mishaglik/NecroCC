@@ -19,6 +19,8 @@ CXXFLAGS += -DMINOR_VERSION=$(MINOR_VERSION)
 
 CXXFLAGS += $(SANFLAGS)
 
+SOURCES_BackEnd = Backend.cpp
+
 SOURCES_LangTree = Tree.cpp
 
 SOURCES_FrontEnd = Frontend.cpp

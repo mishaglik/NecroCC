@@ -5,8 +5,9 @@
 #include "Parser/Parser.h"
 #include "SyntaxAnal/SyntaxAnalyzer.h"
 
-NodeList* frontEnd(const char* str){
+NodeList* frontEnd(const char* str, Node** root){
     LOG_ASSERT(str != NULL);
+    LOG_ASSERT(root != NULL);
     NodeList* list = parseText(str);
 
     Node* node = newNode(NodeType::NONE, {});
@@ -25,6 +26,7 @@ NodeList* frontEnd(const char* str){
     };
 
     context = getG(context);
+    *root = context.root;
 
     graphTree(context.root);
 
