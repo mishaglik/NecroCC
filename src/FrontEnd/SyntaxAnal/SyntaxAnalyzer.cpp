@@ -29,14 +29,12 @@
     _newContext;                                                    \
 })
 
-#define INIT                                \
-    context.nParsed = 0;                    \
-    context.root = NULL;                    \
+#define INIT {                              \
     LOG_ASSERT(context.curPtr != NULL);     \
     LOG_ASSERT(context.size > 0);           \
     LOG_INFO("Trying parse %s:", __func__); \
-    LOG_INC_TAB();                           \
-    LOG_INFO("Current node: %d:", context.curPtr - context.start)
+    LOG_INC_TAB();                          \
+    LOG_INFO("Current node: %d:", context.curPtr - context.start);}
     // nodeDump(*context.curPtr)                                     
 
 #define RETURN(x){                                                          \
@@ -187,7 +185,7 @@ GRAMMAR_RULE(Asg){
     Node* root = NULL;
     int nParsed = 0;
 
-    context = REQUIRE(Id);
+    context = REQUIRE(Lval);
     nParsed += context.nParsed;
     root    = context.root;
     context = REQUIRE_OPR(Operator::SET);
@@ -261,7 +259,43 @@ GRAMMAR_RULE(Opt){
 
 GRAMMAR_RULE(Rval){
     INIT;
-    context = REQUIRE(Sum);
+    context = REQUIRE(Logic);
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Logic){
+    INIT;
+
+    Operator opList[2] = {Operator::LAND, Operator::LOR};
+    context = getOprLadder(context, opList, 2, &getComp);
+
+    if(context.nParsed <= 0){
+        context.nParsed = -1;
+    }
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Comp){
+    INIT;
+
+    Operator opList[6] = {Operator::LESS, Operator::LESS_EQ, Operator::GRTR, Operator::GRTR_EQ, Operator::EQUAL, Operator::NON_EQ};
+    context = getOprLadder(context, opList, 6, &getBinary);
+
+    if(context.nParsed <= 0){
+        context.nParsed = -1;
+    }
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Binary){
+    INIT;
+
+    Operator opList[5] = {Operator::AND, Operator::OR, Operator::XOR, Operator::SHL, Operator::SHR};
+    context = getOprLadder(context, opList, 5, &getSum);
+
+    if(context.nParsed <= 0){
+        context.nParsed = -1;
+    }
     RETURN(context);
 }
 
@@ -280,8 +314,8 @@ GRAMMAR_RULE(Sum){
 GRAMMAR_RULE(Mul){
     INIT;
 
-    Operator opList[2] = {Operator::MUL, Operator::DIV};
-    context = getOprLadder(context, opList, 2, &getP);
+    Operator opList[3] = {Operator::MUL, Operator::DIV, Operator::MOD};
+    context = getOprLadder(context, opList, 3, &getNeg);
 
     if(context.nParsed <= 0){
         context.nParsed = -1;
@@ -289,10 +323,47 @@ GRAMMAR_RULE(Mul){
     RETURN(context);
 }
 
+GRAMMAR_RULE(Neg){
+    INIT;
+
+    Node* root = NULL;
+    int nParsed = 0;
+
+    SyntaxContext newContext = getOpr(context, Operator::SUB);
+    if(newContext.nParsed > 0){
+        root = newContext.root;
+        nParsed += newContext.nParsed;
+        context = newContext;
+    }
+    else{
+        newContext = getOpr(context, Operator::NOT);
+        if(newContext.nParsed > 0){
+            root = newContext.root;
+            nParsed += newContext.nParsed;
+            context = newContext;
+        }
+    }
+
+    context = REQUIRE(P);
+    nParsed += context.nParsed;
+    if(root == NULL) {
+        root = context.root;
+    }
+    else {
+        root->right = context.root;
+    }
+    
+    context.root = root;
+    context.nParsed = nParsed;
+    
+    RETURN(context);
+}
+
 GRAMMAR_RULE(P){
     INIT;
 
     TRY(Wh);
+    TRY(DIFF);
 
     SyntaxContext newCont = getCustom(context, CustomOperator::PAR_L);
     if(newCont.nParsed >= 0){
@@ -348,7 +419,9 @@ GRAMMAR_RULE(Basic){
     INIT;
     TRY(Number);
     TRY(Call);
-    TRY(Id);
+    TRY(Unary);
+    TRY(Addr);
+    TRY(Lval);
 
     context.nParsed = -1;
     RETURN(context);
@@ -393,6 +466,128 @@ GRAMMAR_RULE(Call){
     context.nParsed = nParse;
     context.root  = root;
 
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Unary){
+    INIT;
+
+    Node* root = NULL;
+    int nParsed = 0;
+
+    SyntaxContext newContext = getOpr(context, Operator::INC);
+    if(newContext.nParsed > 0){
+        root = newContext.root;
+        nParsed += newContext.nParsed;
+        context = newContext;
+    }
+    else{
+        newContext = getOpr(context, Operator::DEC);
+        if(newContext.nParsed > 0){
+            root = newContext.root;
+            nParsed += newContext.nParsed;
+            context = newContext;
+        }
+    }
+
+    context = REQUIRE(Lval);
+    nParsed += context.nParsed;
+
+    if(root != NULL){
+        root->right = context.root;
+        context.root = root;
+        context.nParsed = nParsed;
+        
+        RETURN(context);
+    }
+    
+    newContext = getOpr(context, Operator::INC);
+
+    if(newContext.nParsed > 0){
+        root = newContext.root;
+        nParsed += newContext.nParsed;
+    }
+    else{
+        newContext = getOpr(context, Operator::DEC);
+        if(newContext.nParsed > 0){
+            root = newContext.root;
+            nParsed += newContext.nParsed;
+        }
+        else{
+            newContext.nParsed = -1;
+            RETURN(newContext);
+        }
+    }
+
+    root->left = context.root;
+    context.root = root;
+    context.nParsed = nParsed;
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Lval){
+    INIT;
+
+    TRY(Id);
+
+    context = REQUIRE_OPR(Operator::VAL);
+
+    Node* root = NULL;
+    int nParsed = 0;
+
+    root = context.root;
+    nParsed = context.nParsed;
+
+    context = REQUIRE(P);
+
+    root->right = context.root;
+
+    context.nParsed += nParsed;
+    context.root = root;
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(DIFF){
+    INIT;
+
+    context = REQUIRE_OPR(Operator::DIFF);
+    
+    Node* root = context.root;
+    int nParsed = context.nParsed;
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_L);
+    nParsed += context.nParsed;
+
+    context = REQUIRE(Sum);
+    root->right = context.root;
+    nParsed += context.nParsed;
+
+
+    context = REQUIRE_CUSTOM(CustomOperator::PAR_R);
+    nParsed += context.nParsed;
+
+    context.nParsed = nParsed;
+    context.root = root;
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(Addr){
+    INIT;
+
+    context = REQUIRE_OPR(Operator::ADDR);
+    
+    Node* root = context.root;
+    int nParsed = context.nParsed;
+
+    context = REQUIRE(Id);
+    root->right = context.root;
+    nParsed += context.nParsed;
+
+    context.root = root;
+    context.nParsed = nParsed;
     RETURN(context);
 }
 

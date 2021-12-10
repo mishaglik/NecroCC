@@ -30,6 +30,47 @@ void backend(const Node* root, const char* filename){
 
     fprintf(context.asmFile, "aip END_OF_FILE:\n");
     fprintf(context.asmFile, "pop bx\n");
+    fprintf(context.asmFile, "jmp MAIN:\n"
+                            "LESS:\n"
+                            "pop ax\n"
+                            "jb TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "LESS_EQ:\n"
+                            "pop ax\n"
+                            "jbe TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "GRTR: \n"
+                            "pop ax\n"
+                            "ja TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "GRTR_EQ:\n"
+                            "pop ax\n"
+                            "jae TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "EQUAL:\n"
+                            "pop ax:\n"
+                            "je TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "NON_EQ:\n"
+                            "pop ax:\n"
+                            "jne TRUE:\n"
+                            "jmp FALSE:\n"
+                            "\n"
+                            "FALSE:\n"
+                            "push 0\n"
+                            "jmp COMP_RET:\n"
+                            "TRUE:\n"
+                            "push 1\n"
+                            "COMP_RET:\n"
+                            "push ax\n"
+                            "ret\n"
+                            "MAIN:");
+
     
     codeGen(&context, root);
 
@@ -124,6 +165,21 @@ void codeGen(BackendContext* context ,const Node* node){
         CASE_BINARY(SUB, "sub");
         CASE_BINARY(MUL, "mul");
         CASE_BINARY(DIV, "div");
+        CASE_BINARY(MOD, "mod");
+        CASE_BINARY(SHL, "shl");
+        CASE_BINARY(SHR, "shr");
+
+        CASE_BINARY(LESS, "call LESS:");
+        CASE_BINARY(LESS_EQ, "call LESS_EQ");
+        CASE_BINARY(GRTR, "call GRTR");
+        CASE_BINARY(GRTR_EQ, "call GRTR_EQ");
+        CASE_BINARY(EQUAL, "call EQUAL");
+        CASE_BINARY(NON_EQ, "call NON_EQ");
+
+        CASE_BINARY(AND, "and");
+        CASE_BINARY(OR , "or" );
+        CASE_BINARY(XOR, "xor");
+
         case Operator::SET:
             LOG_ASSERT(node->left != NULL);
             LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
@@ -215,6 +271,116 @@ void codeGen(BackendContext* context ,const Node* node){
             ASM("pop bx");
             }
             break;
+        case Operator::WHILE:
+            openNewNS(context);
+            registerVar(context->ns, -2);
+
+            ASM("WHILE_BEG_%p:", node);
+            codeGen(context, node->left);
+            ASM("push 0");
+            ASM("je WHILE_END_%p:", node);
+            codeGen(context, node->right);
+            ASM("pop [bx+%d]", getOffset(context->ns, -2));
+            ASM("jmp WHILE_BEG_%p:", node);
+            ASM("WHILE_END_%p:", node);
+            ASM("push [bx+%d]", getOffset(context->ns, -2));
+            closeNS(context);
+            break;
+        case Operator::LAND:
+            codeGen(context, node->left);
+            ASM("push 0");
+            ASM("je LAND_FALSE_%p:", node);
+
+            codeGen(context, node->right);
+            ASM("push 0");
+            ASM("je LAND_FALSE_%p:", node);
+           
+            ASM("push 1");
+            ASM("jmp LAND_END_%p:", node);
+            ASM("LAND_FALSE_%p:", node);
+            ASM("push 0");
+            ASM("LAND_END_%p:", node);
+            break;
+        case Operator::LOR:
+            codeGen(context, node->left);
+            ASM("push 0");
+            ASM("jne LOR_TRUE_%p:", node);
+
+            codeGen(context, node->right);
+            ASM("push 0");
+            ASM("jne LOR_TRUE_%p:", node);
+           
+            ASM("push 0");
+            ASM("jmp LOR_END_%p:", node);
+            ASM("LOR_TRUE_%p:", node);
+            ASM("push 1");
+            ASM("LOR_TRUE_%p:", node);
+            break;
+        case Operator::NOT:
+            codeGen(context, node->right);
+            ASM("push 0");
+            ASM("call EQUAL:");
+            break;
+        case Operator::INC:
+            if(node->left){
+                LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
+
+                ASM("push [bx+%d]", getOffset(context->ns, node->left->data.id));
+                ASM("push [bx+%d]", getOffset(context->ns, node->left->data.id));
+                ASM("push 1");
+                ASM("add");
+                ASM("pop [bx+%d]",  getOffset(context->ns, node->left->data.id));
+            }
+            else{
+                LOG_ASSERT(node->right);
+                LOG_ASSERT(node->right->type == NodeType::IDENTIFIER);
+                
+                ASM("push [bx+%d]", getOffset(context->ns, node->right->data.id));
+                ASM("push 1");
+                ASM("add");
+                ASM("pop [bx+%d]" , getOffset(context->ns, node->right->data.id));
+                ASM("push [bx+%d]", getOffset(context->ns, node->right->data.id));
+            }
+            break;
+        case Operator::DEC:
+            if(node->left){
+                LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
+
+                ASM("push [bx+%d]", getOffset(context->ns, node->left->data.id));
+                ASM("push [bx+%d]", getOffset(context->ns, node->left->data.id));
+                ASM("push 1");
+                ASM("sub");
+                ASM("pop [bx+%d]",  getOffset(context->ns, node->left->data.id));
+            }
+            else{
+                LOG_ASSERT(node->right);
+                LOG_ASSERT(node->right->type == NodeType::IDENTIFIER);
+                
+                ASM("push [bx+%d]", getOffset(context->ns, node->right->data.id));
+                ASM("push 1");
+                ASM("sub");
+                ASM("pop [bx+%d]" , getOffset(context->ns, node->right->data.id));
+                ASM("push [bx+%d]", getOffset(context->ns, node->right->data.id));
+            }
+            break;
+        case Operator::ADDR:
+            ASM("push bx+%d", getOffset(context->ns, node->right->data.id));
+            break;
+        case Operator::VAL:
+            codeGen(context, node->right);
+            ASM("pop dx");
+            ASM("push [dx]");
+            break;
+        case Operator::BREAK:
+        case Operator::RET:
+            LOG_ERROR("Unsupported oprators. Please do not use them");
+            return;
+        case Operator::DIFF:
+            LOG_ERROR("Undiffered tree.");
+            return;
+        case Operator::F_ARG:
+        case Operator::COMMA:
+        case Operator::TERN_C:
         case Operator::NONE:
         default:
             LOG_ERROR("Incoorect tree");
@@ -227,21 +393,6 @@ void codeGen(BackendContext* context ,const Node* node){
         break;
     case NodeType::IDENTIFIER:
         ASM("push [bx+%d]; var %d", getOffset(context->ns, node->data.id), node->data.id);
-        break;
-    case Operator::WHILE:
-        openNewNS(context);
-        registerVar(context->ns, -2);
-
-        ASM("WHILE_BEG_%p:", node);
-        codeGen(context, node->left);
-        ASM("push 0");
-        ASM("je WHILE_END_%p", node);
-        codeGen(context, node->right);
-        ASM("pop [bx+%d]", getOffset(context->ns, -2));
-        ASM("jmp WHILE_BEG_%p:", node);
-        ASM("WHILE_END_%p:", node);
-        ASM("push [bx+%d]", getOffset(context->ns, -2));
-        closeNS(context);
         break;
     case NodeType::CUSTOM:
     case NodeType::NONE:
