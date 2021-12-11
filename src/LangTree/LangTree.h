@@ -84,6 +84,11 @@ enum class Operator{
 
 // ##### DIFFERENTIATE #####
     DIFF    = 37, // (R)'. R must differable.                                           [basic]
+
+// ##### IO ######
+    IN      = 38,
+    OUT     = 39,
+    OUTC    = 40,
 };
 
 

@@ -13,6 +13,8 @@ NodeList* frontEnd(const char* str, Node** root){
     Node* node = newNode(NodeType::NONE, {});
 
     nodeListPush(list, node);
+
+    LOG_DEBUG("Arr[%p]", list->nodes);
     for(size_t i = 0; i < list->size; ++i){
         char* label = getNodeLabel(list->nodes[i]);
         LOG_DEBUG("[%3d] = { .type = %d, .data = %d \t .label = %s}", i, (int)list->nodes[i]->type, list->nodes[i]->data.num, label);

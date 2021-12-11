@@ -51,6 +51,9 @@ const Keyword Dictionary[] = {
 
     KEYWORD(WHILE, "Nyarlathotep")
 
+    KEYWORD(OUT, "out")
+    KEYWORD(IN, "in")
+
 
     {NULL, NodeType::NONE, {0}}    //End of array identifier
 };

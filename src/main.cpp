@@ -7,7 +7,7 @@
 
 int main(){
     logger_set_file("ncc.log");
-    FILE* file = fopen("Sqr.cht", "r");
+    FILE* file = fopen("examples/Sqr.cht", "r");
     LOG_ASSERT(file != NULL);
     size_t file_sz = getFileSize(file);
     char* buffer = (char*) mgk_calloc(file_sz + 1, sizeof(char));
@@ -16,6 +16,8 @@ int main(){
     
     Node* root = NULL;
     NodeList* list = frontEnd(buffer, &root);
+    
+    // getchar();
     backend(root, "Text.asm");
 
     nodeListDtor(list);

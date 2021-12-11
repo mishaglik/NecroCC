@@ -52,12 +52,12 @@ void backend(const Node* root, const char* filename){
                             "jmp FALSE:\n"
                             "\n"
                             "EQUAL:\n"
-                            "pop ax:\n"
+                            "pop ax\n"
                             "je TRUE:\n"
                             "jmp FALSE:\n"
                             "\n"
                             "NON_EQ:\n"
-                            "pop ax:\n"
+                            "pop ax\n"
                             "jne TRUE:\n"
                             "jmp FALSE:\n"
                             "\n"
@@ -160,7 +160,13 @@ void codeGen(BackendContext* context ,const Node* node){
             codeGen(context, node->left);   \
             codeGen(context, node->right);  \
             ASM(asm);                       \
-            break                          
+            break    
+        #define CASE_BINARY_R(opr, asm)       \
+        case Operator::opr:                 \
+            codeGen(context, node->right);  \
+            codeGen(context, node->left);   \
+            ASM(asm);                       \
+            break                            
         CASE_BINARY(ADD, "add");
         CASE_BINARY(SUB, "sub");
         CASE_BINARY(MUL, "mul");
@@ -170,15 +176,15 @@ void codeGen(BackendContext* context ,const Node* node){
         CASE_BINARY(SHR, "shr");
 
         CASE_BINARY(LESS, "call LESS:");
-        CASE_BINARY(LESS_EQ, "call LESS_EQ");
-        CASE_BINARY(GRTR, "call GRTR");
-        CASE_BINARY(GRTR_EQ, "call GRTR_EQ");
-        CASE_BINARY(EQUAL, "call EQUAL");
-        CASE_BINARY(NON_EQ, "call NON_EQ");
+        CASE_BINARY(LESS_EQ, "call LESS_EQ:");
+        CASE_BINARY(GRTR, "call GRTR:");
+        CASE_BINARY(GRTR_EQ, "call GRTR_EQ:");
+        CASE_BINARY(EQUAL, "call EQUAL:");
+        CASE_BINARY(NON_EQ, "call NON_EQ:");
 
-        CASE_BINARY(AND, "and");
-        CASE_BINARY(OR , "or" );
-        CASE_BINARY(XOR, "xor");
+        CASE_BINARY(AND, "andb");
+        CASE_BINARY(OR , "orb" );
+        CASE_BINARY(XOR, "xorb");
 
         case Operator::SET:
             LOG_ASSERT(node->left != NULL);
@@ -371,8 +377,19 @@ void codeGen(BackendContext* context ,const Node* node){
             ASM("pop dx");
             ASM("push [dx]");
             break;
+        case Operator::IN:
+            ASM("in");
+            break;
+        case Operator::OUT:
+            codeGen(context, node->right);
+            ASM("pop dx");
+            ASM("push dx");
+            ASM("push dx");
+            ASM("out");
+            break;
         case Operator::BREAK:
         case Operator::RET:
+        case Operator::OUTC:
             LOG_ERROR("Unsupported oprators. Please do not use them");
             return;
         case Operator::DIFF:

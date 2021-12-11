@@ -80,7 +80,31 @@ GRAMMAR_RULE(Expr){
 
 GRAMMAR_RULE(Line){
     INIT;
-    
+
+    Node* root = NULL;
+    int nParsed = 0;
+
+
+    SyntaxContext newContext = getOpr(context, Operator::OUT);
+    if(newContext.nParsed >= 0){
+        root = newContext.root;
+        nParsed += newContext.nParsed;
+        context = newContext;
+    }
+
+    context = REQUIRE(OLine);
+    if(root){
+        root->right = context.root;
+        context.root = root;
+        context.nParsed += nParsed;
+    }
+
+    RETURN(context);
+}
+
+GRAMMAR_RULE(OLine){
+    INIT;
+
     TRY(DeclF);
     TRY(DeclV);
     TRY(Asg);
@@ -89,6 +113,7 @@ GRAMMAR_RULE(Line){
     LOG_INFO("");
     LOG_STYLE(ConsoleStyle::YELLOW);
     LOG_INFO("\bEmpty line found");
+    context.root = NULL;
     RETURN(context);
 }
 
@@ -422,8 +447,10 @@ GRAMMAR_RULE(Basic){
     TRY(Unary);
     TRY(Addr);
     TRY(Lval);
+    
+    context = REQUIRE_OPR(Operator::IN);
 
-    context.nParsed = -1;
+    // context.nParsed = -1;
     RETURN(context);
 }
 

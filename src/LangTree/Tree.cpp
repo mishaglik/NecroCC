@@ -53,6 +53,8 @@ void graphTree(const Node* node){
     fprintf(dotFile, "}\n");
     fclose(dotFile);
 
+    LOG_INFO("*Tree graph*");
+
     static int nGraph = 0;
     
     char command[50] = "";
@@ -66,8 +68,6 @@ void graphNode(const Node* node, FILE* graphFile){
     LOG_ASSERT(node      != NULL);
     LOG_ASSERT(graphFile != NULL);
 
-    LOG_INFO("*Tree graph*");
-    
     char* label = getNodeLabel(node);
     fprintf(graphFile, "N%p[shape=record, color=\"%s\",label=\" %s | {<l> %p| <r> %p} \"]\n", node, getTypeColor(node->type), label , node->left, node->right);
     free(label);
@@ -186,6 +186,9 @@ char* getNodeLabel(const Node* node){
                 OP_CASE(DIFF    );
                 OP_CASE(RET     );
                 OP_CASE(F_ARG   );
+                OP_CASE(OUT   );
+                OP_CASE(IN   );
+                OP_CASE(OUTC   );
             default:
                 break;
             }
