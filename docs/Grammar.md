@@ -1,7 +1,7 @@
 # Grammatic rules #
 
 ## Basic rules ##
-- **Number** - number
+- **Number** - number   
 - **Id** - identifier
 
 ## Operator rules ##

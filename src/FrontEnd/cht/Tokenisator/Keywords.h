@@ -27,6 +27,9 @@ const Keyword Dictionary[] = {
 
     KEYWORD(SET, "fhtagn")
 
+    KEYWORD(LOR, "role")
+    KEYWORD(LAND, "Earth")
+
     KEYWORD(EQUAL , "eq")
     KEYWORD(NON_EQ, "nq")
     KEYWORD(LESS,   "lprimo")
