@@ -17,16 +17,23 @@ struct NodeList
 {
     size_t capacity = 0;
     size_t size     = 0;
-    Node** nodes    = NULL;
+    Node* nodes    = NULL;
 };
 
-Node* newNode(NodeType type, NodeData data);
+struct Tree
+{
+    NodeList* list = NULL;
+    Node*     root = NULL;
+};
+
+
+Node newNode(NodeType type, NodeData data);
 
 void nodeListCtor(NodeList* list);
 
 void nodeListDtor(NodeList* list);
 
-void nodeListPush(NodeList* list, Node* node);
+Node* nodeListPush(NodeList* list, Node node);
 
 void graphTree(const Node* node);
 
@@ -37,6 +44,10 @@ const char* getTypeColor(NodeType type);
 char* getNodeLabel(const Node* node);
 
 void nodeDump(const Node* node);
+
+void writeTree(const Tree* tree, const char* filename);
+
+Tree* readTree(const char* filename);
 
 // void graphNodeList(NodeList* list);
 #endif

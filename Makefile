@@ -2,6 +2,12 @@ LIB_DIR = lib/
 BIN_DIR = bin/
 SRC_DIR = src/
 
+NCC_DIR = ncc/
+
+FRONT_DIR = FrontEnd/
+MIDDLE_DIR = MiddleEnd
+BACK_DIR  = BackEnd/
+
 MAJOR_VERSION = 1
 MINOR_VERSION = 0
 # BUILD_VERSION = `cat bld_version`
@@ -19,37 +25,30 @@ CXXFLAGS += -DMINOR_VERSION=$(MINOR_VERSION)
 
 CXXFLAGS += $(SANFLAGS)
 
-SOURCES_BackEnd = Backend.cpp
+SOURCES_COMMON = $(patsubst $(SRC_DIR)%, %, $(shell find $(SRC_DIR)LangTree -name *.cpp))
 
-SOURCES_LangTree = Tree.cpp
+FRONTENDS = cht
 
-SOURCES_FrontEnd = Frontend.cpp
+BACKENDS = asm
 
-SOURCES_FrontEnd/Parser = Parser.cpp
-
-SOURCES_FrontEnd/SyntaxAnal = SyntaxAnalyzer.cpp
+SRC = $(shell find $(SRC_DIR) -name *.cpp -printf "%P ")
 
 SUBDIRS = ${shell find $(SRC_DIR) -type d -printf '%P '}
 
-SOURCES =  $(foreach dir, $(SUBDIRS), $(addprefix $(dir)/, $(SOURCES_$(dir))))
-
-EXECUTABLE  = main.cpp 
-
-SRC = $(SOURCES) $(EXECUTABLE)
-
-OBJ = $(SRC:.cpp=.o)
+OBJ_COMMON = $(addprefix $(BIN_DIR), $(SOURCES_COMMON:.cpp=.o))
 
 DEP = $(SRC:.cpp=.d)
 
-TARGETS = ncc
+TARGETS = $(addprefix $(BACK_DIR), $(BACKENDS)) $(addprefix $(FRONT_DIR), $(FRONTENDS))  $(MIDDLE_DIR)
 
 init:
 	mkdir -p $(addprefix $(BIN_DIR), $(SUBDIRS))
 
-all: $(TARGETS)
+all: $(addprefix $(NCC_DIR), $(TARGETS))
 	# ./increaseVersion.sh bld_version
 
-ncc: $(addprefix $(BIN_DIR), $(OBJ))
+.SECONDEXPANSION:
+$(addprefix $(NCC_DIR), $(TARGETS)): $(NCC_DIR)% : $$(subst $(SRC_DIR), $(BIN_DIR), $$(addsuffix .o, $$(basename $$(shell find $(SRC_DIR)% -name *.cpp)))) $(OBJ_COMMON)
 	g++ $(CXXFLAGS) $^ $(LXXFLAGS) -o $@
 
 $(BIN_DIR)%.o : $(SRC_DIR)%.cpp
@@ -57,10 +56,12 @@ $(BIN_DIR)%.o : $(SRC_DIR)%.cpp
 
 .PHONY: deps
 deps: $(addprefix $(BIN_DIR), $(DEP))
-	echo "Deps builded"
+	@echo $^
+	@echo Deps builded
 	
-$(BIN_DIR)%.d : $(SRC_DIR)%.cpp
+$(addprefix $(BIN_DIR), $(DEP)) :$(BIN_DIR)%.d : $(SRC_DIR)%.cpp
 	g++ -MM -MT $(@:.d=.o) $< -o $@ -I$(LIB_DIR)
+
 
 -include $(addprefix $(BIN_DIR), $(DEP))
 

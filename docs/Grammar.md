@@ -1,0 +1,51 @@
+# Grammatic rules #
+
+## Basic rules ##
+- **Number** - number
+- **Id** - identifier
+
+## Operator rules ##
+- 
+- G ::= Expr$      //Grammar
+- 
+- Expr ::= Line {; Line}*      // Expression
+- 
+- Line ::= DeclF | DeclV | Asg | Opt
+- 
+- Asg ::= Lvalue = Line
+- 
+- Opt  ::= Rval {?? Line | ? Line : Line }?
+- 
+- Rval ::= Logic 
+- 
+- Logic ::= Comp {&&|| Comp}*
+- 
+- Comp ::= Binary {<>=! Binary}*
+- 
+- Binary ::= Summ {&|^ Summ}*
+- 
+- Summ ::= Mul {+- Mul} *
+- 
+- Mul  ::= Neg   {*/% Neg  } *
+- 
+- Neg ::= (-!)? P
+- 
+- P ::=  Wh | Diff | (Expr) | Basic
+- 
+- Wh ::= while ( E ) Line
+- 
+- Diff ::= DIF (E)
+- 
+- Basic ::= Number | Call | Unary |Addr | Lvalue
+- 
+- Unary ::= {Inc|Dec} Id | Id {Inc | Dec}
+- 
+- Call ::= Id (Line? {, Line}*)
+- 
+- DeclF ::= DecF Id ({Id {, Id}*}?) F_ARG Line
+- 
+- DeclV ::= DecV Id (= Line)?
+- 
+- Lvalue ::= Id | Ptr
+- 
+- Addr ::= & Id

@@ -6,10 +6,12 @@
 const size_t INIT_LIST_SZ = 64;
 const size_t EXPAND_COEF  = 2;
 
+const int SIGNATURE = 0x72EE;
+
 void nodeListCtor(NodeList* list){
     LOG_ASSERT(list != NULL);
 
-    list->nodes = (Node**)mgk_calloc(INIT_LIST_SZ, sizeof(Node*));
+    list->nodes = (Node*)mgk_calloc(INIT_LIST_SZ, sizeof(Node));
     list->capacity = INIT_LIST_SZ;
     list->size = 0;
 
@@ -19,28 +21,22 @@ void nodeListCtor(NodeList* list){
 void nodeListDtor(NodeList* list){
     if(list == NULL) return;
 
-    for(size_t i = 0; i < list->size; ++i){
-        if(list->nodes[i]){
-            free(list->nodes[i]);
-        }
-    }
-
     free(list->nodes);
     list->capacity = 0;
     list->size = 0;
     free(list);
 }
 
-void nodeListPush(NodeList* list, Node* node){
+Node* nodeListPush(NodeList* list, Node node){
     LOG_ASSERT(list != NULL);
-    LOG_ASSERT(node != NULL);
 
     if(list->size + 2 >= list->capacity){
-        list->nodes = (Node**)mgk_realloc(list->nodes, EXPAND_COEF * list->capacity, sizeof(Node*));
+        list->nodes = (Node*)mgk_realloc(list->nodes, EXPAND_COEF * list->capacity, sizeof(Node));
         list->capacity = EXPAND_COEF * list->capacity;
     }
 
     list->nodes[list->size++] = node;
+    return list->nodes + list->size - 1;
 }
 
 void graphTree(const Node* node){
@@ -204,11 +200,8 @@ char* getNodeLabel(const Node* node){
 #undef OP_CASE
 void graphNodeList(NodeList* list);
 
-Node* newNode(NodeType type, NodeData data){
-    Node* ptr = (Node*)mgk_calloc(1, sizeof(Node));
-    ptr->type = type;
-    ptr->data = data;
-    return ptr;
+Node newNode(NodeType type, NodeData data){
+    return {type, data, NULL, NULL};
 }
 
 void nodeDump(const Node* node){
@@ -219,4 +212,74 @@ void nodeDump(const Node* node){
     char* nodeStr = getNodeLabel(node);
     LOG_INFO("Node[%p]: {.type = %d, .data = %8d, .label = %s}", node,node->type, node->data.num, nodeStr);
     free(nodeStr);
+}
+
+void writeTree(const Tree* tree, const char* filename){
+    LOG_ASSERT(tree != NULL);
+    LOG_ASSERT(tree->list != NULL);
+    LOG_ASSERT(tree->root != NULL);
+
+    FILE* file = fopen(filename, "wb");
+    LOG_ASSERT(file != NULL);
+
+    fwrite(&SIGNATURE, sizeof(int), 1, file);
+
+    fwrite(&tree->list->size, sizeof(size_t), 1, file);
+    long root_index = tree->root - tree->list->nodes;
+    fwrite(&root_index, sizeof(long), 1, file);
+
+    for(size_t i = 0; i < tree->list->size; ++i){
+        Node node = tree->list->nodes[i];
+        node.left  -= (long)tree->list->nodes;
+        node.right -= (long)tree->list->nodes;
+        fwrite(&node, sizeof(Node), 1, file);
+    }
+
+    fclose(file);
+}
+
+Tree* readTree(const char* filename){
+    LOG_ASSERT(filename != NULL);
+
+    FILE* file = fopen(filename, "rb");
+    LOG_ASSERT(file != NULL);
+
+    int sig = 0;
+    fread(&sig, sizeof(int), 1, file);
+    if(sig != SIGNATURE){
+        LOG_ERROR("Incorrect tree file.");
+        return NULL;
+    }
+
+    size_t size  = 0;
+    long root_index = 0;
+
+    if(fread(&size, sizeof(size_t), 1, file) == 0){
+        LOG_ERROR("File too short");
+        return NULL;
+    }
+    if(fread(&root_index, sizeof(long), 1, file) == 0){
+        LOG_ERROR("File too short");
+        return NULL;
+    }
+
+    Tree* tree = (Tree*)mgk_calloc(1, sizeof(Tree));
+    tree->list = (NodeList*)mgk_calloc(1, sizeof(NodeList));
+    tree->list->size = size;
+    tree->list->capacity = tree->list->size;
+    tree->list->nodes = (Node*)mgk_calloc(size, sizeof(Node));
+
+    if(fread(tree->list->nodes, sizeof(Node), size, file) != size){
+        LOG_ERROR("File too short");
+        nodeListDtor(tree->list);
+        free(tree);
+        return NULL;
+    }
+
+    for(size_t i = 0; i < size; ++i){
+        tree->list->nodes[i].left  += (long)tree->list->nodes;
+        tree->list->nodes[i].right += (long)tree->list->nodes;
+    }
+    tree->root = tree->list->nodes + root_index;
+    return tree;
 }
