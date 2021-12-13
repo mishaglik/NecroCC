@@ -1,13 +1,13 @@
 #include "MGK/Logger.h"
 #include "MGK/Utils.h"
+#include "File.h"
 
 #include "Frontend.h"
-#include "Parser/Parser.h"
+#include "Tokenisator/Tokenisator.h"
 #include "SyntaxAnal/SyntaxAnalyzer.h"
 
 Tree* frontEnd(const char* str){
     LOG_ASSERT(str != NULL);
-    // LOG_ASSERT(root != NULL);
     NodeList* list = parseText(str);
 
     Node node = newNode(NodeType::NONE, {});
@@ -38,12 +38,21 @@ Tree* frontEnd(const char* str){
 
 int main(int argc, char* argv[]){
     LOG_ASSERT(argc > 2);
-    Tree* tree = frontEnd(argv[1]);
+
+    FILE* file = fopen(argv[1], "r");
+    LOG_ASSERT(file != NULL);
+
+    size_t file_sz = getFileSize(file);
+    char* str = (char*)mgk_calloc(file_sz + 1, sizeof(char));
+    fread(str, sizeof(char), file_sz, file);
+
+    Tree* tree = frontEnd(str);
     LOG_ASSERT(tree != NULL);
-    
+
     writeTree(tree, argv[2]);
 
     nodeListDtor(tree->list);
     free(tree);
+    free(str);
     return 0;
 }

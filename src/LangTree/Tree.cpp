@@ -114,7 +114,7 @@ const char* getTypeColor(NodeType type){
 char* getNodeLabel(const Node* node){
     LOG_ASSERT(node != NULL);
 
-    char* str = (char*)mgk_calloc(15, sizeof(char));
+    char* str = (char*)mgk_calloc(25, sizeof(char));
 
     switch (node->type)
     {
@@ -230,8 +230,11 @@ void writeTree(const Tree* tree, const char* filename){
 
     for(size_t i = 0; i < tree->list->size; ++i){
         Node node = tree->list->nodes[i];
-        node.left  -= (long)tree->list->nodes;
-        node.right -= (long)tree->list->nodes;
+
+        if(node.left)  node.left  = (Node*) (node.left  - tree->list->nodes); else node.left  = (Node*)(-1);
+        if(node.right) node.right = (Node*) (node.right - tree->list->nodes); else node.right = (Node*)(-1);
+        LOG_DEBUG("Left: %ld", (long)node.left);
+        LOG_DEBUG("Right %ld", (long)node.left);
         fwrite(&node, sizeof(Node), 1, file);
     }
 
@@ -277,8 +280,13 @@ Tree* readTree(const char* filename){
     }
 
     for(size_t i = 0; i < size; ++i){
-        tree->list->nodes[i].left  += (long)tree->list->nodes;
-        tree->list->nodes[i].right += (long)tree->list->nodes;
+        if(tree->list->nodes[i].left  == (Node*)-1) tree->list->nodes[i].left  = NULL;
+            else tree->list->nodes[i].left  = tree->list->nodes + (long)tree->list->nodes[i].left;
+        
+        if(tree->list->nodes[i].right == (Node*)-1) tree->list->nodes[i].right = NULL;
+            else tree->list->nodes[i].right = tree->list->nodes + (long)tree->list->nodes[i].right;
+        
+
     }
     tree->root = tree->list->nodes + root_index;
     return tree;

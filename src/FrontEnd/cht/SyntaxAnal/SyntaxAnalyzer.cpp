@@ -1,6 +1,8 @@
 #include "SyntaxAnalyzer.h"
+#define GLOBAL_LOG_LEVEL 2
 #include "MGK/Logger.h"
 #include "MGK/Utils.h"
+
 
 #define REQUIRE(rule) ({                                                             \
     SyntaxContext _newContext = get ## rule(context);                                \

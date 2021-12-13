@@ -1,7 +1,7 @@
 #ifndef NECROCC_FRONEND_PARSER_KEYWORDS_H
 #define NECROCC_FRONEND_PARSER_KEYWORDS_H
 
-#include "Parser.h"
+#include "Tokenisator.h"
 
 #define KEYWORD(val, str) {str, NodeType::OPERATOR, {.opr = Operator::val}},
 #define NUMBER(val, str) {str, NodeType::NUMBER, {.num = val}},

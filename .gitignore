@@ -1,7 +1,8 @@
 .vscode 
 bin
 lib
-log
-ncc
+log/*
+ncc/*
+asm/*
 
 todo
