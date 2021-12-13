@@ -61,4 +61,22 @@ const Keyword Dictionary[] = {
 #undef KEYWORD
 #undef NUMBER
 
+const size_t VarNameList_sz = 14;
+const char* const VarNameList[VarNameList_sz] = {
+    "ghtar",
+    "mrrr",
+    "nopor",
+    "shiza",
+    "few",
+    "lpakg",
+    "ahotina",
+    "Ded",
+    "fro",
+    "dead",
+    "tewjgnw",
+    "soigj",
+    "lkiv",
+    "sjh",
+};
+
 #endif

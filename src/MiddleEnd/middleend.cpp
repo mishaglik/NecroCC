@@ -24,6 +24,9 @@ Node diff(Node* node, NodeList* list){
     LOG_ASSERT(list != NULL);
     if(node == NULL) return {};
 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wswitch-enum"
+
     switch (node->type)
     {
     case NodeType::OPERATOR:
@@ -97,6 +100,8 @@ Node diff(Node* node, NodeList* list){
     default:
         return *node;
     }
+    #pragma GCC diagnostic pop
+
 }
 
 int main(int argc, char* argv[]){

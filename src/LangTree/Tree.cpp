@@ -233,8 +233,6 @@ void writeTree(const Tree* tree, const char* filename){
 
         if(node.left)  node.left  = (Node*) (node.left  - tree->list->nodes); else node.left  = (Node*)(-1);
         if(node.right) node.right = (Node*) (node.right - tree->list->nodes); else node.right = (Node*)(-1);
-        LOG_DEBUG("Left: %ld", (long)node.left);
-        LOG_DEBUG("Right %ld", (long)node.left);
         fwrite(&node, sizeof(Node), 1, file);
     }
 

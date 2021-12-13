@@ -10,7 +10,7 @@
 - 
 - Expr ::= Line {; Line}*      // Expression
 - 
-- Line ::= DeclF | DeclV | Asg | Opt
+- Line ::= out? DeclF | DeclV | Asg | Opt
 - 
 - Asg ::= Lvalue = Line
 - 
@@ -42,7 +42,7 @@
 - 
 - Call ::= Id (Line? {, Line}*)
 - 
-- DeclF ::= DecF Id ({Id {, Id}*}?) F_ARG Line
+- DeclF ::= DecF Id ({Id {, Id}*}?)   Line
 - 
 - DeclV ::= DecV Id (= Line)?
 - 

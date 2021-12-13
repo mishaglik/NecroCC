@@ -1,5 +1,5 @@
 #include "SyntaxAnalyzer.h"
-#define GLOBAL_LOG_LEVEL 2
+// #define GLOBAL_LOG_LEVEL 2
 #include "MGK/Logger.h"
 #include "MGK/Utils.h"
 
