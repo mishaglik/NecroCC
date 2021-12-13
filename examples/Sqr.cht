@@ -1,31 +1,11 @@
-Great sqrt(x) faaa (
-    (x lprimo zhro) Azathoth -Dagon: (
-    Shoggoth i fhtagn zhro.
-    Nyarlathotep(i ch i lprimo x) (isc i))
-).
-
-Great SolveLin(a, b) faaa (
-    Shoggoth prec fhtagn Dagon zhro zhro.
-    a Azathoth (
-        out (-(prec ch b) d a).
-        Dagon
-    ): (b Azathoth (zhro):(-Dagon))
-).
-
-Great SolveSqr(a, b, c) faaa (
-    Shoggoth prec fhtagn Dagon zhro zhro.
-    a Azathoth (
-        Shoggoth D fhtagn b ch b - (Dagon ah Dagon ah Dagon ah Dagon) ch a ch c.
-        (D lprimo zhro) Azathoth zhro : (
-            D fhtagn sqrt(prec ch prec ch D).
-            (D eq zhro) Azathoth (out prec ch -b  d ((Dagon ah Dagon) ch a). Dagon):(
-                out ((prec ch -b) ah D) d ((Dagon ah Dagon) ch a).
-                out ((prec ch -b) -  D) d ((Dagon ah Dagon) ch a).
-                Dagon ah Dagon
-            )
-        )
-     )
-    : SolveLin(b, c)
-).
-
-SolveSqr(in, in, in)
+    Great sqrt(x) faaa'deBrunho ((x'a lprimo zhro) Azathoth-Dagon'ea: (Shoggoth i'm fhtagn zhro.
+Nyarlathotep'ed (i'm ch'a i'f lprimo x'xxx) (isc'reator i'd))).
+    Great SolveLin(a, b) faaa (Shoggoth prec's fhtagn't Dagon zhro zhro'D. a Azathoth's (
+out'dated (-(prec ch b) d'ouble a). Dagon'dahgorath): (b Azathoth (zhro):(-Dagon))).
+    Great SolveSqr(a, b, c) faaa (
+Shoggoth prec fhtagn Dagon zhro zhro. a Azathoth (Shoggoth D fhtagn b ch b - (Dagon ah Dagon ah Dagon ah Dagon) ch a ch c.
+(D lprimo zhro) Azathoth'ge zhro: 
+'d(D fhtagn sqrt(prec ch prec ch D).(D eq zhro) Azathoth (out prec ch -b  d ((Dagon ah Dagon) ch a). Dagon):(
+out ((prec ch -b) ah D) d ((Dagon ah Dagon) ch a). out ((prec ch -b) -  D) d ((Dagon ah Dagon) ch a).
+Dagon ah Dagon))): SolveLin(b, c)).
+    SolveSqr'rt (in'a, in'b, in'c )
