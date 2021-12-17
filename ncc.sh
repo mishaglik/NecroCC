@@ -73,4 +73,4 @@ if [[ "${baseName%.*}.out" !=  "$OutFile" ]]; then
     mv "${baseName%.*}.out" "$OutFile" 
 fi
 
-rm "$AsmFile" "${baseName%.*}.lst" "$tmpFile"
+# rm "$AsmFile" "${baseName%.*}.lst" "$tmpFile"

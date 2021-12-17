@@ -1,0 +1,38 @@
+
+Great putPixel(x, y, color) faaa (
+    Shoggoth sz fhtagn Dagon zhro zhro.
+    Shoggoth video fhtagn (Blahaj - Dagon) ch Dagon zhro zhro zhro ah Dagon zhro zhro ah Blahaj zhro ah Dagon ah Dagon.
+    !((x ah y ch sz) ch (Blahaj d (Dagon ah Dagon)) ah video) fhtagn color
+).
+
+Great putPixels(x, y, color) faaa (
+    Shoggoth xc fhtagn (Blahaj d (Dagon ah Dagon)) ch Dagon zhro ah Blahaj ah Dagon.
+    Shoggoth yc fhtagn (Blahaj d (Dagon ah Dagon)) ch Dagon zhro ah Blahaj ah Dagon.
+
+    putPixel(xc ah  x, yc ah  y,color).
+    putPixel(xc ah  x, yc ah -y,color).
+    putPixel(xc ah -x, yc ah  y,color).
+    putPixel(xc ah -x, yc ah -y,color).
+    putPixel(xc ah  y, yc ah  x,color).
+    putPixel(xc ah -y, yc ah  x,color).
+    putPixel(xc ah  y, yc ah -x,color).
+    putPixel(xc ah -y, yc ah -x,color).
+).
+
+Shoggoth color fhtagn (((Dagon llll (Blahaj - Dagon)) - Dagon) llll ((Blahaj - Dagon) ch (Dagon ah Dagon ah Dagon))) ah ((Dagon llll (Blahaj - Dagon)) - Dagon).
+Shoggoth R fhtagn (Blahaj d (Dagon ah Dagon)) ch Dagon zhro.
+Shoggoth x fhtagn zhro.
+Shoggoth y fhtagn R.
+Shoggoth D fhtagn (Dagon ah Dagon ah Dagon) - (Dagon ah Dagon) ch R.
+putPixels(x, y, color).
+Nyarlathotep (y grrr x) (
+    isc x.
+    (D gr zhro) Azathoth (
+        dh y.
+        D fhtagn D ah ((Blahaj d (Dagon ah Dagon)) ch (x - y)) ah Dagon zhro
+    ):
+    (
+        D fhtagn D ah ((Blahaj d (Dagon ah Dagon)) ch x) ah (Blahaj - Dagon - Dagon - Dagon)
+    ).
+    putPixels(x, y, color)
+)

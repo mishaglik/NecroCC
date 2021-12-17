@@ -30,13 +30,13 @@
 - 
 - Neg ::= (-!)? P
 - 
-- P ::=  Wh | Diff | (Expr) | Basic
+- P ::=  Wh | Diff | (Expr) | Basic '
 - 
 - Wh ::= while ( E ) Line
 - 
 - Diff ::= DIF (E)
 - 
-- Basic ::= Number | Call | Unary |Addr | Lvalue
+- Basic ::= Number | Call | Unary | Addr | Lvalue
 - 
 - Unary ::= {Inc|Dec} Id | Id {Inc | Dec}
 - 
@@ -46,6 +46,6 @@
 - 
 - DeclV ::= DecV Id (= Line)?
 - 
-- Lvalue ::= Id | Ptr
+- Lvalue ::= Id | P!
 - 
 - Addr ::= & Id

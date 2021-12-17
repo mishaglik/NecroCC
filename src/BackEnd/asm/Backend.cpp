@@ -75,6 +75,8 @@ void backend(const Node* root, const char* filename){
     codeGen(&context, root);
 
     fprintf(context.asmFile, "out\n");
+    fprintf(context.asmFile, "draw\n");
+    fprintf(context.asmFile, "in\n");
     fprintf(context.asmFile, "hlt\n");
     fprintf(context.asmFile, "END_OF_FILE:\n");
 
@@ -161,7 +163,7 @@ void codeGen(BackendContext* context ,const Node* node){
             codeGen(context, node->right);  \
             ASM(asm);                       \
             break    
-        #define CASE_BINARY_R(opr, asm)       \
+        #define CASE_BINARY_R(opr, asm)     \
         case Operator::opr:                 \
             codeGen(context, node->right);  \
             codeGen(context, node->left);   \
@@ -188,11 +190,20 @@ void codeGen(BackendContext* context ,const Node* node){
 
         case Operator::SET:
             LOG_ASSERT(node->left != NULL);
-            LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
-            codeGen(context, node->right);
-            ASM("pop [bx+%d]; SET %d", getOffset(context->ns, node->left->data.id) , node->left->data.id);
-            ASM("push [bx+%d];", getOffset(context->ns, node->left->data.id));
-
+            if(node->left->type == NodeType::IDENTIFIER){
+                codeGen(context, node->right);
+                ASM("pop [bx+%d]; SET %d", getOffset(context->ns, node->left->data.id) , node->left->data.id);
+                ASM("push [bx+%d];", getOffset(context->ns, node->left->data.id));
+            }
+            else{
+                LOG_ASSERT(node->left->type == NodeType::OPERATOR);
+                LOG_ASSERT(node->left->data.opr == Operator::VAL);
+                codeGen(context, node->right);
+                codeGen(context, node->left->right);
+                ASM("pop dx");
+                ASM("pop [dx]");
+                ASM("push [dx]");
+            }
             break;
         case Operator::TERN_Q:
             LOG_ASSERT(node->right->data.opr ==Operator::TERN_C);

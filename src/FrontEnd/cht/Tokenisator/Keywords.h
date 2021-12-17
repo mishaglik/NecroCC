@@ -57,6 +57,10 @@ const Keyword Dictionary[] = {
     KEYWORD(OUT, "out")
     KEYWORD(IN, "in")
 
+    KEYWORD(ADDR, "?")
+    KEYWORD(VAL, "!")
+
+
 
     {NULL, NodeType::NONE, {0}}    //End of array identifier
 };
