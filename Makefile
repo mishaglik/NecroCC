@@ -29,7 +29,7 @@ SOURCES_COMMON = $(patsubst $(SRC_DIR)%, %, $(shell find $(SRC_DIR)LangTree -nam
 
 FRONTENDS = cht
 
-BACKENDS = asm
+BACKENDS = asm x86_64
 
 SRC = $(shell find $(SRC_DIR) -name *.cpp -printf "%P ")
 
