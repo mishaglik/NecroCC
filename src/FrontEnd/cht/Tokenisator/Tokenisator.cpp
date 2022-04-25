@@ -72,19 +72,19 @@ NodeList* parseText(const char* text){
 
                     for(int i = 1; i < curId; ++i){
                         if(strcmp(token, idTable[i].str) == 0){
-                            LOG_INFO("\b Already exists!");
+                            LOG_INFO("\b Already exists! #%d", idTable[i].id);
                             nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id=idTable[i].id}));
                             found = 1;
                             break;
                         }
                     }
                     if(!found){
-                        LOG_INFO("\b New!");
                         if(tabCap <= (size_t)curId){
                             idTable = (Identifier*)mgk_realloc(idTable, 2*tabCap , sizeof(Identifier));
                             tabCap  *= 2;
                         }
-                        idTable[curId++] = {strdup(token), curId};
+                        LOG_INFO("\b New! #%d", curId);
+                        idTable[curId++] = {strdup(token), curId - 1};
                         nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id = curId-1}));
                     }
 
