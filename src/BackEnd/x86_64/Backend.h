@@ -111,9 +111,9 @@ struct NameSpace
     VarOffset* varTable = NULL;
     
 
-    int curOffset   = 0;
     size_t size     = 0;
     size_t capacity = 0;
+    size_t above    = 0;
     size_t pushed   = 0;
 };
 
@@ -124,6 +124,7 @@ struct BackendContext
     ByteBuffer binBuf;
     ByteBuffer labelBuf;
     ByteBuffer funcLabelsBuf;
+    int pass = 0;
     unsigned labels = 0;
     int nTabs = 0;
 };
@@ -150,19 +151,29 @@ int getOffset(NameSpace* ns, idt_t id);
 
 void expandNS(NameSpace* ns, size_t newSZ);
 
-void registerVar(NameSpace* ns, idt_t id);
+void registerVar(NameSpace* ns, idt_t id, int offset = 0);
 
 void codeGen(BackendContext* context, const Node* node);
 
 void regVars(NameSpace* ns, const Node* node);
 
-int getNargs(const Node* node);
+int getNfuncArgs(const Node* node);
 
-void evaluteArguments(BackendContext* context, const Node* node, int* offset);
+int evaluteArguments(BackendContext* context, const Node* node);
 
 void openNewNS(BackendContext* context);
 
 void closeNS(BackendContext* context);
+
+void createFrame(BackendContext* context, int par = 0);
+
+int getVarCnt(const Node* node);
+
+void createFrame(BackendContext* context, NameSpace* par, const Node* node);
+
+void closeFrame(BackendContext* context);
+
+void functionEntryVars(BackendContext* context, const Node* node, int* n = NULL);
 
 #include "Operations.h"
 

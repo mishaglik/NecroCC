@@ -10,6 +10,8 @@ const int INT_SZ = 8; //sizeof(int);
 
 #define ASM(format, ...) {ByteBufferAppendf(&context->asmBuf, format "\n\t", ## __VA_ARGS__);}
 
+const Reg stdcallRegs[6] = {Reg::RDI, Reg::RSI, Reg::RDX, Reg::RCX, Reg::R8, Reg::R9};
+
 NameSpace* createNS(NameSpace* parent = NULL){
     NameSpace* ns = (NameSpace*)mgk_calloc(1, sizeof(NameSpace));
     ns->parent = parent;
@@ -26,7 +28,7 @@ void backend(const Node* root, const char* filename){
     LOG_FILLER("BACKEND START");
 
 
-    BackendContext context = {createNS()};
+    BackendContext context = {};
     newByteBuffer(&context.asmBuf);
     newByteBuffer(&context.binBuf);
     newByteBuffer(&context.labelBuf);
@@ -34,10 +36,14 @@ void backend(const Node* root, const char* filename){
 
     ByteBufferAppendf(&context.asmBuf,
         ".intel_syntax noprefix\n"
-        ".global _start\n"
-        "_start:\n");
+        ".global main\n"
+        "main:\n");
     
+    LabelReserve(&context, 1);  // Take label 0;
+    createFrame(&context, NULL, root);
     codeGen(&context, root);
+    closeFrame(&context);
+    xExit(&context);
 
     deleteNS(context.ns);
     FILE* asmFile = fopen(filename, "w");
@@ -74,19 +80,7 @@ int getOffset(NameSpace* ns, idt_t id){
         LOG_ERROR("\bVAR %d not registered", id);
         return -1;
     }
-    return -(int)(ns->parent->pushed * INT_SZ) + getOffset(ns->parent, id);
-}
-
-void registerVar(NameSpace* ns, idt_t id){
-    LOG_ASSERT(ns != NULL);
-    LOG_ASSERT(ns->varTable != NULL);
-
-    if(ns->size >= ns->capacity){
-        expandNS(ns, ns->capacity * 2);
-    }
-
-    ns->varTable[ns->size] = {id, (int)(ns->size * INT_SZ)};
-    ns->size++;
+    return (int)((ns->parent->above + ns->parent->pushed + 1) * INT_SZ) + getOffset(ns->parent, id);
 }
 
 void expandNS(NameSpace* ns, size_t newSZ){
@@ -112,7 +106,7 @@ void codeGen(BackendContext* context ,const Node* node){
 
     char* label = getNodeLabel(node);
     LOG_INFO("Code generating for node[%p]: %s", node, label);
-    ASM(";%s", label);
+    ASM(";//%s", label);
     free(label);
     LOG_INC_TAB();
 
@@ -147,10 +141,27 @@ void codeGen(BackendContext* context ,const Node* node){
         CASE_BINARY(ADD, XADD);
         CASE_BINARY(SUB, XSUB);
         CASE_BINARY(MUL, XMUL);
-        CASE_BINARY(DIV, XDIV); 
-        // CASE_BINARY(MOD, XMOD);
         CASE_BINARY(SHL, XSHL);
         CASE_BINARY(SHR, XSHR);
+        
+        case Operator::DIV:
+            codeGen(context, node->left);
+            codeGen(context, node->right);
+            XPOP(Reg::RAX);
+            XCQO();
+            XPOP(Reg::RBX);
+            XDIV(Reg::RBX);
+            XPUSH(Reg::RAX);
+            break;
+        case Operator::MOD:
+            codeGen(context, node->left);
+            codeGen(context, node->right);
+            XPOP(Reg::RAX);
+            XCQO();
+            XPOP(Reg::RBX);
+            XDIV(Reg::RBX);
+            XPUSH(Reg::RDX);
+            break;
 
         CASE_CMP(LESS, Flags::L);
         CASE_CMP(LESS_EQ, Flags::LE);
@@ -164,9 +175,6 @@ void codeGen(BackendContext* context ,const Node* node){
         CASE_BINARY(AND, XAND);
         CASE_BINARY(OR , XOR );
         CASE_BINARY(XOR, XXOR);
-        case Operator::MOD:
-            LOG_ASSERT(0);
-            break;
         case Operator::SET:
             LOG_ASSERT(node->left != NULL);
             if(node->left->type == NodeType::IDENTIFIER){
@@ -186,19 +194,29 @@ void codeGen(BackendContext* context ,const Node* node){
             }
             break;
         case Operator::TERN_Q:
-            LOG_ASSERT(node->right->data.opr ==Operator::TERN_C);
-            
+            LOG_ASSERT(node->right->data.opr == Operator::TERN_C);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             l = LabelReserve(context, 2);
 
-            XJMP(Flags::NZ, l)
+            XJMP(Flags::Z, l);
+            
+            createFrame(context, context->ns, node);
             codeGen(context, node->right->left);
+            XPOP(Reg::RAX);
+            closeFrame(context);
+
             XJMP(Flags::ABS, l + 1);
             LabelRegister(context, l);
+            
+            createFrame(context, context->ns, node);
             codeGen(context, node->right->right);
+            XPOP(Reg::RAX);
+            closeFrame(context);
+            
             LabelRegister(context, l + 1);
+            XPUSH(Reg::RAX);
             break;
         case Operator::QQ:
             codeGen(context, node->left);
@@ -206,8 +224,11 @@ void codeGen(BackendContext* context ,const Node* node){
             XTESTRR(Reg::RAX, Reg::RAX);
             l = LabelReserve(context, 1);
             XJMP(Flags::NZ, l);
+            
+            createFrame(context, context->ns, node);
             codeGen(context, node->right);
             XPOP(Reg::RAX);
+            closeFrame(context);
             LabelRegister(context, l);
             XPUSH(Reg::RAX);
             break;
@@ -228,43 +249,37 @@ void codeGen(BackendContext* context ,const Node* node){
             XPUSH(Reg::RAX);
             break;
         case Operator::FUNC:{
+            
             l = LabelReserve(context, 2);
-            LabelRegister(context, l);
-            functionRegister(context, node->data.id, l, 0);
+            functionRegister(context, node->left->data.id, l, 0);
             XJMP(Flags::ABS, l + 1);
+            LabelRegister(context, l);
+            size_t of1 = context->binBuf.size;
             NameSpace* oldNS = context->ns;
-            context->ns = createNS();
-            regVars(context->ns, node->right->left);
-            registerVar(context->ns, -1);
-            XPOPMVC(getOffset(context->ns, -1));            
-            codeGen(context, node->right->right);
 
-            XPUSHMVC(getOffset(context->ns, -1));
-            XRET();
-            LabelRegister(context, l + 1);
-            XLEARV(Reg::RAX, l);
-            XPUSH(Reg::RAX);
-            deleteNS(context->ns);
+            createFrame(context, NULL, node);
+            functionEntryVars(context, node->right->left, NULL);
+
+            codeGen(context, node->right->right);
+            XPOP(Reg::RAX);
+            closeFrame(context);
             context->ns = oldNS;
+            XRET();
+
+            LabelRegister(context, l + 1);
+            *(int*)(&context->binBuf.buff[of1 - 4]) = (int)(context->binBuf.size - of1);
+            XXOR(Reg::RAX, Reg::RAX);
+            XPUSH(Reg::RAX);
             }
             break;
         case Operator::CALL:
             {
-            XMOVRC(Reg::RAX, (int)(INT_SZ * context->ns->size));
-            XSUB(Reg::RBP, Reg::RAX);
-            
-            NameSpace* oldNS = context->ns;
-            context->ns = createNS(oldNS);
-
-            int offset = 0;
-            evaluteArguments(context, node->right, &offset);
-            XCALL(functionGetL(node->left->data.id));
-
-            deleteNS(context->ns);
-            context->ns = oldNS;
-
-            XMOVRC(Reg::RAX, (int)(INT_SZ * context->ns->size));
-            XADD(Reg::RBP, Reg::RAX);
+            int n = evaluteArguments(context, node->right);
+            for(int i = 0; i < n; ++i){
+                XPOP(stdcallRegs[i]);
+            }
+            XCALL(functionGetL(context, node->left->data.id));
+            XPUSH(Reg::RAX);
             }
             break;
         case Operator::WHILE:
@@ -319,7 +334,7 @@ void codeGen(BackendContext* context ,const Node* node){
             XJMP(Flags::NZ, l);
            
             XMOVRC(Reg::RAX, 0);
-            XPUSH(Reg::RAX)
+            XPUSH(Reg::RAX);
             XJMP(Flags::ABS, l + 1);
 
             LabelRegister(context, l);
@@ -428,18 +443,14 @@ void codeGen(BackendContext* context ,const Node* node){
     LOG_INFO("Finished");
 }
 
-int getNargs(const Node* node){
+int getNfuncArgs(const Node* node){
     if(node == NULL)
         return 0;
-    if(node->type == NodeType::IDENTIFIER)
+    if(node->type == NodeType::IDENTIFIER){
+        LOG_WARNING("Found var [%p] #%d", node, node->data.id);
         return 1;
-
-    int ans = 1;
-    while(node->right){
-        ans++;
-        node = node->right;
     }
-    return ans;
+    return getNfuncArgs(node->left) + getNfuncArgs(node->right);
 }
 
 void regVars(NameSpace* ns, const Node* node){
@@ -458,25 +469,24 @@ void regVars(NameSpace* ns, const Node* node){
     LOG_ERROR("Incorrect expr tree");
 }
 
-void evaluteArguments(BackendContext* context, const Node* node, int* offset){
+int evaluteArguments(BackendContext* context, const Node* node){
     LOG_ASSERT(context != NULL);
-    if(node == NULL) return;
+    if(node == NULL) return 0;
     if(node->type == NodeType::OPERATOR && node->data.opr == Operator::COMMA){
-        evaluteArguments(context, node->left, offset);
-        evaluteArguments(context, node->right, offset);
-        return;
+        return
+        evaluteArguments(context, node->left) + 
+        evaluteArguments(context, node->right);
     }
     else{
         codeGen(context, node);
-        ASM("pop [bx+%d]", *offset);
-        *offset += INT_SZ;
+        return 1;
     }
 }
 
 void openNewNS(BackendContext* context){
     LOG_ASSERT(context != NULL);
 
-    XSUB(Reg::RBP, (int)(INT_SZ * context->ns->size));
+    XSUBRC(Reg::RBP, (int)(INT_SZ * context->ns->size));
     
     NameSpace* oldNS = context->ns;
     context->ns = createNS(oldNS);
@@ -490,7 +500,7 @@ void closeNS(BackendContext* context){
     deleteNS(context->ns);
     context->ns = oldNS;
 
-    XADD(Reg::RBP, (int)(INT_SZ * context->ns->size));
+    XADDRC(Reg::RBP, (int)(INT_SZ * context->ns->size));
 }
 
 int main(int argc, char* argv[]){
@@ -554,21 +564,94 @@ void LabelRegister(BackendContext* context, unsigned label){
 long long LabelGetOffs(BackendContext* context, unsigned label){
     LOG_ASSERT(context != NULL);
     LOG_ASSERT(label < context->labels);
+    
     return ((long long*) context->labelBuf.buff)[label];
 }
 
 void functionRegister(BackendContext* context, int id, unsigned label, int nargs){
     FuncLable l = {.id = id, .label = label, .nArgs = nargs};
+    LOG_INFO("Registered function #%d with label %d", id, label);
     ByteBufferAppend(&context->funcLabelsBuf, (const char*)&l, sizeof(FuncLable));
+    LOG_ASSERT(functionGetL(context, id) == label);
 }
 unsigned functionGetL(BackendContext* context, int id){
     FuncLable* funcs = (FuncLable*)context->funcLabelsBuf.buff;
-    for(size_t i = 0; i < context->funcLabelsBuf.size / sizeof(FuncLable); ++i){
+    for(size_t i = 0; i * sizeof(FuncLable) < context->funcLabelsBuf.size; ++i){
         if(funcs[i].id == id) return funcs[i].label;
     }
+    LOG_ERROR("Function #%d not found", id);
     return 0;
 }
 
 void ByteBufferExpand(ByteBuffer* buf){
     buf->buff = (char*)mgk_realloc(buf->buff, buf->capacity *= 2, sizeof(char));
+}
+
+int getVarCnt(const Node* node){
+    if(node == NULL) return 0;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::VAR   ) return 1;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::CALL  ) return 0;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::FUNC  ) return 0;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::QQ    ) return 0;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::TERN_Q) return 0;
+
+    return getVarCnt(node->left) + getVarCnt(node->right);
+}
+
+void createFrame(BackendContext* context, NameSpace* par, const Node* node){
+    LOG_ASSERT(context != NULL);
+    XPUSH(Reg::RBP);
+    context->ns = createNS(par);
+    int n = getVarCnt(node) * INT_SZ;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::WHILE) n += 8;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::FUNC) n += MIN(6, getNfuncArgs(node->right->left)) * INT_SZ;
+    XMOVRR(Reg::RBP, Reg::RSP);
+    XSUBRC(Reg::RSP, n);
+}
+
+void registerVar(NameSpace* frame, idt_t id, int offset){
+    LOG_ASSERT(frame != NULL);
+    LOG_ASSERT(frame->varTable != NULL);
+
+    if(frame->size >= frame->capacity){
+        expandNS(frame, frame->capacity * 2);
+    }
+    if(offset == 0){
+        offset = -(int)(INT_SZ * (++frame->above));
+    }
+
+    frame->varTable[frame->size] = {id, offset};
+    frame->size++;
+}
+
+
+
+void functionEntryVars(BackendContext* context, const Node* node, int* n){
+    LOG_ASSERT(context != NULL);
+    if(node == NULL) return;
+    int k = 0;
+    if(n == NULL) n = &k;
+    if(node->type == NodeType::IDENTIFIER){
+        if(*n < 6){
+            registerVar(context->ns, node->data.id);
+            int off = -(int)(context->ns->above * INT_SZ);
+            xMovRMCR(context, Reg::RBP, off, stdcallRegs[*n]);
+        }
+        else{
+            registerVar(context->ns, node->data.id, (INT_SZ * (*n - 6 + 2)));
+        }
+        (*n)++;
+    }
+    functionEntryVars(context, node->left , n);
+    functionEntryVars(context, node->right, n);
+}
+
+void closeFrame(BackendContext* context){
+    LOG_ASSERT(context != NULL);
+    NameSpace* oldNS = context->ns->parent;
+    deleteNS(context->ns);
+    context->ns = oldNS;
+
+    XMOVRR(Reg::RSP, Reg::RBP);
+    XPOP(Reg::RBP);    
 }

@@ -5,18 +5,24 @@
 #error  Wrong include scheme.
 #endif
 
-#define XADD(r1, r2) {xBinaryRR(context, 0x01, r1, r2); ASM("add %s %s", getRegName(r1), getRegName(r2));}
-#define XSUB(r1, r2) {xBinaryRR(context, 0x29, r1, r2); ASM("add %s %s", getRegName(r1), getRegName(r2));}
-#define XMUL(r1, r2) xMulRR(context, r1, r2)
+#define XADD(r1, r2) {xBinaryRR(context, 0x01, r1, r2); ASM("add %s, %s", getRegName(r1), getRegName(r2));}
+#define XSUB(r1, r2) {xBinaryRR(context, 0x29, r1, r2); ASM("sub %s, %s", getRegName(r1), getRegName(r2));}
+#define XMUL(r1, r2) xIMulRR(context, r1, r2)
 #define XSHL(r1, r2) xShlRR(context, r1, r2)
 #define XSHR(r1, r2) xShrRR(context, r1, r2)
-#define XDIV(r1, r2) xDivRR(context, r1, r2)
+#define XDIV(r)      xIDivR(context, r)
 
-#define CQO() xCqo(context);
+#define XCQO() xCqo(context);
 
-#define XOR(r1, r2)  {xBinaryRR(context, 0x09, r1, r2);ASM("add %s %s", getRegName(r1), getRegName(r2));}
-#define XAND(r1, r2) {xBinaryRR(context, 0x21, r1, r2);ASM("add %s %s", getRegName(r1), getRegName(r2));}
-#define XXOR(r1, r2) {xBinaryRR(context, 0x31, r1, r2);ASM("add %s %s", getRegName(r1), getRegName(r2));}
+#define XOR(r1, r2)  {xBinaryRR(context, 0x09, r1, r2);ASM("or %s, %s", getRegName(r1), getRegName(r2));}
+#define XAND(r1, r2) {xBinaryRR(context, 0x21, r1, r2);ASM("and %s, %s", getRegName(r1), getRegName(r2));}
+#define XXOR(r1, r2) {xBinaryRR(context, 0x31, r1, r2);ASM("xor %s, %s", getRegName(r1), getRegName(r2));}
+
+#define XADDRC(r, c) xAddRC(context, r, c)
+#define XSUBRC(r, c) xSubRC(context, r, c)
+#define XANDRC(r, c) xAndRC(context, r, c)
+#define XORRC(r, c)  xOrRC(context, r, c)
+#define XXORRC(r, c) xXOrRC(context, r, c)
 
 // mov r1, r2
 #define XMOVRR(r1, r2) xMovRR(context, r1, r2)
@@ -43,7 +49,7 @@
 // jmp rip + off
 #define XJMP(cond, l) xJmpC(context, cond, l)
 
-#define XCALL(l) xCallC(contex, l)
+#define XCALL(l) xCallC(context, l)
 
 // set(cond) r; Ex: sete al;
 #define XSET(cond, r) xSetR(context, cond, r)
@@ -52,8 +58,8 @@
 
 //lea r, [rbp + offs]
 #define XLEARV(r, offs) xLeaRMRC(context, r, Reg::RBP, offs)
-#define XPUSH(r) xPushR(context, r)
-#define XPOP(r)  xPopR(context, r)
+#define XPUSH(r) {xPushR(context, r); if(context->ns) context->ns->pushed++;}
+#define XPOP(r)  {xPopR(context, r);  if(context->ns) context->ns->pushed--;}
 
 #define XPOPMVC(c) xPopMRC(context, Reg::RBP, c)
 #define XPUSHMVC(c) xPushMRC(context, Reg::RBP, c)
@@ -112,10 +118,15 @@ void xMovRRM (BackendContext* context, Reg r1, Reg r2);
 void xMovRMR (BackendContext* context, Reg r1, Reg r2);
 void xMovRC  (BackendContext* context, Reg r, long long c);
 
-void xBinary(BackendContext* context, unsigned char opcode, Reg r1, Reg r2);
+void xBinaryRR(BackendContext* context, unsigned char opcode, Reg r1, Reg r2);
 void xIMulRR(BackendContext* context, Reg r1, Reg r2);
 void xIDivR(BackendContext* context, Reg r);
 void xShlRR(BackendContext* context, Reg r1, Reg r2);
 void xShrRR(BackendContext* context, Reg r1, Reg r2);
 
+void xAddRC(BackendContext* context, Reg r, long long c);
+void xSubRC(BackendContext* context, Reg r, long long c);
+void xAndRC(BackendContext* context, Reg r, long long c);
+void xOrRC (BackendContext* context, Reg r, long long c);
+void xXorRC(BackendContext* context, Reg r, long long c);
 #endif

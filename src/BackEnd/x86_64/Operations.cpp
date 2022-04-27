@@ -6,7 +6,7 @@
 #define ASM(format, ...) {ByteBufferAppendf(&context->asmBuf, format "\n\t", ## __VA_ARGS__);}
 #define BIN(buf, sz) ByteBufferAppend(&context->binBuf, (const char*)buf, sz)
 
-#define PUT_ARG(place, x) *((long long*)&(place)) = (x)
+#define PUT_ARG(place, x) *((int*)&(place)) = (int)(x)
 #define REG3BIT(r)  (unsigned char)((unsigned char)(r) & 0x7)
 #define REGEXTR(r)  (unsigned char)((unsigned char)(r) >> 3)
 #define FLAFBIT(f)  (unsigned char)((unsigned char)(f) & 0xf)
@@ -106,10 +106,10 @@ void xCmpRR(BackendContext* context, Reg r1, Reg r2){
      unsigned char buf[3] = {0x48, 0x39, 0xc0};
     ASM("cmp %s, %s", getRegName(r1), getRegName(r2));
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= REG3BIT(r2) << 3;
+    buf[2] |= REG3BIT(r1);
+    buf[2] |= UC (REG3BIT(r2) << 3);
     buf[0] |= REGEXTR(r1);
-    buf[0] |= REGEXTR(r2) << 2;
+    buf[0] |= UC (REGEXTR(r2) << 2);
 
     BIN(buf, 3);
 }
@@ -123,15 +123,15 @@ void xCmpRC(BackendContext* context, Reg r, long long c){
     ASM("cmp %s, %lld", getRegName(r), c);
 
     if(r == Reg::RAX){
-        buf[2] = 0x3d;
-        PUT_ARG(buf[3], c);
+        buf[1] = 0x3d;
+        PUT_ARG(buf[2], c);
         BIN(buf, 6);
         return;
     }
 
     buf[0] |= REGEXTR(r);
-    buf[3] |= REG3BIT(r);
-    PUT_ARG(buf[4], c);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
     BIN(buf, 7);
 }
 
@@ -149,14 +149,20 @@ void xExit(BackendContext* context){
 }
 
 void xIn(BackendContext* context){
-    ASM("push 0; in")
-    const  unsigned char buf[2] = {0x6a, 0x00};
-    BIN(buf, 2);
+    LOG_ASSERT(context != NULL);
+    ASM("call ncc_in");
+    // long long afterIp = (long long)context->binBuf.size + 5;
+    unsigned char buf[5] = {0xe8};
+    PUT_ARG(buf[1], 0ll);
+    BIN(buf, 5);
 }
 void xOut(BackendContext* context){
-    ASM("mov rax, rdi; out")
-    const  unsigned char buf[3] = {0x48, 0x89, 0xf8};
-    BIN(buf, 3);
+    LOG_ASSERT(context != NULL);
+    ASM("call ncc_out");
+    // long long afterIp = (long long)context->binBuf.size + 5;
+    unsigned char buf[5] = {0xe8};
+    PUT_ARG(buf[1], 0ll);
+    BIN(buf, 5);
 }
 void xOutC(BackendContext* context){
     ASM("mov rax, rdi; out")
@@ -170,17 +176,17 @@ void xLeaRMRC(BackendContext* context, Reg r1, Reg r2, long long c){
      unsigned char buf[8] = {0x48, 0x8d, 0x80};
 
     buf[0] |= REGEXTR(r1);
-    buf[0] |= REGEXTR(r2) << 2;
-    buf[3] |= REG3BIT(r2);
-    buf[3] |= REG3BIT(r1) << 3;
+    buf[0] |= UC (REGEXTR(r2) << 2);
+    buf[2] |= REG3BIT(r2);
+    buf[2] |= UC (REG3BIT(r1) << 3);
 
     if(r2 == Reg::RSP){
-        buf[4] = 0x24;
-        PUT_ARG(buf[5], c);
+        buf[3] = 0x24;
+        PUT_ARG(buf[4], c);
         BIN(buf, 8);
         return;
     }
-    PUT_ARG(buf[4], c);
+    PUT_ARG(buf[3], c);
     BIN(buf, 7);
 }
 
@@ -215,7 +221,7 @@ void xSetR(BackendContext* context, Flags f, Reg r){
 void xCallC(BackendContext* context, unsigned l){
     LOG_ASSERT(context != NULL);
     ASM("call L%u", l);
-    long long afterIp = context->binBuf.size + 5;
+    long long afterIp = (long long)context->binBuf.size + 5;
     unsigned char buf[5] = {0xe8};
     PUT_ARG(buf[1], LabelGetOffs(context, l) - afterIp);
     BIN(buf, 5);
@@ -227,14 +233,16 @@ void xJmpC(BackendContext* context, Flags f, unsigned l){
         ASM("jmp L%u", l);
     } else ASM("j%s L%u", getFlagName(f), l);
 
-    long long afterIp = context->binBuf.size + 5;
+    long long afterIp = 0; 
     unsigned char buf[6] = {};
     if(f == Flags::ABS){
+        afterIp = (long long)context->binBuf.size + 5;
         buf[0] = 0xe9;
         PUT_ARG(buf[1], LabelGetOffs(context, l) - afterIp);
         BIN(buf, 5);
         return;
     }
+    afterIp = (long long)context->binBuf.size + 6;
     buf[0] = 0x0f;
     buf[1] = 0x80 | FLAFBIT(f);
     PUT_ARG(buf[2], LabelGetOffs(context, l) - afterIp);
@@ -248,8 +256,8 @@ void xTestRR(BackendContext* context, Reg r1, Reg r2){
      unsigned char buf[3] = {0x48, 0x85, 0xc0};
     ASM("test %s, %s", getRegName(r1), getRegName(r2));
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= UC (REG3BIT(r2) << 3);
+    buf[2] |= REG3BIT(r1);
+    buf[2] |= UC (REG3BIT(r2) << 3);
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
@@ -263,7 +271,7 @@ void xIncR(BackendContext* context, Reg r){
     ASM("inc %s", getRegName(r));
 
     buf[0] |= REGEXTR(r);
-    buf[3] |= REG3BIT(r);
+    buf[2] |= REG3BIT(r);
 
     BIN(buf, 3);
 }
@@ -274,14 +282,14 @@ void xDecR(BackendContext* context, Reg r){
     ASM("dec %s", getRegName(r));
 
     buf[0] |= REGEXTR(r);
-    buf[3] |= REG3BIT(r);
+    buf[2] |= REG3BIT(r);
 
     BIN(buf, 3);
 }
 
 void xMovRR  (BackendContext* context, Reg r1, Reg r2){
     ASM("mov %s, %s", getRegName(r1), getRegName(r2));
-    xBinary(context, 0x89, r1, r2);
+    xBinaryRR(context, 0x89, r1, r2);
 }
 
 void xMovRRM (BackendContext* context, Reg r1, Reg r2){
@@ -291,18 +299,18 @@ void xMovRRM (BackendContext* context, Reg r1, Reg r2){
     buf[0] |= UC (REGEXTR(r1) << 2);
     buf[0] |= REGEXTR(r2);
 
-    buf[3] |= UC (REG3BIT(r1) << 3);
-    buf[3] |= REG3BIT(r2);
+    buf[2] |= UC (REG3BIT(r1) << 3);
+    buf[2] |= REG3BIT(r2);
 
     if(r2 == Reg::RBP){
-        buf[3] = UC (0x45 | (REG3BIT(r1) << 3));
-        buf[4] = 0x00;
+        buf[2] = UC (0x45 | (REG3BIT(r1) << 3));
+        buf[3] = 0x00;
         BIN(buf, 4);
         return;
     }
     if(r2 == Reg::RSP){
-        buf[3] = UC (0x04 | (REG3BIT(r1) << 3));
-        buf[4] = 0x24;
+        buf[2] = UC (0x04 | (REG3BIT(r1) << 3));
+        buf[3] = 0x24;
         BIN(buf, 4);
         return;
     }
@@ -316,18 +324,18 @@ void xMovRMR (BackendContext* context, Reg r1, Reg r2){
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= UC (REG3BIT(r2) << 3);
+    buf[2] |= REG3BIT(r1);
+    buf[2] |= UC (REG3BIT(r2) << 3);
 
     if(r1 == Reg::RBP){
-        buf[3] = UC (0x45 | (REG3BIT(r2) << 3));
-        buf[4] = 0x00;
+        buf[2] = UC (0x45 | (REG3BIT(r2) << 3));
+        buf[3] = 0x00;
         BIN(buf, 4);
         return;
     }
     if(r1 == Reg::RSP){
-        buf[3] = UC (0x04 | (REG3BIT(r2) << 3));
-        buf[4] = 0x24;
+        buf[2] = UC (0x04 | (REG3BIT(r2) << 3));
+        buf[3] = 0x24;
         BIN(buf, 4);
         return;
     }
@@ -336,40 +344,40 @@ void xMovRMR (BackendContext* context, Reg r1, Reg r2){
 
 void xMovRRMC(BackendContext* context, Reg r1, Reg r2, long long off){
     LOG_ASSERT(context != NULL);
-    ASM("mov %s, [%s + %#x]", getRegName(r1), getRegName(r2), (unsigned long long) off);
+    ASM("mov %s, [%s %+d]", getRegName(r1), getRegName(r2), (int) off);
 
      unsigned char buf[8] = {0x48, 0x8b, 0x80};
     buf[0] |= UC (REGEXTR(r1) << 2);
     buf[0] |= REGEXTR(r2);
 
-    buf[3] |= UC (REG3BIT(r1) << 3);
-    buf[3] |= REG3BIT(r2);
+    buf[2] |= UC (REG3BIT(r1) << 3);
+    buf[2] |= REG3BIT(r2);
 
     if(r2 == Reg::RSP){
-        buf[3] = UC (0x84 | (REG3BIT(r1) << 3));
-        buf[4] = 0x24;
-        PUT_ARG(buf[5], off);
+        buf[2] = UC (0x84 | (REG3BIT(r1) << 3));
+        buf[3] = 0x24;
+        PUT_ARG(buf[4], off);
         BIN(buf, 8);
         return;
     }
-    PUT_ARG(buf[4], off);
+    PUT_ARG(buf[3], off);
     BIN(buf, 7);
 }
 void xMovRMCR(BackendContext* context, Reg r1, long long off, Reg r2){
     LOG_ASSERT(context != NULL);
-    ASM("mov [%s + %#x], %s", getRegName(r1), (unsigned long long) off, getRegName(r2));
+    ASM("mov [%s %+d], %s", getRegName(r1), (int) off, getRegName(r2));
 
-     unsigned char buf[4] = {0x48, 0x89, 0x80};
+    unsigned char buf[8] = {0x48, 0x89, 0x80};
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= UC (REG3BIT(r2) << 3);
+    buf[2] |= REG3BIT(r1);
+    buf[2] |= UC (REG3BIT(r2) << 3);
 
     if(r1 == Reg::RSP){
-        buf[3] = UC (0x84 | (REG3BIT(r2) << 3));
-        buf[4] = 0x24;
-        PUT_ARG(buf[5], off);
+        buf[2] = UC (0x84 | (REG3BIT(r2) << 3));
+        buf[3] = 0x24;
+        PUT_ARG(buf[4], off);
         BIN(buf, 8);
         return;
     }
@@ -378,24 +386,99 @@ void xMovRMCR(BackendContext* context, Reg r1, long long off, Reg r2){
 }
 void xMovRC  (BackendContext* context, Reg r, long long c){
     LOG_ASSERT(context != NULL);
-    ASM("mov %s, %lld", getRegName(r), c);
-     unsigned char buf[7] = {0x48, 0xc7, 0xc0};
+    ASM("mov %s, %d", getRegName(r), (int)c);
+    unsigned char buf[7] = {0x48, 0xc7, 0xc0};
     buf[0] |= REGEXTR(r);
-    buf[3] |= REG3BIT(r);
-    PUT_ARG(buf[4], c);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
     BIN(buf, 7);
 }
 
-void xBinary(BackendContext* context, unsigned char opcode, Reg r1, Reg r2){
+void xBinaryRR(BackendContext* context, unsigned char opcode, Reg r1, Reg r2){
     LOG_ASSERT(context != NULL);
      unsigned char buf[3] = {0x48, opcode, 0xc0};
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= UC (REG3BIT(r2) << 3);
+    buf[2] |= REG3BIT(r1);
+    buf[2] |= UC (REG3BIT(r2) << 3);
 
     BIN(buf, 3);
+}
+
+void xAddRC(BackendContext* context, Reg r, long long c){
+    LOG_ASSERT(context != NULL);
+    ASM("add %s, %d", getRegName(r), c);
+    unsigned char buf[7] = {0x48, 0x81, 0xc0};
+    if(r == Reg::RAX){
+        buf[1] = 0x05;
+        PUT_ARG(buf[2], c);
+        BIN(buf, 6);
+    }
+    buf[0] |= REGEXTR(r);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[4], c);
+    BIN(buf, 7);
+}
+
+void xSubRC(BackendContext* context, Reg r, long long c){
+    LOG_ASSERT(context != NULL);
+    ASM("sub %s, %d", getRegName(r), c);
+    unsigned char buf[7] = {0x48, 0x81, 0xe8};
+    if(r == Reg::RAX){
+        buf[1] = 0x2d;
+        PUT_ARG(buf[2], c);
+        BIN(buf, 6);
+    }
+    buf[0] |= REGEXTR(r);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
+    BIN(buf, 7);
+}
+
+void xAndRC(BackendContext* context, Reg r, long long c){
+    LOG_ASSERT(context != NULL);
+    unsigned char buf[7] = {0x48, 0x81, 0xe0};
+    ASM("and %s, %d", getRegName(r), c);
+    if(r == Reg::RAX){
+        buf[1] = 0x25;
+        PUT_ARG(buf[2], c);
+        BIN(buf, 6);
+    }
+    buf[0] |= REGEXTR(r);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
+    BIN(buf, 7);
+}
+
+void xOrRC(BackendContext* context, Reg r, long long c){
+    LOG_ASSERT(context != NULL);
+    unsigned char buf[7] = {0x48, 0x81, 0xc8};
+    ASM("or  %s, %d", getRegName(r), c);
+    if(r == Reg::RAX){
+        buf[1] = 0x0d;
+        PUT_ARG(buf[2], c);
+        BIN(buf, 6);
+    }
+    buf[0] |= REGEXTR(r);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
+    BIN(buf, 7);
+}
+
+void xXorRC(BackendContext* context, Reg r, long long c){
+    LOG_ASSERT(context != NULL);
+    ASM("xor %s, %d", getRegName(r), c);
+    unsigned char buf[7] = {0x48, 0x81, 0xf0};
+    if(r == Reg::RAX){
+        buf[1] = 0x35;
+        PUT_ARG(buf[2], c);
+        BIN(buf, 6);
+    }
+    buf[0] |= REGEXTR(r);
+    buf[2] |= REG3BIT(r);
+    PUT_ARG(buf[3], c);
+    BIN(buf, 7);
 }
 
 void xIMulRR(BackendContext* context, Reg r1, Reg r2){
@@ -406,8 +489,8 @@ void xIMulRR(BackendContext* context, Reg r1, Reg r2){
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
-    buf[4] |= REG3BIT(r1);
-    buf[4] |= UC (REG3BIT(r2) << 3);
+    buf[3] |= REG3BIT(r1);
+    buf[3] |= UC (REG3BIT(r2) << 3);
 
     BIN(buf, 4);
 }
@@ -416,29 +499,29 @@ void xIDivR(BackendContext* context, Reg r){
     LOG_ASSERT(context != NULL);
     ASM("idiv %s", getRegName(r));
     
-     unsigned char buf[3] = {0x48, 0xf7, 0xf8};
+    unsigned char buf[3] = {0x48, 0xf7, 0xf8};
     buf[0] |= REGEXTR(r);
-    buf[3] |= REG3BIT(r);
+    buf[2] |= REG3BIT(r);
 
-    BIN(buf, 4);
+    BIN(buf, 3);
 }
 
 void xShlRR(BackendContext* context, Reg r1, Reg r2){
     LOG_ASSERT(context != NULL);
     LOG_ASSERT(r2 == Reg::RCX);
-    ASM("shl %s cl", getRegName(r1));
+    ASM("shl %s, cl", getRegName(r1));
      unsigned char buf[3] = {0x48, 0xd3, 0xe0};
     buf[0] |= REGEXTR(r1);
-    buf[3] |= REG3BIT(r1);
+    buf[2] |= REG3BIT(r1);
     BIN(buf, 3);
 }
 void xShrRR(BackendContext* context, Reg r1, Reg r2){
     LOG_ASSERT(context != NULL);
     LOG_ASSERT(r2 == Reg::RCX);
-    ASM("shr %s cl", getRegName(r1));
+    ASM("shr %s, cl", getRegName(r1));
     unsigned char buf[3] = {0x48, 0xd3, 0xe8};
     buf[0] |= REGEXTR(r1);
-    buf[3] |= REG3BIT(r1);
+    buf[2] |= REG3BIT(r1);
     BIN(buf, 3);
 }
 

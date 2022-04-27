@@ -84,8 +84,9 @@ NodeList* parseText(const char* text){
                             tabCap  *= 2;
                         }
                         LOG_INFO("\b New! #%d", curId);
-                        idTable[curId++] = {strdup(token), curId - 1};
-                        nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id = curId-1}));
+                        idTable[curId] = {strdup(token), curId};
+                        nodeListPush(list, newNode(NodeType::IDENTIFIER, {.id = curId}));
+                        curId++;
                     }
 
                     memset(token, 0, MAX_TOKEN_LEN);

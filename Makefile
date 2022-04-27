@@ -15,7 +15,7 @@ MINOR_VERSION = 0
 
 LIBRARIES = MGK Stack File
 
-CXXFLAGS = `cat $(LIB_DIR)Cflags` -I$(LIB_DIR)
+CXXFLAGS = -g `cat $(LIB_DIR)Cflags` -I$(LIB_DIR)
 SANFLAGS = `cat $(LIB_DIR)SanitizeFlags`
 LXXFLAGS = -L$(LIB_DIR) $(addprefix -l, $(LIBRARIES))
 
