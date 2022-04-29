@@ -1,6 +1,7 @@
 #include "MGK/Logger.h"
 #include "MGK/Utils.h"
 #include "Backend.h"
+#include "Elfer.h"
 #include <stdarg.h>
 #include <string.h>
 const size_t INIT_SZ = 32;
@@ -36,8 +37,8 @@ void backend(const Node* root, const char* filename){
 
     ByteBufferAppendf(&context.asmBuf,
         ".intel_syntax noprefix\n"
-        ".global main\n"
-        "main:\n");
+        ".global _start\n"
+        "_start:\n");
     
     LabelReserve(&context, 1);  // Take label 0;
     createFrame(&context, NULL, root);
@@ -49,6 +50,9 @@ void backend(const Node* root, const char* filename){
     FILE* asmFile = fopen(filename, "w");
     LOG_ASSERT(asmFile != NULL);
     fwrite(context.asmBuf.buff, sizeof(char), context.asmBuf.size, asmFile);
+
+    genElf("my.out", context.binBuf.buff, context.binBuf.size);
+
     deleteByteBuffer(&context.asmBuf);
     deleteByteBuffer(&context.binBuf);
     deleteByteBuffer(&context.labelBuf);
@@ -193,7 +197,7 @@ void codeGen(BackendContext* context ,const Node* node){
                 XPUSH(Reg::RAX);
             }
             break;
-        case Operator::TERN_Q:
+        case Operator::TERN_Q:{
             LOG_ASSERT(node->right->data.opr == Operator::TERN_C);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
@@ -201,6 +205,7 @@ void codeGen(BackendContext* context ,const Node* node){
             l = LabelReserve(context, 2);
 
             XJMP(Flags::Z, l);
+            size_t of = context->binBuf.size;
             
             createFrame(context, context->ns, node);
             codeGen(context, node->right->left);
@@ -209,6 +214,8 @@ void codeGen(BackendContext* context ,const Node* node){
 
             XJMP(Flags::ABS, l + 1);
             LabelRegister(context, l);
+            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
+            of = context->binBuf.size;
             
             createFrame(context, context->ns, node);
             codeGen(context, node->right->right);
@@ -216,21 +223,27 @@ void codeGen(BackendContext* context ,const Node* node){
             closeFrame(context);
             
             LabelRegister(context, l + 1);
+            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
             XPUSH(Reg::RAX);
+        }
             break;
-        case Operator::QQ:
+        case Operator::QQ:{
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             l = LabelReserve(context, 1);
             XJMP(Flags::NZ, l);
+            size_t of = context->binBuf.size;
+
             
             createFrame(context, context->ns, node);
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             closeFrame(context);
             LabelRegister(context, l);
+            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
             XPUSH(Reg::RAX);
+        }
             break;
         case Operator::ENDL:
             codeGen(context, node->left);
@@ -282,7 +295,8 @@ void codeGen(BackendContext* context ,const Node* node){
             XPUSH(Reg::RAX);
             }
             break;
-        case Operator::WHILE:
+        case Operator::WHILE:{
+
             openNewNS(context);
             registerVar(context->ns, -2);
             
@@ -293,54 +307,79 @@ void codeGen(BackendContext* context ,const Node* node){
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             XJMP(Flags::Z  , l + 1);
+            size_t of = context->binBuf.size;
             codeGen(context, node->right);
             XPOPMVC(getOffset(context->ns, -2));
             XJMP(Flags::ABS, l);
             LabelRegister(context, l + 1);
+            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
             XPUSHMVC(getOffset(context->ns, -2));
             closeNS(context);
+        }
             break;
-        case Operator::LAND:
+        case Operator::LAND:{
+            size_t ofs[3] = {};
             l = LabelReserve(context, 2);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             XJMP(Flags::Z, l);
+            ofs[0] = context->binBuf.size;
 
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             XJMP(Flags::Z, l);
-           
+            ofs[1] = context->binBuf.size;
+
             XMOVRC(Reg::RAX, 1);
             XPUSH(Reg::RAX);
             XJMP(Flags::ABS, l + 1);
+            ofs[2] = context->binBuf.size;
 
             LabelRegister(context, l);
+            *(int*)(&context->binBuf.buff[ofs[0] - 4]) = (int)(context->binBuf.size - ofs[0]);
+            *(int*)(&context->binBuf.buff[ofs[1] - 4]) = (int)(context->binBuf.size - ofs[1]);
+
             XMOVRC(Reg::RAX, 0);
             XPUSH(Reg::RAX);
             LabelRegister(context, l + 1);
+            *(int*)(&context->binBuf.buff[ofs[2] - 4]) = (int)(context->binBuf.size - ofs[2]);
+
+        }
             break;
-        case Operator::LOR:
+        case Operator::LOR:{
+            size_t ofs[3];
+
             l = LabelReserve(context, 2);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             XJMP(Flags::NZ, l);
+            ofs[0] = context->binBuf.size;
 
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
             XJMP(Flags::NZ, l);
+            ofs[1] = context->binBuf.size;
            
             XMOVRC(Reg::RAX, 0);
             XPUSH(Reg::RAX);
             XJMP(Flags::ABS, l + 1);
+            ofs[2] = context->binBuf.size;
+
 
             LabelRegister(context, l);
+            *(int*)(&context->binBuf.buff[ofs[0] - 4]) = (int)(context->binBuf.size - ofs[0]);
+            *(int*)(&context->binBuf.buff[ofs[1] - 4]) = (int)(context->binBuf.size - ofs[1]);
+
             XMOVRC(Reg::RAX, 1);
             XPUSH(Reg::RAX);
             LabelRegister(context, l + 1);
+            *(int*)(&context->binBuf.buff[ofs[2] - 4]) = (int)(context->binBuf.size - ofs[2]);
+
+        }
             break;
         case Operator::NOT:
             codeGen(context, node->right);
@@ -564,7 +603,7 @@ void LabelRegister(BackendContext* context, unsigned label){
 long long LabelGetOffs(BackendContext* context, unsigned label){
     LOG_ASSERT(context != NULL);
     LOG_ASSERT(label < context->labels);
-    
+
     return ((long long*) context->labelBuf.buff)[label];
 }
 

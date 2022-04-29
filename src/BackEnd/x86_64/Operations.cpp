@@ -151,17 +151,17 @@ void xExit(BackendContext* context){
 void xIn(BackendContext* context){
     LOG_ASSERT(context != NULL);
     ASM("call ncc_in");
-    // long long afterIp = (long long)context->binBuf.size + 5;
+    long long afterIp = (long long)context->binBuf.size + 5;
     unsigned char buf[5] = {0xe8};
-    PUT_ARG(buf[1], 0ll);
+    PUT_ARG(buf[1], -0x20 - afterIp);
     BIN(buf, 5);
 }
 void xOut(BackendContext* context){
     LOG_ASSERT(context != NULL);
     ASM("call ncc_out");
-    // long long afterIp = (long long)context->binBuf.size + 5;
+    long long afterIp = (long long)context->binBuf.size + 5;
     unsigned char buf[5] = {0xe8};
-    PUT_ARG(buf[1], 0ll);
+    PUT_ARG(buf[1], -0x10 - afterIp);
     BIN(buf, 5);
 }
 void xOutC(BackendContext* context){
@@ -381,7 +381,7 @@ void xMovRMCR(BackendContext* context, Reg r1, long long off, Reg r2){
         BIN(buf, 8);
         return;
     }
-    PUT_ARG(buf[4], off);
+    PUT_ARG(buf[3], off);
     BIN(buf, 7);
 }
 void xMovRC  (BackendContext* context, Reg r, long long c){
@@ -486,11 +486,11 @@ void xIMulRR(BackendContext* context, Reg r1, Reg r2){
     ASM("imul %s, %s", getRegName(r1), getRegName(r2));
     
      unsigned char buf[4] = {0x48, 0x0f, 0xaf, 0xc0};
-    buf[0] |= REGEXTR(r1);
-    buf[0] |= UC (REGEXTR(r2) << 2);
+    buf[0] |= REGEXTR(r2);
+    buf[0] |= UC (REGEXTR(r1) << 2);
 
-    buf[3] |= REG3BIT(r1);
-    buf[3] |= UC (REG3BIT(r2) << 3);
+    buf[3] |= REG3BIT(r2);
+    buf[3] |= UC (REG3BIT(r1) << 3);
 
     BIN(buf, 4);
 }
