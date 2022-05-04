@@ -21,17 +21,27 @@ SYS_STDOUT = 0x01
 ;//     syscall
 
 ncc_in:
-    mov rax, 5
-    ;// push rbp
-    ;// mov rbp, rsp
-    ;// sub rsp, 64
     
-    ;// xor rax, rax
-    ;// xor rdi, rdi
-    ;// lea rsi, [rbp - 64]
-    ;// mov rdx, 32
+;//     mov rax, 5
+;//     ret
 
-    ;// lea rsi, [rbp - 64]
+    push rbp
+    mov rbp, rsp
+    sub rsp, 16
+
+    mov QWORD PTR [rbp - 0x08], 0
+    mov QWORD PTR [rbp - 0x10], 0
+    
+    xor rax, rax
+    xor rdi, rdi
+    lea rsi, [rbp - 0x10]
+    mov rdx, 0xf
+    syscall
+
+    lea rdi, [rbp - 0x10]
+    call atoi
+    mov rsp, rbp
+    pop rbp
     ret
 
 ncc_out:
@@ -49,6 +59,38 @@ ncc_out:
     mov rsp, rbp
     pop rbp
     ret
+
+;// rdi - string Null ended
+atoi:
+        xor rax, rax
+        mov rdx, 1
+        xor rsi, rsi
+atoi_loop:
+        mov sil, BYTE PTR [rdi]
+        inc rdi
+        
+        test sil, sil
+        jz atoi_loop_end
+
+        cmp sil, '\n'
+        je atoi_loop_end
+
+        cmp sil, ' '
+        je atoi_loop_end
+
+        cmp sil, '-'
+        jne atoi_digit
+        mov rdx, -1
+
+atoi_digit:
+        sub sil, '0'
+        imul rax, 10
+        add rax, rsi
+
+        jmp atoi_loop
+atoi_loop_end:
+        imul rax, rdx
+        ret
 
 ;// =====================================================================
 ;//  itoa10 - prints integer to string. Require string to include all characters. Unsigned
@@ -271,6 +313,8 @@ putNc_Flush:
 TNXTABLE:
         .ascii "0123456789ABCDEF" ;// Easter egg for good debug
 buffer:
+        .fill BUFFER_SIZE
+bufferRd:
         .fill BUFFER_SIZE
 bufferSz:
         .long 0, 0

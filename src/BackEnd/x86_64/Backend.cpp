@@ -10,15 +10,16 @@ const int INT_SZ = 8; //sizeof(int);
 
 
 #define ASM(format, ...) {ByteBufferAppendf(&context->asmBuf, format "\n\t", ## __VA_ARGS__);}
+#define UPDATE_ADDR(of) *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of)
 
 const Reg stdcallRegs[6] = {Reg::RDI, Reg::RSI, Reg::RDX, Reg::RCX, Reg::R8, Reg::R9};
 
 NameSpace* createNS(NameSpace* parent = NULL){
     NameSpace* ns = (NameSpace*)mgk_calloc(1, sizeof(NameSpace));
-    ns->parent = parent;
-    ns->size  = 0;
-    ns->varTable = (VarOffset*)mgk_calloc(32, sizeof(VarOffset));
-    ns->pushed = 0;
+    ns->parent    = parent;
+    ns->size      = 0;
+    ns->varTable  = (VarOffset*)mgk_calloc(32, sizeof(VarOffset));
+    ns->pushed    = 0;
     return ns; 
 }
 
@@ -114,7 +115,7 @@ void codeGen(BackendContext* context ,const Node* node){
     free(label);
     LOG_INC_TAB();
 
-    unsigned l = 0;
+    unsigned lbl = 0;
 
     switch (node->type)
     {
@@ -183,7 +184,7 @@ void codeGen(BackendContext* context ,const Node* node){
             LOG_ASSERT(node->left != NULL);
             if(node->left->type == NodeType::IDENTIFIER){
                 codeGen(context, node->right);
-                XPOPMVC(getOffset(context->ns, node->left->data.id));
+                XPOPMVC( getOffset(context->ns, node->left->data.id));
                 XPUSHMVC(getOffset(context->ns, node->left->data.id));
             }
             else{
@@ -202,9 +203,9 @@ void codeGen(BackendContext* context ,const Node* node){
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            l = LabelReserve(context, 2);
+            lbl = LabelReserve(context, 2);
 
-            XJMP(Flags::Z, l);
+            XJMP(Flags::Z, lbl);
             size_t of = context->binBuf.size;
             
             createFrame(context, context->ns, node);
@@ -212,9 +213,9 @@ void codeGen(BackendContext* context ,const Node* node){
             XPOP(Reg::RAX);
             closeFrame(context);
 
-            XJMP(Flags::ABS, l + 1);
-            LabelRegister(context, l);
-            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
+            XJMP(Flags::ABS, lbl + 1);
+            LabelRegister(context, lbl);
+            UPDATE_ADDR(of);
             of = context->binBuf.size;
             
             createFrame(context, context->ns, node);
@@ -222,8 +223,8 @@ void codeGen(BackendContext* context ,const Node* node){
             XPOP(Reg::RAX);
             closeFrame(context);
             
-            LabelRegister(context, l + 1);
-            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
+            LabelRegister(context, lbl + 1);
+            UPDATE_ADDR(of);
             XPUSH(Reg::RAX);
         }
             break;
@@ -231,8 +232,8 @@ void codeGen(BackendContext* context ,const Node* node){
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            l = LabelReserve(context, 1);
-            XJMP(Flags::NZ, l);
+            lbl = LabelReserve(context, 1);
+            XJMP(Flags::NZ, lbl);
             size_t of = context->binBuf.size;
 
             
@@ -240,8 +241,8 @@ void codeGen(BackendContext* context ,const Node* node){
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             closeFrame(context);
-            LabelRegister(context, l);
-            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
+            LabelRegister(context, lbl);
+            UPDATE_ADDR(of);
             XPUSH(Reg::RAX);
         }
             break;
@@ -263,10 +264,10 @@ void codeGen(BackendContext* context ,const Node* node){
             break;
         case Operator::FUNC:{
             
-            l = LabelReserve(context, 2);
-            functionRegister(context, node->left->data.id, l, 0);
-            XJMP(Flags::ABS, l + 1);
-            LabelRegister(context, l);
+            lbl = LabelReserve(context, 2);
+            functionRegister(context, node->left->data.id, lbl, 0);
+            XJMP(Flags::ABS, lbl + 1);
+            LabelRegister(context, lbl);
             size_t of1 = context->binBuf.size;
             NameSpace* oldNS = context->ns;
 
@@ -279,8 +280,8 @@ void codeGen(BackendContext* context ,const Node* node){
             context->ns = oldNS;
             XRET();
 
-            LabelRegister(context, l + 1);
-            *(int*)(&context->binBuf.buff[of1 - 4]) = (int)(context->binBuf.size - of1);
+            LabelRegister(context, lbl + 1);
+            UPDATE_ADDR(of1);
             XXOR(Reg::RAX, Reg::RAX);
             XPUSH(Reg::RAX);
             }
@@ -300,85 +301,83 @@ void codeGen(BackendContext* context ,const Node* node){
             openNewNS(context);
             registerVar(context->ns, -2);
             
-            l = LabelReserve(context, 2);
+            lbl = LabelReserve(context, 2);
 
-            LabelRegister(context, l);
+            LabelRegister(context, lbl);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            XJMP(Flags::Z  , l + 1);
+            XJMP(Flags::Z  , lbl + 1);
             size_t of = context->binBuf.size;
             codeGen(context, node->right);
             XPOPMVC(getOffset(context->ns, -2));
-            XJMP(Flags::ABS, l);
-            LabelRegister(context, l + 1);
-            *(int*)(&context->binBuf.buff[of - 4]) = (int)(context->binBuf.size - of);
+            XJMP(Flags::ABS, lbl);
+            LabelRegister(context, lbl + 1);
+            UPDATE_ADDR(of);
             XPUSHMVC(getOffset(context->ns, -2));
             closeNS(context);
         }
             break;
         case Operator::LAND:{
             size_t ofs[3] = {};
-            l = LabelReserve(context, 2);
+            lbl = LabelReserve(context, 2);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            XJMP(Flags::Z, l);
+            XJMP(Flags::Z, lbl);
             ofs[0] = context->binBuf.size;
 
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            XJMP(Flags::Z, l);
+            XJMP(Flags::Z, lbl);
             ofs[1] = context->binBuf.size;
 
             XMOVRC(Reg::RAX, 1);
             XPUSH(Reg::RAX);
-            XJMP(Flags::ABS, l + 1);
+            XJMP(Flags::ABS, lbl + 1);
             ofs[2] = context->binBuf.size;
 
-            LabelRegister(context, l);
-            *(int*)(&context->binBuf.buff[ofs[0] - 4]) = (int)(context->binBuf.size - ofs[0]);
-            *(int*)(&context->binBuf.buff[ofs[1] - 4]) = (int)(context->binBuf.size - ofs[1]);
+            LabelRegister(context, lbl);
+            UPDATE_ADDR(ofs[0]);
+            UPDATE_ADDR(ofs[1]);
 
             XMOVRC(Reg::RAX, 0);
             XPUSH(Reg::RAX);
-            LabelRegister(context, l + 1);
-            *(int*)(&context->binBuf.buff[ofs[2] - 4]) = (int)(context->binBuf.size - ofs[2]);
-
+            LabelRegister(context, lbl + 1);
+            UPDATE_ADDR(ofs[2]);
         }
             break;
         case Operator::LOR:{
             size_t ofs[3];
 
-            l = LabelReserve(context, 2);
+            lbl = LabelReserve(context, 2);
             codeGen(context, node->left);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            XJMP(Flags::NZ, l);
+            XJMP(Flags::NZ, lbl);
             ofs[0] = context->binBuf.size;
 
             codeGen(context, node->right);
             XPOP(Reg::RAX);
             XTESTRR(Reg::RAX, Reg::RAX);
-            XJMP(Flags::NZ, l);
+            XJMP(Flags::NZ, lbl);
             ofs[1] = context->binBuf.size;
            
             XMOVRC(Reg::RAX, 0);
             XPUSH(Reg::RAX);
-            XJMP(Flags::ABS, l + 1);
+            XJMP(Flags::ABS, lbl + 1);
             ofs[2] = context->binBuf.size;
 
 
-            LabelRegister(context, l);
-            *(int*)(&context->binBuf.buff[ofs[0] - 4]) = (int)(context->binBuf.size - ofs[0]);
-            *(int*)(&context->binBuf.buff[ofs[1] - 4]) = (int)(context->binBuf.size - ofs[1]);
+            LabelRegister(context, lbl);
+            UPDATE_ADDR(ofs[0]);
+            UPDATE_ADDR(ofs[1]);
 
             XMOVRC(Reg::RAX, 1);
             XPUSH(Reg::RAX);
-            LabelRegister(context, l + 1);
-            *(int*)(&context->binBuf.buff[ofs[2] - 4]) = (int)(context->binBuf.size - ofs[2]);
-
+            LabelRegister(context, lbl + 1);
+            UPDATE_ADDR(ofs[2]);
         }
             break;
         case Operator::NOT:
@@ -642,7 +641,7 @@ void createFrame(BackendContext* context, NameSpace* par, const Node* node){
     XPUSH(Reg::RBP);
     context->ns = createNS(par);
     int n = getVarCnt(node) * INT_SZ;
-    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::WHILE) n += 8;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::WHILE) n += INT_SZ;
     if(node->type == NodeType::OPERATOR && node->data.opr == Operator::FUNC) n += MIN(6, getNfuncArgs(node->right->left)) * INT_SZ;
     XMOVRR(Reg::RBP, Reg::RSP);
     XSUBRC(Reg::RSP, n);

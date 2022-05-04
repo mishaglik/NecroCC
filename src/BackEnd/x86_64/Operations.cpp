@@ -108,6 +108,7 @@ void xCmpRR(BackendContext* context, Reg r1, Reg r2){
 
     buf[2] |= REG3BIT(r1);
     buf[2] |= UC (REG3BIT(r2) << 3);
+
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
@@ -141,9 +142,9 @@ void xExit(BackendContext* context){
     ASM("mov rax, 0x3c");
     ASM("syscall");
     const  unsigned char buf[12] = {
-        0x48, 0x31, 0xff,   // xor rdi, rdi 
+        0x48, 0x31, 0xff,                           // xor rdi, rdi 
         0x48, 0xc7, 0xc0, 0x3c, 0x00, 0x00, 0x00,  // mov rax, 0x3c (exit code);
-        0x0f, 0x05  // syscall
+        0x0f, 0x05                                // syscall
     };
     BIN(buf, 12);
 }
@@ -156,6 +157,7 @@ void xIn(BackendContext* context){
     PUT_ARG(buf[1], -0x20 - afterIp);
     BIN(buf, 5);
 }
+
 void xOut(BackendContext* context){
     LOG_ASSERT(context != NULL);
     ASM("call ncc_out");
@@ -164,6 +166,7 @@ void xOut(BackendContext* context){
     PUT_ARG(buf[1], -0x10 - afterIp);
     BIN(buf, 5);
 }
+
 void xOutC(BackendContext* context){
     ASM("mov rax, rdi; out")
     const  unsigned char buf[3] = {0x48, 0x89, 0xf8};
@@ -258,6 +261,7 @@ void xTestRR(BackendContext* context, Reg r1, Reg r2){
 
     buf[2] |= REG3BIT(r1);
     buf[2] |= UC (REG3BIT(r2) << 3);
+
     buf[0] |= REGEXTR(r1);
     buf[0] |= UC (REGEXTR(r2) << 2);
 
@@ -515,6 +519,7 @@ void xShlRR(BackendContext* context, Reg r1, Reg r2){
     buf[2] |= REG3BIT(r1);
     BIN(buf, 3);
 }
+
 void xShrRR(BackendContext* context, Reg r1, Reg r2){
     LOG_ASSERT(context != NULL);
     LOG_ASSERT(r2 == Reg::RCX);

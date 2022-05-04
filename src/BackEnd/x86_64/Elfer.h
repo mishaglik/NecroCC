@@ -4,7 +4,7 @@
 
 void genElf(const char* filename, const char* binBuffer, size_t n);
 
-void writeElfHeader(FILE* file);
+void writeElfHeader(FILE* file, size_t k);
 
 void writeElfPHTable(FILE* file, size_t n);
 void writeElfSHTable(FILE* file, size_t n);

@@ -11,8 +11,40 @@ const Elf64_Word SHNum = 9;
 const Elf64_Addr PltSz = 0x30;
 const Elf64_Addr StartOff = 0x400000;
 const Elf64_Addr EntryPoint = StartOff + 0x1000 + PltSz;
+const size_t Offset_Mask = ~0xffful;
 
-const unsigned char PltSeg[PltSz] = {
+const Elf64_Ehdr EHdr{
+    .e_ident = {
+        ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, // 0x7f ELF
+        /*[EI_CLASS     ] = */ ELFCLASS64, 
+        /*[EI_DATA      ] = */ ELFDATA2LSB, 
+        /*[EI_VERSION   ] = */ EV_CURRENT,
+        /*[EI_OSABI     ] = */ ELFOSABI_NONE,
+        /*[EI_ABIVERSION] = */ 0,
+        0,0,0,0, 0,0,0
+    },
+    .e_type    = ET_EXEC,
+    .e_machine = EM_X86_64,
+    .e_version = EV_CURRENT,
+
+    .e_entry     = EntryPoint,
+
+    .e_phoff     = sizeof(Elf64_Ehdr),
+    .e_shoff     = 0x3500,
+
+    .e_flags   = 0,
+    .e_ehsize    = sizeof(Elf64_Ehdr),	
+
+    .e_phentsize = sizeof(Elf64_Phdr), 
+    .e_phnum     = PHNum,
+
+    .e_shentsize = sizeof(Elf64_Shdr), 
+    .e_shnum     = SHNum,
+    .e_shstrndx  = 3,
+};
+
+
+static unsigned char PltSeg[PltSz] = {
     /*1000:*/	0xff, 0x35, 0x02, 0x20, 0x00, 0x00,    	// push    rip + 0x2002         # 3008 <_GLOBAL_OFFSET_TABLE_+0x8>
     /*1006:*/	0xff, 0x25, 0x04, 0x20, 0x00, 0x00,    	// jmp    [rip + 0x2004]        # 3010 <_GLOBAL_OFFSET_TABLE_+0x10>
     /*100c:*/	0x0f, 0x1f, 0x40, 0x00,          	    // nopl   rax + 0x0
@@ -28,7 +60,7 @@ const unsigned char PltSeg[PltSz] = {
     /*102b:*/	0xe9, 0xd0, 0xff, 0xff, 0xff,           // jmp    1000 <ncc_in@plt-0x10>
 };
 
-const Elf64_Rela RelaSeg[2] = {
+static Elf64_Rela RelaSeg[2] = {
     {
         .r_offset = StartOff + 0x3018, 
         .r_info   = ELF64_R_INFO(1, R_X86_64_JUMP_SLOT),
@@ -74,51 +106,51 @@ static const Elf64_Sym SymTab[3] = {
 };
 
 const size_t DTNum = 10;
-const Elf64_Dyn DynTable[DTNum] = {
+static Elf64_Dyn DynTable[DTNum] = {
     {
-        .d_tag = DT_NEEDED,
+        .d_tag = DT_NEEDED,                         // [0]
         .d_un  = {.d_val = 16},
     },
     {
-        .d_tag = DT_STRTAB,
+        .d_tag = DT_STRTAB,                         // [1]
         .d_un  = {.d_ptr = StartOff + 0x400},
     },
     {
-        .d_tag = DT_SYMTAB,
+        .d_tag = DT_SYMTAB,                         // [2]
         .d_un  = {.d_ptr = StartOff + 0x300},
     },
     {
-        .d_tag = DT_STRSZ,
+        .d_tag = DT_STRSZ,                          // [3]
         .d_un  = {.d_val = sizeof(StrTab)},
     },
     {
-        .d_tag = DT_SYMENT,
+        .d_tag = DT_SYMENT,                         // [4]
         .d_un  = {.d_val = sizeof(Elf64_Sym)},
     },
     {
-        .d_tag = DT_PLTGOT,
+        .d_tag = DT_PLTGOT,                         // [5]
         .d_un  = {.d_ptr = StartOff + 0x3000},
     },
     {
-        .d_tag = DT_PLTRELSZ,
+        .d_tag = DT_PLTRELSZ,                       // [6]
         .d_un  = {.d_val = sizeof(RelaSeg)},
     },
     {
-        .d_tag = DT_PLTREL,
+        .d_tag = DT_PLTREL,                         // [7]
         .d_un  = {.d_val = DT_RELA},
     },
     {
-        .d_tag = DT_JMPREL,
+        .d_tag = DT_JMPREL,                         // [8]
         .d_un  = {.d_ptr = StartOff + 0x500},
     },
     {
-        .d_tag = DT_NULL,
+        .d_tag = DT_NULL,                           // [9]
         .d_un  = {},
     },
 };
 
 
-const Elf64_Shdr SHTable[SHNum] = {
+static Elf64_Shdr SHTable[SHNum] = {
     {   
         .sh_name      = 0,                  //[0]: Null
         .sh_type      = 0,
@@ -197,7 +229,7 @@ const Elf64_Shdr SHTable[SHNum] = {
         .sh_flags     = SHF_ALLOC | SHF_EXECINSTR,
         .sh_addr      = EntryPoint,
         .sh_offset    = 0x1030,
-        .sh_size      = 0x2000 - 0x1030,
+        .sh_size      = 0,
         .sh_link      = 0,
         .sh_info      = 0,
         .sh_addralign = 0x8,
@@ -208,7 +240,7 @@ const Elf64_Shdr SHTable[SHNum] = {
         .sh_type      = SHT_DYNAMIC,
         .sh_flags     = SHF_ALLOC | SHF_WRITE,
         .sh_addr      = StartOff + 0x2ee0,
-        .sh_offset    = 0x2ee0,
+        .sh_offset    =            0x2ee0,
         .sh_size      = sizeof(Elf64_Dyn) * DTNum,
         .sh_link      = 3,
         .sh_info      = 0,
@@ -220,7 +252,7 @@ const Elf64_Shdr SHTable[SHNum] = {
         .sh_type      = SHT_PROGBITS,
         .sh_flags     = SHF_ALLOC | SHF_WRITE,
         .sh_addr      = StartOff + 0x3000,
-        .sh_offset    = 0x3000,
+        .sh_offset    =            0x3000,
         .sh_size      = 0x80,
         .sh_link      = 0,
         .sh_info      = 0,
@@ -231,11 +263,14 @@ const Elf64_Shdr SHTable[SHNum] = {
 
 void genElf(const char* filename, const char* binBuffer, size_t n){
     LOG_ASSERT(n < 0x1000);
+
+    size_t k = n & Offset_Mask;
+
     FILE* file = fopen(filename, "w");
     LOG_ASSERT(file != NULL);
     
-    writeElfHeader(file);
-    writeElfPHTable(file, n);
+    writeElfHeader (file, k);
+    writeElfPHTable(file, k);
 
     fseek(file, 0x0200, SEEK_SET);
     fwrite(Interp, sizeof(Interp), 1, file);
@@ -247,75 +282,57 @@ void genElf(const char* filename, const char* binBuffer, size_t n){
     fwrite(StrTab, sizeof(StrTab), 1, file);
 
     fseek(file, 0x0500, SEEK_SET);
+    RelaSeg[0].r_offset += k;
+    RelaSeg[1].r_offset += k;
     fwrite(RelaSeg, sizeof(RelaSeg), 1, file);
+    RelaSeg[0].r_offset -= k;
+    RelaSeg[1].r_offset -= k;
 
     fseek(file, 0x1000, SEEK_SET);
-    fwrite(&PltSeg,   sizeof(char), PltSz, file);
+
+    *(unsigned*)&PltSeg[0x02] += (unsigned)k;
+    *(unsigned*)&PltSeg[0x08] += (unsigned)k;
+    *(unsigned*)&PltSeg[0x12] += (unsigned)k;
+    *(unsigned*)&PltSeg[0x22] += (unsigned)k;
+    fwrite(&PltSeg,   sizeof(char), PltSz, file);  
+    *(unsigned*)&PltSeg[0x02] -= (unsigned)k;
+    *(unsigned*)&PltSeg[0x08] -= (unsigned)k;
+    *(unsigned*)&PltSeg[0x12] -= (unsigned)k;
+    *(unsigned*)&PltSeg[0x22] -= (unsigned)k;  
+    
     fwrite(binBuffer, sizeof(char), n,     file);
 
-    fseek(file, 0x2ee0, SEEK_SET);
+    fseek(file, 0x2ee0 + k, SEEK_SET);
+    DynTable[6].d_un.d_ptr += k;
     fwrite(&DynTable, sizeof(Elf64_Dyn), DTNum, file);
+    DynTable[6].d_un.d_ptr -= k;
 
     Elf64_Addr addr = 0x401016;
-    fseek(file, 0x3018, SEEK_SET);
+    fseek(file, 0x3018 + k, SEEK_SET);
     fwrite(&addr, sizeof(Elf64_Addr), 1, file);
 
     addr += 0x10;
-    fseek(file, 0x3020, SEEK_SET);
+    fseek(file, 0x3020 + k, SEEK_SET);
     fwrite(&addr, sizeof(Elf64_Addr), 1, file);
 
-    fseek(file, 0x3500, SEEK_SET);
-    writeElfSHTable(file, n);
+    fseek(file, 0x3500 + k, SEEK_SET);
+    writeElfSHTable(file, k);
 
     fclose(file);
 }
 
 
 
-void writeElfHeader(FILE* file){
-    Elf64_Ehdr hdr = {};
+void writeElfHeader(FILE* file, size_t k){
+    Elf64_Ehdr hdr = EHdr;
 
-    hdr.e_ident[EI_MAG0] = ELFMAG0;
-    hdr.e_ident[EI_MAG1] = ELFMAG1;
-    hdr.e_ident[EI_MAG2] = ELFMAG2;
-    hdr.e_ident[EI_MAG3] = ELFMAG3;
-
-    hdr.e_ident[EI_CLASS     ] = ELFCLASS64;
-    hdr.e_ident[EI_DATA      ] = ELFDATA2LSB;
-    hdr.e_ident[EI_VERSION   ] = EV_CURRENT;
-    hdr.e_ident[EI_OSABI     ] = ELFOSABI_NONE;
-    hdr.e_ident[EI_ABIVERSION] = 0;
-    
-    hdr.e_ident[EI_PAD + 0] = 0;
-    hdr.e_ident[EI_PAD + 1] = 0;
-    hdr.e_ident[EI_PAD + 2] = 0;
-    hdr.e_ident[EI_PAD + 3] = 0;
-    hdr.e_ident[EI_PAD + 4] = 0;
-    hdr.e_ident[EI_PAD + 5] = 0;
-    hdr.e_ident[EI_PAD + 6] = 0;
-
-    hdr.e_type    = ET_EXEC;
-    hdr.e_machine = EM_X86_64;
-    hdr.e_version = EV_CURRENT;
-    hdr.e_flags   = 0;
-
-    hdr.e_ehsize    = sizeof(Elf64_Ehdr);		
-
-    hdr.e_phoff     = sizeof(Elf64_Ehdr);
-    hdr.e_phentsize = sizeof(Elf64_Phdr); 
-    hdr.e_phnum     = PHNum; 
-
-    hdr.e_shoff     = 0x3500;
-    hdr.e_shentsize = sizeof(Elf64_Shdr); 
-    hdr.e_shnum     = SHNum; 		
-    hdr.e_shstrndx  = 3;
-
-    hdr.e_entry     = EntryPoint;             // Entry point.
-
+    hdr.e_shoff += k;
     fwrite(&hdr, sizeof(Elf64_Ehdr), 1, file);
 }
 
 void writeElfPHTable(FILE* file, size_t n){
+    size_t k = n & Offset_Mask;
+
     Elf64_Phdr hdr_phd = {
         .p_type   = PT_PHDR,	
         .p_flags  = PF_R,		
@@ -353,19 +370,19 @@ void writeElfPHTable(FILE* file, size_t n){
         .p_type   = PT_LOAD,	
         .p_flags  = PF_R | PF_X,		
         .p_offset = 0x1000,		
-        .p_vaddr  = StartOff + 0x1000,		
+        .p_vaddr  = StartOff + 0x1000,	
         .p_paddr  = StartOff + 0x1000,		
-        .p_filesz = 0x1000,		
-        .p_memsz  = 0x1000,		
+        .p_filesz = n + PltSz,		
+        .p_memsz  = n + PltSz,		
         .p_align  = 0x1000,
     };
 
     Elf64_Phdr hdr_dynld = {
         .p_type   = PT_LOAD,	
         .p_flags  = PF_R | PF_W,		
-        .p_offset = 0x2ee0,		
-        .p_vaddr  = StartOff + 0x2ee0,		
-        .p_paddr  = StartOff + 0x2ee0,		
+        .p_offset =            0x2ee0 + k,		
+        .p_vaddr  = StartOff + 0x2ee0 + k,		
+        .p_paddr  = StartOff + 0x2ee0 + k,		
         .p_filesz = 0x200,		
         .p_memsz  = 0x1200,		
         .p_align  = 0x1000,
@@ -374,9 +391,9 @@ void writeElfPHTable(FILE* file, size_t n){
     Elf64_Phdr hdr_dyn = {
         .p_type   = PT_DYNAMIC,	
         .p_flags  = PF_R | PF_W,		
-        .p_offset = 0x2ee0,		
-        .p_vaddr  = StartOff + 0x2ee0,		
-        .p_paddr  = StartOff + 0x2ee0,		
+        .p_offset =            0x2ee0 + k,		
+        .p_vaddr  = StartOff + 0x2ee0 + k,		
+        .p_paddr  = StartOff + 0x2ee0 + k,		
         .p_filesz = 0x120,		
         .p_memsz  = 0x120,		
         .p_align  = 0x1000,
@@ -393,5 +410,19 @@ void writeElfPHTable(FILE* file, size_t n){
 
 
 void writeElfSHTable(FILE* file, size_t n){
+    size_t k = n & Offset_Mask;
+    
+    SHTable[6].sh_size    = n;
+    SHTable[7].sh_addr   += k;
+    SHTable[7].sh_offset += k;
+    SHTable[8].sh_addr   += k;
+    SHTable[8].sh_offset += k;
+
     fwrite(&SHTable, sizeof(SHTable), 1, file);
+
+    SHTable[6].sh_size    = 0;
+    SHTable[7].sh_addr   -= k;
+    SHTable[7].sh_offset -= k;
+    SHTable[8].sh_addr   -= k;
+    SHTable[8].sh_offset -= k;
 }
