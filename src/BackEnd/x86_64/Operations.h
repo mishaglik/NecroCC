@@ -14,7 +14,7 @@
 
 #define XCQO() xCqo(context);
 
-#define XOR(r1, r2)  {xBinaryRR(context, 0x09, r1, r2);ASM("or %s, %s", getRegName(r1), getRegName(r2));}
+#define X_OR(r1, r2) {xBinaryRR(context, 0x09, r1, r2);ASM("or %s, %s", getRegName(r1), getRegName(r2));}
 #define XAND(r1, r2) {xBinaryRR(context, 0x21, r1, r2);ASM("and %s, %s", getRegName(r1), getRegName(r2));}
 #define XXOR(r1, r2) {xBinaryRR(context, 0x31, r1, r2);ASM("xor %s, %s", getRegName(r1), getRegName(r2));}
 

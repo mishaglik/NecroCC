@@ -65,6 +65,10 @@ $(addprefix $(BIN_DIR), $(DEP)) :$(BIN_DIR)%.d : $(SRC_DIR)%.cpp
 
 -include $(addprefix $(BIN_DIR), $(DEP))
 
+ncclib:
+	gcc $(SRC_DIR)ncclib2.s -c -o $(BIN_DIR)libncc.o -nostdlib -fPIE
+	gcc $(BIN_DIR)libncc.o  -shared -o ncc/libncc.so -nostdlib -fPIE
+
 .PHONY: clean
 clean:
 	rm -f $(addprefix $(BIN_DIR), $(OBJ) $(DEP))

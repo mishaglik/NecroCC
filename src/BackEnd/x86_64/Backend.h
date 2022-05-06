@@ -115,6 +115,7 @@ struct NameSpace
     size_t capacity = 0;
     size_t above    = 0;
     size_t pushed   = 0;
+    unsigned regSaved = 0;
 };
 
 struct BackendContext
@@ -127,6 +128,7 @@ struct BackendContext
     int pass = 0;
     unsigned labels = 0;
     int nTabs = 0;
+    unsigned regStackUsed = 0;
 };
 
 
@@ -174,6 +176,8 @@ void createFrame(BackendContext* context, NameSpace* par, const Node* node);
 void closeFrame(BackendContext* context);
 
 void functionEntryVars(BackendContext* context, const Node* node, int* n = NULL);
+
+// unsigned getRegsNeeded(const Node* node);
 
 #include "Operations.h"
 

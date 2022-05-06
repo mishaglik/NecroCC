@@ -22,9 +22,8 @@ SYS_STDOUT = 0x01
 
 ncc_in:
     
-;//     mov rax, 5
-;//     ret
-
+    mov rax, 5
+    ret
     push rbp
     mov rbp, rsp
     sub rsp, 16
@@ -45,6 +44,9 @@ ncc_in:
     ret
 
 ncc_out:
+;//     mov rax, rdi
+;//     ret
+
     push rbp
     mov rbp, rsp
     sub rsp, 64

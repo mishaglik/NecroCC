@@ -421,7 +421,7 @@ void xAddRC(BackendContext* context, Reg r, long long c){
     }
     buf[0] |= REGEXTR(r);
     buf[2] |= REG3BIT(r);
-    PUT_ARG(buf[4], c);
+    PUT_ARG(buf[3], c);
     BIN(buf, 7);
 }
 
