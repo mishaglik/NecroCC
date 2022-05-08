@@ -14,8 +14,8 @@ const int INT_SZ = 8; //sizeof(int);
 
 const Reg stdcallRegs[6] = {Reg::RDI, Reg::RSI, Reg::RDX, Reg::RCX, Reg::R8, Reg::R9};
 
-const size_t regStackSz = 14;
-const Reg regStack[14]  = {Reg::RAX, Reg::RDI, Reg::RSI, Reg::RDX, Reg::RCX, Reg::R8, Reg::R9, Reg::RBX, Reg::R10, Reg::R11, Reg::R12, Reg::R13, Reg::R14, Reg::R15};
+const size_t regStackSz         = 14;
+const Reg regStack[regStackSz]  = {Reg::RAX, Reg::RDI, Reg::RSI, Reg::RDX, Reg::RCX, Reg::R8, Reg::R9, Reg::RBX, Reg::R10, Reg::R11, Reg::R12, Reg::R13, Reg::R14, Reg::R15};
 
 NameSpace* createNS(NameSpace* parent = NULL){
     NameSpace* ns = (NameSpace*)mgk_calloc(1, sizeof(NameSpace));
@@ -92,8 +92,9 @@ int getOffset(NameSpace* ns, idt_t id){
         LOG_ERROR("\bVAR %d not registered", id);
         return -1;
     }
-    LOG_INFO("Offset: 8 * (%d + %d) + %d", (int)(ns->parent->above), (int)ns->parent->pushed, getOffset(ns->parent, id));
-    return (int)((ns->parent->above + ns->parent->pushed) * INT_SZ) + getOffset(ns->parent, id);
+    int off = getOffset(ns->parent, id);
+    LOG_INFO("Offset: (%d + 8 * %d) + %d", (int)(ns->parent->nSub), (int)ns->parent->pushed, off);
+    return (int)(ns->parent->nSub + (ns->parent->pushed) * INT_SZ) + off;
 }
 
 void expandNS(NameSpace* ns, size_t newSZ){
@@ -110,7 +111,8 @@ void codeGen(BackendContext* context, const Node* node){
     context->nTabs++;
 
     if(node == NULL){
-        LOG_ERROR("NULL NODE");
+        XXOR(regStack[context->regStackUsed],regStack[context->regStackUsed]);
+        context->regStackUsed++;
         LOG_DEC_TAB();
         LOG_INFO("Finished");
         context->nTabs--;
@@ -126,7 +128,7 @@ void codeGen(BackendContext* context, const Node* node){
     unsigned lbl = 0;
     int pushed = 0;
 
-    if(context->regStackUsed > 10){
+    if(context->regStackUsed > regStackSz - 4){
         for(size_t i = 0; i < context->regStackUsed; ++i){
             pushed++;
             XPUSH(regStack[i]);
@@ -263,7 +265,7 @@ void codeGen(BackendContext* context, const Node* node){
             XJMP(Flags::Z, lbl);
             size_t of = context->binBuf.size;
             
-            createFrame(context, context->ns, node);
+            createFrame(context, context->ns, node->right->left);
             codeGen(context, node->right->left);
             XMOVRR(r1, Reg::RAX);
             closeFrame(context);
@@ -273,7 +275,7 @@ void codeGen(BackendContext* context, const Node* node){
             UPDATE_ADDR(of);
             of = context->binBuf.size;
             
-            createFrame(context, context->ns, node);
+            createFrame(context, context->ns, node->right->right);
             codeGen(context, node->right->right);
             XMOVRR(r1, Reg::RAX);
             closeFrame(context);
@@ -365,19 +367,20 @@ void codeGen(BackendContext* context, const Node* node){
             break;
         case Operator::WHILE:{
             lbl = LabelReserve(context, 2);
-            createFrame(context, context->ns, node);            
+            createFrame(context, context->ns, node);
+            context->regStackUsed++;            
             LabelRegister(context, lbl);
             codeGen(context, node->left);
-            XTESTRR(Reg::RAX, Reg::RAX);
-            context->regStackUsed--;
+            XTESTRR(Reg::RDI, Reg::RDI);
+            context->regStackUsed -= 2;
 
             XJMP(Flags::Z  , lbl + 1);
             size_t of = context->binBuf.size;
             codeGen(context, node->right);            
             XJMP(Flags::ABS, lbl);
             LabelRegister(context, lbl + 1);
-            closeFrame(context);
             UPDATE_ADDR(of);
+            closeFrame(context);
             XMOVRR(r1, Reg::RAX);
             
         }
@@ -592,8 +595,8 @@ int evaluteArguments(BackendContext* context, const Node* node){
     if(node == NULL) return 0;
     if(node->type == NodeType::OPERATOR && node->data.opr == Operator::COMMA){
         return
-        evaluteArguments(context, node->left) + 
-        evaluteArguments(context, node->right);
+        evaluteArguments(context, node->right) + 
+        evaluteArguments(context, node->left);
     }
     else{
         codeGen(context, node);
@@ -727,11 +730,13 @@ void createFrame(BackendContext* context, NameSpace* par, const Node* node){
     context->ns = createNS(par);
 
     int n = getVarCnt(node) * INT_SZ;
-    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::FUNC) n += MIN(6, getNfuncArgs(node->right->left)) * INT_SZ;
+    if(node->type == NodeType::OPERATOR && node->data.opr == Operator::FUNC){
+        n = getVarCnt(node->right->right) * INT_SZ;
+        n += MIN(6, getNfuncArgs(node->right->left)) * INT_SZ;
+    }
     XMOVRR(Reg::RBP, Reg::RSP);
 
     if(par){
-
         for(size_t i = 1; i < context->regStackUsed; ++i){
             xPushR(context, regStack[i]);
         }
@@ -739,13 +744,14 @@ void createFrame(BackendContext* context, NameSpace* par, const Node* node){
         context->regStackUsed = 0;
     }
     
+    context->ns->nSub = n;
+    LOG_INFO("Creating frame with nSub = %d", n);
     XSUBRC(Reg::RSP, n);
 }
 
 void registerVar(NameSpace* frame, idt_t id, int offset){
     LOG_ASSERT(frame != NULL);
     LOG_ASSERT(frame->varTable != NULL);
-
     if(frame->size >= frame->capacity){
         expandNS(frame, frame->capacity * 2);
     }
@@ -789,7 +795,7 @@ void closeFrame(BackendContext* context){
     } else context->regStackUsed = 0;
     deleteNS(context->ns);
     context->ns = oldNS;
-
+    LOG_INFO("Closing frame");
     XMOVRR(Reg::RSP, Reg::RBP);
     XPOP(Reg::RBP);    
 }

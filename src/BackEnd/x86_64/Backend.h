@@ -115,6 +115,7 @@ struct NameSpace
     size_t capacity = 0;
     size_t above    = 0;
     size_t pushed   = 0;
+    size_t nSub     = 0;
     unsigned regSaved = 0;
 };
 

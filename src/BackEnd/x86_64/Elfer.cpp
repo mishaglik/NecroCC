@@ -32,7 +32,7 @@ const Elf64_Ehdr EHdr{
     .e_phoff     = sizeof(Elf64_Ehdr),
     .e_shoff     = 0x3500,
 
-    .e_flags   = 0,
+    .e_flags     = 0,
     .e_ehsize    = sizeof(Elf64_Ehdr),	
 
     .e_phentsize = sizeof(Elf64_Phdr), 
@@ -263,14 +263,15 @@ static Elf64_Shdr SHTable[SHNum] = {
 
 void genElf(const char* filename, const char* binBuffer, size_t n){
     LOG_ASSERT(n < 0x1000);
-
+    LOG_ASSERT(n != 0);
+    LOG_INFO("File size: %zu", n);
     size_t k = n & Offset_Mask;
 
     FILE* file = fopen(filename, "w");
     LOG_ASSERT(file != NULL);
     
     writeElfHeader (file, k);
-    writeElfPHTable(file, k);
+    writeElfPHTable(file, n);
 
     fseek(file, 0x0200, SEEK_SET);
     fwrite(Interp, sizeof(Interp), 1, file);
@@ -294,7 +295,9 @@ void genElf(const char* filename, const char* binBuffer, size_t n){
     *(unsigned*)&PltSeg[0x08] += (unsigned)k;
     *(unsigned*)&PltSeg[0x12] += (unsigned)k;
     *(unsigned*)&PltSeg[0x22] += (unsigned)k;
+
     fwrite(&PltSeg,   sizeof(char), PltSz, file);  
+    
     *(unsigned*)&PltSeg[0x02] -= (unsigned)k;
     *(unsigned*)&PltSeg[0x08] -= (unsigned)k;
     *(unsigned*)&PltSeg[0x12] -= (unsigned)k;
@@ -316,7 +319,7 @@ void genElf(const char* filename, const char* binBuffer, size_t n){
     fwrite(&addr, sizeof(Elf64_Addr), 1, file);
 
     fseek(file, 0x3500 + k, SEEK_SET);
-    writeElfSHTable(file, k);
+    writeElfSHTable(file, n);
 
     fclose(file);
 }

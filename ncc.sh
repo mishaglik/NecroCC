@@ -56,18 +56,32 @@ if [[ ! -e ncc/BackEnd/${Backend} ]]; then
     echo "Backend \"${Backend}\" not found"
     exit
 fi
-
 tmpFile=${baseName}.tree
 ./ncc/FrontEnd/${Frontend} "$File" "$tmpFile"
 if [[ ! -e "$tmpFile" ]]; then
+    echo "No tree file"
     exit
 fi
 ./ncc/MiddleEnd "$tmpFile"
+
+
+if [[ "${Backend}" == "asm" ]]; then
 ./ncc/BackEnd/${Backend} "$tmpFile" "$AsmFile"
+
 if [[ ! -e "$AsmFile" ]]; then 
+    echo "No asm file"
     exit
 fi
+
 ./asm/${Backend} "$AsmFile"
+
+fi
+
+if [[ "${Backend}" == "x86_64" ]]; then
+echo "BackEnd"
+./ncc/BackEnd/${Backend} "$tmpFile" "${baseName%.*}"
+chmod +x ${baseName%.*}
+fi
 
 if [[ "${baseName%.*}.out" !=  "$OutFile" ]]; then
     mv "${baseName%.*}.out" "$OutFile" 

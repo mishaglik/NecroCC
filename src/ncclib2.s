@@ -22,8 +22,8 @@ SYS_STDOUT = 0x01
 
 ncc_in:
     
-    mov rax, 5
-    ret
+;//     mov rax, 5
+;//     ret
     push rbp
     mov rbp, rsp
     sub rsp, 16
@@ -46,16 +46,28 @@ ncc_in:
 ncc_out:
 ;//     mov rax, rdi
 ;//     ret
-
     push rbp
     mov rbp, rsp
     sub rsp, 64
     push rdi
     mov rsi, rdi
     lea rdi, [rbp - 64]
+
+    cmp rsi, 0
+    jge noMinus
+    mov BYTE PTR [rdi], '-'
+    inc rdi
+    neg rsi
+
+noMinus:
     call itoa10
-    mov rsi, rax
     lea rdi, [rbp - 64]
+    xor rsi, rsi
+    cmp BYTE PTR [rdi], '-'
+    jne noInc
+    inc rsi
+noInc:
+    add rsi, rax
     call puts
     pop rax
     mov rsp, rbp
@@ -83,7 +95,7 @@ atoi_loop:
         cmp sil, '-'
         jne atoi_digit
         mov rdx, -1
-
+        jmp atoi_loop
 atoi_digit:
         sub sil, '0'
         imul rax, 10
