@@ -1,32 +1,13 @@
 #ifndef NECROCC_BACKEND_X86_64_BACKEND_H
 #define NECROCC_BACKEND_X86_64_BACKEND_H
 #include "../../LangTree/Tree.h"
+#include "StFrame.h"
 
-struct VarOffset
-{
-    idt_t id   = 0;
-    int offset = 0;
-};
 
-struct FuncLable
-{
-    idt_t id  = 0;
-    unsigned label = 0;
-    int nArgs = 0;
-};
 
-struct ByteBuffer
-{
-    char* buff;
-    size_t size;
-    size_t capacity;
-};
 
-void newByteBuffer(ByteBuffer* buf);
-void deleteByteBuffer(ByteBuffer* buffer);
-void ByteBufferAppend(ByteBuffer* buf, const char* data, size_t size);
-void ByteBufferAppendf(ByteBuffer* buf, const char* format, ...);
-void ByteBufferExpand(ByteBuffer* buf);
+
+
 
 const size_t NRegs = 13;
 
@@ -105,80 +86,32 @@ enum class Flags{
     G   = 0x1f,
 };
 
-struct NameSpace
-{
-    NameSpace* parent   = NULL;
-    VarOffset* varTable = NULL;
-    
-
-    size_t size     = 0;
-    size_t capacity = 0;
-    size_t above    = 0;
-    size_t pushed   = 0;
-    size_t nSub     = 0;
-    unsigned regSaved = 0;
-};
 
 struct BackendContext
 {
-    NameSpace* ns = NULL;
+    Nameframe* nf = NULL;
     ByteBuffer asmBuf;
     ByteBuffer binBuf;
-    ByteBuffer labelBuf;
     ByteBuffer funcLabelsBuf;
+    LabelBuf   labelBuf;
     int pass = 0;
-    unsigned labels = 0;
     int nTabs = 0;
     unsigned regStackUsed = 0;
 };
 
-
-
-unsigned LabelReserve(BackendContext* context, unsigned n);
-void LabelRegister(BackendContext* context, unsigned label);
-long long LabelGetOffs(BackendContext* context, unsigned label);
-
-void functionRegister(BackendContext* context, int id, unsigned label, int nargs);
-unsigned functionGetL(BackendContext* context, int id);
-
-
-void VariableSet(BackendContext* context, Reg r, int offset);
-
-NameSpace* createNS(NameSpace* parent);
-
-void deleteNS(NameSpace* ns);
-
-void backend(const Node* root, const char* filename);
-
-int getOffset(NameSpace* ns, idt_t id);
-
-void expandNS(NameSpace* ns, size_t newSZ);
-
-void registerVar(NameSpace* ns, idt_t id, int offset = 0);
-
-void codeGen(BackendContext* context, const Node* node);
-
-void regVars(NameSpace* ns, const Node* node);
-
-int getNfuncArgs(const Node* node);
+void functionEntryVars(BackendContext* context, const Node* node, int* n);
 
 int evaluteArguments(BackendContext* context, const Node* node);
 
-void openNewNS(BackendContext* context);
-
-void closeNS(BackendContext* context);
-
-void createFrame(BackendContext* context, int par = 0);
-
-int getVarCnt(const Node* node);
-
-void createFrame(BackendContext* context, NameSpace* par, const Node* node);
+void createFrame(BackendContext* context, Nameframe* par, const Node* node);
 
 void closeFrame(BackendContext* context);
 
-void functionEntryVars(BackendContext* context, const Node* node, int* n = NULL);
+void VariableSet(BackendContext* context, Reg r, int offset);
 
-// unsigned getRegsNeeded(const Node* node);
+void backend(const Node* root, const char* filename);
+
+void codeGen(BackendContext* context, const Node* node);
 
 #include "Operations.h"
 

@@ -11,19 +11,9 @@ BUFFER_SIZE = 128
 SYS_WRITE  = 0x01
 SYS_STDOUT = 0x01
 
-.global _start
-;// _start:
-;//     call ncc_in
-;//     mov rdi, rax
-;//     call ncc_out
-;//     xor rdi, rdi
-;//     mov rax, 0x3c
-;//     syscall
-
-ncc_in:
-    
-;//     mov rax, 5
-;//     ret
+;// Input function.
+;// 
+ncc_in:    
     push rbp
     mov rbp, rsp
     sub rsp, 16
@@ -43,9 +33,9 @@ ncc_in:
     pop rbp
     ret
 
+;// Output function
+;// 
 ncc_out:
-;//     mov rax, rdi
-;//     ret
     push rbp
     mov rbp, rsp
     sub rsp, 64

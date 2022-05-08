@@ -226,7 +226,7 @@ void xCallC(BackendContext* context, unsigned l){
     ASM("call L%u", l);
     long long afterIp = (long long)context->binBuf.size + 5;
     unsigned char buf[5] = {0xe8};
-    PUT_ARG(buf[1], LabelGetOffs(context, l) - afterIp);
+    PUT_ARG(buf[1], LabelGetOffs(&context->labelBuf, l) - afterIp);
     BIN(buf, 5);
 }
 
@@ -241,14 +241,14 @@ void xJmpC(BackendContext* context, Flags f, unsigned l){
     if(f == Flags::ABS){
         afterIp = (long long)context->binBuf.size + 5;
         buf[0] = 0xe9;
-        PUT_ARG(buf[1], LabelGetOffs(context, l) - afterIp);
+        PUT_ARG(buf[1], LabelGetOffs(&context->labelBuf, l) - afterIp);
         BIN(buf, 5);
         return;
     }
     afterIp = (long long)context->binBuf.size + 6;
     buf[0] = 0x0f;
     buf[1] = 0x80 | FLAFBIT(f);
-    PUT_ARG(buf[2], LabelGetOffs(context, l) - afterIp);
+    PUT_ARG(buf[2], LabelGetOffs(&context->labelBuf, l) - afterIp);
     BIN(buf, 6);
 }
 
@@ -606,7 +606,7 @@ const char* getFlagName(Flags f){
     case Flags::NBE : return "nbe";
     case Flags::A   : return "a";
     case Flags::S   : return "s";
-    case Flags::NS  : return "ns";
+    case Flags::NS  : return "nf";
     case Flags::P   : return "p";
     case Flags::PE  : return "pe";
     case Flags::NP  : return "np";

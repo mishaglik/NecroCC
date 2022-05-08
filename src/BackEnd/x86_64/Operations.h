@@ -58,8 +58,8 @@
 
 //lea r, [rbp + offs]
 #define XLEARV(r, offs) xLeaRMRC(context, r, Reg::RBP, offs)
-#define XPUSH(r) {xPushR(context, r); if(context->ns) context->ns->pushed++;}
-#define XPOP(r)  {xPopR(context, r);  if(context->ns) context->ns->pushed--;}
+#define XPUSH(r) {xPushR(context, r); if(context->nf) context->nf->pushed++;}
+#define XPOP(r)  {xPopR(context, r);  if(context->nf) context->nf->pushed--;}
 
 #define XPOPMVC(c) xPopMRC(context, Reg::RBP, c)
 #define XPUSHMVC(c) xPushMRC(context, Reg::RBP, c)
