@@ -3,12 +3,6 @@
 #include "../../LangTree/Tree.h"
 #include "StFrame.h"
 
-
-
-
-
-
-
 const size_t NRegs = 13;
 
 enum class Reg{

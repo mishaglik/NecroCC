@@ -1,6 +1,6 @@
 # NeronomiCC (*ncc*)
-### *All for DOOM* ###
-Thanks author for translation. He lost his mind, but task is done
+### *All for DOOM* Now with x86_64 ###
+Thanks author for translation. He lost his mind during elf battle, but task is done
 ## Basic ##
 + Only latin. Only hardcore.
 + Case insensitive. Good luck in naming.
@@ -60,3 +60,14 @@ Thanks author for translation. He lost his mind, but task is done
     - S#%k up **!** And take your data.
 + **Cthulhu** is main difference.
 
+## X86_64 ##
+x86_64 5000 times faster than execuing in virtual prc
+
+For executing in x86_64 mode you must add ncclib.so to your ld path.
+For example:
+
+ `export LD_LIBRARY_PATH=./ncc:$LD_LIBRARY_PATH`
+
+ or just copy/ln ncc/libncc.so to /lib64
+
+ `cp ncc/libncc.so /lib64`

@@ -302,6 +302,7 @@ void codeGen(BackendContext* context, const Node* node){
 
             }
             break;
+            
         case Operator::CALL:
             {
             for(size_t i = 0; i < context->regStackUsed; ++i){
@@ -322,8 +323,9 @@ void codeGen(BackendContext* context, const Node* node){
             {
                 XPOP(regStack[savedReg--]);
             }
-            }
+        }
             break;
+
         case Operator::WHILE:{
             lbl = LabelReserve(&context->labelBuf, 2);
             createFrame(context, context->nf, node);
@@ -344,6 +346,7 @@ void codeGen(BackendContext* context, const Node* node){
             
         }
             break;
+
         case Operator::LAND:{
             size_t ofs[3] = {};
             lbl = LabelReserve(&context->labelBuf, 2);
@@ -373,6 +376,7 @@ void codeGen(BackendContext* context, const Node* node){
             UPDATE_ADDR(ofs[2]);
         }
             break;
+
         case Operator::LOR:{
             size_t ofs[3];
 

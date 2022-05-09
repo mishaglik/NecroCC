@@ -32,7 +32,12 @@ struct FuncLable
     int nArgs = 0;
 };
 
-
+/**
+ * @brief Create new NameFrame
+ * 
+ * @param parent 
+ * @return Nameframe* - new NameFrame
+ */
 Nameframe* createNF(Nameframe* parent);
 
 void deleteNF(Nameframe* nf);
@@ -53,9 +58,13 @@ struct ByteBuffer
 };
 
 void newByteBuffer(ByteBuffer* buf);
+
 void deleteByteBuffer(ByteBuffer* buffer);
+
 void ByteBufferAppend(ByteBuffer* buf, const char* data, size_t size);
+
 void ByteBufferAppendf(ByteBuffer* buf, const char* format, ...);
+
 void ByteBufferExpand(ByteBuffer* buf);
 
 int getVarCnt(const Node* node);

@@ -3,6 +3,7 @@
 #include "StFrame.h"
 #include <string.h>
 #include <stdarg.h>
+
 extern const size_t INT_SZ;
 
 Nameframe* createNF(Nameframe* parent = NULL){
