@@ -71,7 +71,7 @@ void codeGen(BackendContext* context, const Node* node){
     context->nTabs++;
 
     if(node == NULL){
-        XXOR(regStack[context->regStackUsed],regStack[context->regStackUsed]);
+        XXOR(regStack[context->regStackUsed], regStack[context->regStackUsed]);
         context->regStackUsed++;
         LOG_DEC_TAB();
         LOG_INFO("Finished");
@@ -96,15 +96,16 @@ void codeGen(BackendContext* context, const Node* node){
         context->regStackUsed = 0;
     }
 
-    Reg r1 = regStack[context->regStackUsed];
+    Reg r1 = regStack[context->regStackUsed + 0];
     Reg r2 = regStack[context->regStackUsed + 1];
     Reg r3 = regStack[context->regStackUsed + 2];
-    switch (node->type)
-    {
-    case NodeType::OPERATOR:
-    {
-        switch (node->data.opr)
-        {
+    
+    switch (node->type){
+
+    case NodeType::OPERATOR:{
+
+        switch (node->data.opr){
+
     #define CASE_BINARY(opr, OPR)           \
         case Operator::opr:                 \
             codeGen(context, node->left);   \
@@ -128,6 +129,10 @@ void codeGen(BackendContext* context, const Node* node){
         CASE_BINARY(ADD, XADD);
         CASE_BINARY(SUB, XSUB);
         CASE_BINARY(MUL, XMUL);
+        CASE_BINARY(AND, XAND);
+        CASE_BINARY(OR , X_OR);
+        CASE_BINARY(XOR, XXOR);
+//===========================================//
         case Operator::SHL:
             codeGen(context, node->left);   
             codeGen(context, node->right);
@@ -144,7 +149,8 @@ void codeGen(BackendContext* context, const Node* node){
                 XPOP(Reg::RCX);
             }
             context->regStackUsed--;
-            break;                                                       
+            break;    
+//===========================================//
         case Operator::SHR:
             codeGen(context, node->left);   
             codeGen(context, node->right);
@@ -161,7 +167,8 @@ void codeGen(BackendContext* context, const Node* node){
                 XPOP(Reg::RCX);
             }
             context->regStackUsed--;
-            break;        
+            break;
+//===========================================//
         case Operator::DIV:
         case Operator::MOD:            
             codeGen(context, node->left);
@@ -183,6 +190,7 @@ void codeGen(BackendContext* context, const Node* node){
             if(r1 != Reg::RDX) XPOP(Reg::RDX);
             context->regStackUsed--;
             break;
+//===========================================//
 
         CASE_CMP(LESS, Flags::L);
         CASE_CMP(LESS_EQ, Flags::LE);
@@ -191,33 +199,35 @@ void codeGen(BackendContext* context, const Node* node){
         CASE_CMP(EQUAL, Flags::E);
         CASE_CMP(NON_EQ, Flags::NE);
 
-        
-
-        CASE_BINARY(AND, XAND);
-        CASE_BINARY(OR , X_OR);
-        CASE_BINARY(XOR, XXOR);
     
     #undef CASE_BINARY
-    #undef CASE_CMP
-    
+    #undef CASE_CMP    
+//===========================================//
         case Operator::SET:
             LOG_ASSERT(node->left != NULL);
             if(node->left->type == NodeType::IDENTIFIER){
                 codeGen(context, node->right);
+            
                 XMOVVR(getOffset(context->nf, node->left->data.id), r1);
             }
             else{
                 LOG_ASSERT(node->left->type == NodeType::OPERATOR);
                 LOG_ASSERT(node->left->data.opr == Operator::VAL);
+            
                 codeGen(context, node->left->right);
                 codeGen(context, node->right);
+            
                 XMOVRMR(r1, r2);
                 context->regStackUsed--;
             }
             break;
+
+//===========================================//
         case Operator::TERN_Q:{
             LOG_ASSERT(node->right->data.opr == Operator::TERN_C);
+            
             codeGen(context, node->left);
+            
             XTESTRR(r1, r1);
             context->regStackUsed--;
             lbl = LabelReserve(&context->labelBuf, 2);
@@ -245,6 +255,7 @@ void codeGen(BackendContext* context, const Node* node){
             context->regStackUsed++;
         }
             break;
+//===========================================//
         case Operator::QQ:{
             codeGen(context, node->left);
             XPOP(r1);
@@ -262,6 +273,7 @@ void codeGen(BackendContext* context, const Node* node){
             context->regStackUsed++;
         }
             break;
+//===========================================//
         case Operator::ENDL:
             codeGen(context, node->left);
             if(node->right){
@@ -271,12 +283,14 @@ void codeGen(BackendContext* context, const Node* node){
                 codeGen(context, node->right);
             }
             break;
+//===========================================//
         case Operator::VAR:
             LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
             registerVar(context->nf, node->left->data.id);
             codeGen(context, node->right);
             XMOVVR(getOffset(context->nf,node->left->data.id), r1);
             break;
+//===========================================//
         case Operator::FUNC:{
             
             lbl = LabelReserve(&context->labelBuf, 2);
@@ -302,7 +316,7 @@ void codeGen(BackendContext* context, const Node* node){
 
             }
             break;
-            
+//===========================================//
         case Operator::CALL:
             {
             for(size_t i = 0; i < context->regStackUsed; ++i){
@@ -326,6 +340,7 @@ void codeGen(BackendContext* context, const Node* node){
         }
             break;
 
+//===========================================//
         case Operator::WHILE:{
             lbl = LabelReserve(&context->labelBuf, 2);
             createFrame(context, context->nf, node);
@@ -347,6 +362,7 @@ void codeGen(BackendContext* context, const Node* node){
         }
             break;
 
+//===========================================//
         case Operator::LAND:{
             size_t ofs[3] = {};
             lbl = LabelReserve(&context->labelBuf, 2);
@@ -376,7 +392,7 @@ void codeGen(BackendContext* context, const Node* node){
             UPDATE_ADDR(ofs[2]);
         }
             break;
-
+//===========================================//
         case Operator::LOR:{
             size_t ofs[3];
 
@@ -407,12 +423,14 @@ void codeGen(BackendContext* context, const Node* node){
             UPDATE_ADDR(ofs[2]);
         }
             break;
+//======================< Not >===========================//
         case Operator::NOT:
             codeGen(context, node->right);
             XTESTRR(r1, r1);
             XMOVRC(r1, 0);
             XSET(Flags::Z, r1);
             break;
+//======================< Inc >==========================//
         case Operator::INC:
             if(node->left){
                 LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
@@ -433,6 +451,7 @@ void codeGen(BackendContext* context, const Node* node){
                 context->regStackUsed++;
             }
             break;
+//====================< Dec >==============================//
         case Operator::DEC:
             if(node->left){
                 LOG_ASSERT(node->left->type == NodeType::IDENTIFIER);
@@ -454,6 +473,7 @@ void codeGen(BackendContext* context, const Node* node){
             }
             break;
             break;
+//=================< Addr >================================//
         case Operator::ADDR:
             XLEARV(r1, getOffset(context->nf, node->right->data.id));
             context->regStackUsed++;
@@ -462,6 +482,7 @@ void codeGen(BackendContext* context, const Node* node){
             codeGen(context, node->right);
             XMOVRRM(r1, r1);
             break;
+//===================< In >===============================//
         case Operator::IN:
             if(r1 != Reg::RAX) XPUSH(Reg::RAX);
             XIN();
@@ -469,6 +490,7 @@ void codeGen(BackendContext* context, const Node* node){
             if(r1 != Reg::RAX) XPOP(Reg::RAX);
             context->regStackUsed++;
             break;
+//===================< Out >=============================//
         case Operator::OUT:
             codeGen(context, node->right);
             if(r1 != Reg::RDI) XPUSH(Reg::RDI);
@@ -479,6 +501,7 @@ void codeGen(BackendContext* context, const Node* node){
             if(r1 != Reg::RAX) XPOP(Reg::RAX);
             if(r1 != Reg::RDI) XPOP(Reg::RDI);
             break;
+//================< Unsupported >========================//
         case Operator::BREAK:
         case Operator::RET:
         case Operator::OUTC:

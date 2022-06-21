@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <elf.h>
 #include <MGK/Logger.h>
 #include <MGK/Utils.h>
@@ -9,13 +10,17 @@
 const Elf64_Word PHNum = 6;
 const Elf64_Word SHNum = 9;
 const Elf64_Addr PltSz = 0x30;
-const Elf64_Addr StartOff = 0x400000;
+
+const Elf64_Addr StartOff   = 0x400000;
 const Elf64_Addr EntryPoint = StartOff + 0x1000 + PltSz;
-const size_t Offset_Mask = ~0xffful;
+const size_t Offset_Mask    = ~0xffful;
+
+const size_t ELF_INIT_SIZE = 0x4000;
+const size_t ELF_BUF_ROUND = 0x1000;
 
 const Elf64_Ehdr EHdr{
     .e_ident = {
-        ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, // 0x7f ELF
+        ELFMAG0, ELFMAG1, ELFMAG2, ELFMAG3, // 0x7f 'E' 'L' 'F'
         /*[EI_CLASS     ] = */ ELFCLASS64, 
         /*[EI_DATA      ] = */ ELFDATA2LSB, 
         /*[EI_VERSION   ] = */ EV_CURRENT,
@@ -74,7 +79,7 @@ static Elf64_Rela RelaSeg[2] = {
 };
 
 //                       1       8        16
-//                       v       v        v                  35        44        52     60        68            78
+//                       v       v        v                  35v       44v      52v     60 v      68v          v  78
 const char StrTab[] = "\0ncc_in\0ncc_out\0libncc.so\0.dynamic\0.got.plt\0.interp\0.dynsym\0.strtab\0.rela.plt\0.text";
 const char Interp[] = "/lib64/ld-linux-x86-64.so.2";
 
@@ -261,80 +266,81 @@ static Elf64_Shdr SHTable[SHNum] = {
     },
 };
 
-void genElf(const char* filename, const char* binBuffer, size_t n){
-    LOG_ASSERT(n < 0x1000);
-    LOG_ASSERT(n != 0);
-    LOG_INFO("File size: %zu", n);
-    size_t k = n & Offset_Mask;
+void genElf(const char* filename, const char* binBuffer, size_t bufSize){
+    LOG_ASSERT(bufSize != 0);
+    LOG_INFO("File size: %zu", bufSize);
+    size_t extra_size = bufSize & ELF_BUF_ROUND;
 
-    FILE* file = fopen(filename, "w");
-    LOG_ASSERT(file != NULL);
+    ElfBuffer* elf = createElfBuffer(ELF_INIT_SIZE + extra_size);
     
-    writeElfHeader (file, k);
-    writeElfPHTable(file, n);
-
-    fseek(file, 0x0200, SEEK_SET);
-    fwrite(Interp, sizeof(Interp), 1, file);
-
-    fseek(file, 0x0300, SEEK_SET);
-    fwrite(SymTab, sizeof(SymTab), 1, file);
-
-    fseek(file, 0x0400, SEEK_SET);
-    fwrite(StrTab, sizeof(StrTab), 1, file);
-
-    fseek(file, 0x0500, SEEK_SET);
-    RelaSeg[0].r_offset += k;
-    RelaSeg[1].r_offset += k;
-    fwrite(RelaSeg, sizeof(RelaSeg), 1, file);
-    RelaSeg[0].r_offset -= k;
-    RelaSeg[1].r_offset -= k;
-
-    fseek(file, 0x1000, SEEK_SET);
-
-    *(unsigned*)&PltSeg[0x02] += (unsigned)k;
-    *(unsigned*)&PltSeg[0x08] += (unsigned)k;
-    *(unsigned*)&PltSeg[0x12] += (unsigned)k;
-    *(unsigned*)&PltSeg[0x22] += (unsigned)k;
-
-    fwrite(&PltSeg,   sizeof(char), PltSz, file);  
+    LOG_ASSERT(elf != NULL);
     
-    *(unsigned*)&PltSeg[0x02] -= (unsigned)k;
-    *(unsigned*)&PltSeg[0x08] -= (unsigned)k;
-    *(unsigned*)&PltSeg[0x12] -= (unsigned)k;
-    *(unsigned*)&PltSeg[0x22] -= (unsigned)k;  
-    
-    fwrite(binBuffer, sizeof(char), n,     file);
+    writeElfHeader (elf, extra_size);
+    writeElfPHTable(elf, bufSize);
 
-    fseek(file, 0x2ee0 + k, SEEK_SET);
-    DynTable[6].d_un.d_ptr += k;
-    fwrite(&DynTable, sizeof(Elf64_Dyn), DTNum, file);
-    DynTable[6].d_un.d_ptr -= k;
+    writeElfBuffer(elf, 0x200, Interp, sizeof(Interp));
+
+    writeElfBuffer(elf, 0x300, SymTab, sizeof(SymTab));
+
+    writeElfBuffer(elf, 0x400, StrTab, sizeof(StrTab));
+
+
+    RelaSeg[0].r_offset += extra_size;          //Patching extra size offsets in Rels segment
+    RelaSeg[1].r_offset += extra_size;
+
+    writeElfBuffer(elf, 0x500, RelaSeg, sizeof(RelaSeg));
+
+    RelaSeg[0].r_offset -= extra_size;          // Return to default.
+    RelaSeg[1].r_offset -= extra_size;
+
+    *(unsigned*)&(PltSeg[0x02]) += (unsigned)extra_size;      //Patching extra size offsets in Plt segment
+    *(unsigned*)&(PltSeg[0x08]) += (unsigned)extra_size;
+    *(unsigned*)&(PltSeg[0x12]) += (unsigned)extra_size;
+    *(unsigned*)&(PltSeg[0x22]) += (unsigned)extra_size;
+
+    writeElfBuffer(elf, 0x1000, PltSeg, PltSz);
+
+    *(unsigned*)&(PltSeg[0x02]) -= (unsigned)extra_size;
+    *(unsigned*)&(PltSeg[0x08]) -= (unsigned)extra_size;
+    *(unsigned*)&(PltSeg[0x12]) -= (unsigned)extra_size;
+    *(unsigned*)&(PltSeg[0x22]) -= (unsigned)extra_size;  
+    
+    writeElfBuffer(elf, 0x1000 + PltSz, binBuffer, bufSize);
+
+    
+    DynTable[6].d_un.d_ptr += extra_size;
+
+    writeElfBuffer(elf, 0x2ee0 + extra_size, DynTable, sizeof(Elf64_Dyn) * DTNum);
+
+    DynTable[6].d_un.d_ptr -= extra_size;
 
     Elf64_Addr addr = 0x401016;
-    fseek(file, 0x3018 + k, SEEK_SET);
-    fwrite(&addr, sizeof(Elf64_Addr), 1, file);
+    
+    writeElfBuffer(elf, 0x3018 + extra_size, &addr, sizeof(Elf64_Addr));
 
     addr += 0x10;
-    fseek(file, 0x3020 + k, SEEK_SET);
-    fwrite(&addr, sizeof(Elf64_Addr), 1, file);
 
-    fseek(file, 0x3500 + k, SEEK_SET);
-    writeElfSHTable(file, n);
+    writeElfBuffer(elf, 0x3018 + extra_size + sizeof(Elf64_Addr),
+                         &addr, sizeof(Elf64_Addr));
 
-    fclose(file);
+    writeElfSHTable(elf, bufSize);
+
+    writeToFileElfBuffer(elf, filename);
+    deleteElfBuffer(elf);
 }
 
 
 
-void writeElfHeader(FILE* file, size_t k){
+void writeElfHeader (ElfBuffer* elf, size_t extra_size){
     Elf64_Ehdr hdr = EHdr;
 
-    hdr.e_shoff += k;
-    fwrite(&hdr, sizeof(Elf64_Ehdr), 1, file);
+    hdr.e_shoff += extra_size;
+
+    writeElfBuffer(elf, 0, &hdr, sizeof(Elf64_Ehdr));
 }
 
-void writeElfPHTable(FILE* file, size_t n){
-    size_t k = n & Offset_Mask;
+void writeElfPHTable(ElfBuffer* elf, size_t binSz){
+    size_t extra_size = binSz & ELF_BUF_ROUND;
 
     Elf64_Phdr hdr_phd = {
         .p_type   = PT_PHDR,	
@@ -375,17 +381,17 @@ void writeElfPHTable(FILE* file, size_t n){
         .p_offset = 0x1000,		
         .p_vaddr  = StartOff + 0x1000,	
         .p_paddr  = StartOff + 0x1000,		
-        .p_filesz = n + PltSz,		
-        .p_memsz  = n + PltSz,		
+        .p_filesz = binSz + PltSz,		
+        .p_memsz  = binSz + PltSz,		
         .p_align  = 0x1000,
     };
 
     Elf64_Phdr hdr_dynld = {
         .p_type   = PT_LOAD,	
         .p_flags  = PF_R | PF_W,		
-        .p_offset =            0x2ee0 + k,		
-        .p_vaddr  = StartOff + 0x2ee0 + k,		
-        .p_paddr  = StartOff + 0x2ee0 + k,		
+        .p_offset =            0x2ee0 + extra_size,		
+        .p_vaddr  = StartOff + 0x2ee0 + extra_size,		
+        .p_paddr  = StartOff + 0x2ee0 + extra_size,		
         .p_filesz = 0x200,		
         .p_memsz  = 0x1200,		
         .p_align  = 0x1000,
@@ -394,38 +400,76 @@ void writeElfPHTable(FILE* file, size_t n){
     Elf64_Phdr hdr_dyn = {
         .p_type   = PT_DYNAMIC,	
         .p_flags  = PF_R | PF_W,		
-        .p_offset =            0x2ee0 + k,		
-        .p_vaddr  = StartOff + 0x2ee0 + k,		
-        .p_paddr  = StartOff + 0x2ee0 + k,		
+        .p_offset =            0x2ee0 + extra_size,		
+        .p_vaddr  = StartOff + 0x2ee0 + extra_size,		
+        .p_paddr  = StartOff + 0x2ee0 + extra_size,		
         .p_filesz = 0x120,		
         .p_memsz  = 0x120,		
         .p_align  = 0x1000,
     };
 
 
-    fwrite(&hdr_phd,    sizeof(Elf64_Phdr), 1, file);
-    fwrite(&hdr_interp, sizeof(Elf64_Phdr), 1, file);
-    fwrite(&hdr_filler, sizeof(Elf64_Phdr), 1, file);
-    fwrite(&hdr_text,   sizeof(Elf64_Phdr), 1, file);
-    fwrite(&hdr_dynld,  sizeof(Elf64_Phdr), 1, file);
-    fwrite(&hdr_dyn,    sizeof(Elf64_Phdr), 1, file);
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 0, &hdr_phd,    sizeof(Elf64_Phdr));
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 1, &hdr_interp, sizeof(Elf64_Phdr));
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 2, &hdr_filler, sizeof(Elf64_Phdr));
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 3, &hdr_text,   sizeof(Elf64_Phdr));
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 4, &hdr_dynld,  sizeof(Elf64_Phdr));
+    writeElfBuffer(elf, sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) * 5, &hdr_dyn,    sizeof(Elf64_Phdr));
 }
 
 
-void writeElfSHTable(FILE* file, size_t n){
-    size_t k = n & Offset_Mask;
-    
-    SHTable[6].sh_size    = n;
-    SHTable[7].sh_addr   += k;
-    SHTable[7].sh_offset += k;
-    SHTable[8].sh_addr   += k;
-    SHTable[8].sh_offset += k;
 
-    fwrite(&SHTable, sizeof(SHTable), 1, file);
+void writeElfSHTable(ElfBuffer* elf, size_t binSz){
+    size_t extra_size = binSz & ELF_BUF_ROUND;
+    
+    SHTable[6].sh_size    = binSz;
+    SHTable[7].sh_addr   += extra_size;
+    SHTable[7].sh_offset += extra_size;
+    SHTable[8].sh_addr   += extra_size;
+    SHTable[8].sh_offset += extra_size;
+
+    writeElfBuffer(elf, 0x3500 + extra_size, SHTable ,sizeof(SHTable));
 
     SHTable[6].sh_size    = 0;
-    SHTable[7].sh_addr   -= k;
-    SHTable[7].sh_offset -= k;
-    SHTable[8].sh_addr   -= k;
-    SHTable[8].sh_offset -= k;
+    SHTable[7].sh_addr   -= extra_size;
+    SHTable[7].sh_offset -= extra_size;
+    SHTable[8].sh_addr   -= extra_size;
+    SHTable[8].sh_offset -= extra_size;
+}
+
+ElfBuffer* createElfBuffer(size_t capacity){
+    ElfBuffer* elf = (ElfBuffer*)mgk_calloc(1, sizeof(ElfBuffer));
+    elf->buffer = mgk_calloc(capacity, 1);
+    elf->capacity = capacity;
+    return elf;
+}
+
+void deleteElfBuffer(ElfBuffer* elf){
+    if(elf == NULL) return;
+    free(elf->buffer);
+    free(elf);
+}
+
+void expandElfBuffer(ElfBuffer* elf, size_t new_capacity){
+    elf->buffer = mgk_realloc(elf->buffer, new_capacity, 1);
+    elf->capacity = new_capacity;
+}
+
+
+void writeElfBuffer(ElfBuffer* elf, size_t offset, const void* data, size_t n){
+    LOG_ASSERT(elf != NULL);
+    if(offset + n > elf->capacity) expandElfBuffer(elf, ((offset + n) & ~(ELF_BUF_ROUND - 1)) + ELF_BUF_ROUND);
+    memcpy((char*)elf->buffer + offset, data, n);
+}
+
+void writeToFileElfBuffer(const ElfBuffer* elf, const char* filename){
+    LOG_ASSERT(elf != NULL);
+    LOG_ASSERT(filename != NULL);
+    
+    FILE* file = fopen(filename, "w");
+    
+    LOG_ASSERT(file != NULL);
+
+    fwrite(elf->buffer, elf->capacity, 1, file);
+    fclose(file);
 }
